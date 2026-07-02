@@ -59,17 +59,16 @@ export default function Login() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
             <div className="flex flex-col gap-5 w-full">
-              {/* Google Button with Magic Border */}
-              <div className="magic-button w-full h-[56px] rounded-2xl">
-                <motion.button
-                  {...buttonPress}
-                  onClick={() => handleOAuthLogin('google')}
-                  className="magic-button-content !rounded-2xl w-full flex items-center justify-center gap-3 text-base"
-                >
-                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-                  Continue with Google
-                </motion.button>
-              </div>
+              {/* Standard Google Button */}
+              <motion.button
+                {...buttonPress}
+                onClick={() => handleOAuthLogin('google')}
+                className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-semibold text-gray-800 bg-white hover:bg-gray-50 transition-all shadow-sm"
+                style={{ border: '1px solid #e2e8f0' }}
+              >
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                Continue with Google
+              </motion.button>
 
               {/* GitHub Button with Glass Style */}
               <motion.button

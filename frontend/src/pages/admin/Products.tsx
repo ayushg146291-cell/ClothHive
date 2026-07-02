@@ -51,9 +51,10 @@ function EditProductModal({
 
   const handleSave = () => {
     if (!product) return
+    const finalStock = variants.length > 0 ? variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) : stock;
     updateProduct.mutate({
       name,
-      stock,
+      stock: finalStock,
       price,
       isActive,
       variants,
@@ -96,12 +97,15 @@ function EditProductModal({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Total Stock</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1.5">
+                Total Stock {variants.length > 0 && '(Auto-calculated)'}
+              </label>
               <input
                 type="number"
-                value={stock}
+                value={variants.length > 0 ? variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) : stock}
                 onChange={(e) => setStock(Number(e.target.value))}
-                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                disabled={variants.length > 0}
+                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none disabled:opacity-50"
               />
             </div>
             <div className="flex flex-col justify-end">
@@ -153,6 +157,16 @@ function EditProductModal({
                         placeholder="e.g. Black"
                         value={variant.color || ''}
                         onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
+                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">SKU</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. TSHIRT-XL-BLK"
+                        value={variant.sku || ''}
+                        onChange={(e) => handleVariantChange(index, 'sku', e.target.value)}
                         className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
                       />
                     </div>
