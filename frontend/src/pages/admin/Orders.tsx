@@ -53,7 +53,7 @@ export default function AdminOrders() {
                 <tr key={order.id} className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
                   <td className="px-6 py-4 font-medium text-white">#{order.orderNumber}</td>
                   <td className="px-6 py-4">{order.user?.email || 'Guest'}</td>
-                  <td className="px-6 py-4">{formatDate(order.createdAt)}</td>
+                  <td className="px-6 py-4">{order.createdAt ? formatDate(order.createdAt) : 'Unknown'}</td>
                   <td className="px-6 py-4">{formatCurrency(order.totalAmount)}</td>
                   <td className="px-6 py-4">
                     <span className="px-2.5 py-1 rounded-full text-xs font-medium text-white" style={{ background: ORDER_STATUS_COLORS[order.status] }}>

@@ -106,7 +106,7 @@ export default function Checkout() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">Phone</label>
-                  <input {...register('phone')} placeholder="+1 555 000 0000" className="w-full glass-input rounded-xl px-4 py-3" />
+                  <input {...register('phone')} placeholder="+91 98765 43210" className="w-full glass-input rounded-xl px-4 py-3" />
                   {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>}
                 </div>
 
@@ -118,13 +118,13 @@ export default function Checkout() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">City</label>
-                    <input {...register('city')} placeholder="San Francisco" className="w-full glass-input rounded-xl px-4 py-3" />
+                    <label className="block text-sm font-medium text-gray-400 mb-2">City</label>
+                    <input {...register('city')} placeholder="Mumbai" className="w-full glass-input rounded-xl px-4 py-3" />
                     {errors.city && <p className="text-red-400 text-xs mt-1">{errors.city.message}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">State/Province</label>
-                    <input {...register('state')} placeholder="CA" className="w-full glass-input rounded-xl px-4 py-3" />
+                    <label className="block text-sm font-medium text-gray-400 mb-2">State / Province</label>
+                    <input {...register('state')} placeholder="Maharashtra" className="w-full glass-input rounded-xl px-4 py-3" />
                     {errors.state && <p className="text-red-400 text-xs mt-1">{errors.state.message}</p>}
                   </div>
                 </div>
@@ -132,12 +132,12 @@ export default function Checkout() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">ZIP Code</label>
-                    <input {...register('postalCode')} placeholder="94102" className="w-full glass-input rounded-xl px-4 py-3" />
+                    <input {...register('postalCode')} placeholder="400001" className="w-full glass-input rounded-xl px-4 py-3" />
                     {errors.postalCode && <p className="text-red-400 text-xs mt-1">{errors.postalCode.message}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Country</label>
-                    <input {...register('country')} placeholder="US" className="w-full glass-input rounded-xl px-4 py-3" />
+                    <input {...register('country')} placeholder="IN" className="w-full glass-input rounded-xl px-4 py-3" />
                   </div>
                 </div>
 

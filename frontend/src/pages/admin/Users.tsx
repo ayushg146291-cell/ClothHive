@@ -61,7 +61,7 @@ export default function AdminUsers() {
                       {user.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-6 py-4">{formatDate(user.createdAt)}</td>
+                  <td className="px-6 py-4">{user.createdAt ? formatDate(user.createdAt) : 'Unknown'}</td>
                   <td className="px-6 py-4 text-right">
                     <button className="p-1.5 text-gray-400 hover:text-indigo-400 transition-colors"><ShieldAlert size={16} /></button>
                   </td>

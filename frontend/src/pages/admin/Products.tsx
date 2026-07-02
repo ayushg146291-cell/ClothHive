@@ -58,7 +58,7 @@ export default function AdminProducts() {
                       <span className="font-medium text-white">{product.name}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">{product.category.name}</td>
+                  <td className="px-6 py-4">{product.category?.name || 'Uncategorized'}</td>
                   <td className="px-6 py-4">{formatCurrency(product.price)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${product.stock > 0 ? 'bg-emerald-400/10 text-emerald-400' : 'bg-red-400/10 text-red-400'}`}>

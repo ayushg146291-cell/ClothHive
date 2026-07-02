@@ -96,15 +96,15 @@ export default function Footer() {
             <div className="space-y-2 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Mail size={14} />
-                <span>hello@clothhive.com</span>
+                <span>ayush@clothhive.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone size={14} />
-                <span>+1 (800) 555-HIVE</span>
+                <span>+91 98765 43210</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin size={14} />
-                <span>San Francisco, CA</span>
+                <span>Mumbai, India</span>
               </div>
             </div>
           </div>
