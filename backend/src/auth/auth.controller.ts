@@ -92,7 +92,8 @@ export class AuthController {
       role: user.role,
     });
 
-    const frontendUrl = this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const rawFrontendUrl = this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    const frontendUrl = rawFrontendUrl.replace(/\/+$/, '');
     const callbackUrl = `${frontendUrl}/auth/callback?token=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`;
 
     return res.redirect(callbackUrl);

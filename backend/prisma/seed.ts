@@ -49,8 +49,8 @@ async function main() {
     )
   );
 
-  // 3. Create 75 Products
-  const NUM_PRODUCTS = 75;
+  // 3. Create 100 Products
+  const NUM_PRODUCTS = 100;
   console.log(`Creating ${NUM_PRODUCTS} products with variants...`);
 
   for (let i = 0; i < NUM_PRODUCTS; i++) {
