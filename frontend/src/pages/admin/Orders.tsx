@@ -1,18 +1,31 @@
 import { useState } from 'react'
 import AdminLayout from '@/components/layout/AdminLayout'
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
+import { Search, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { orderService } from '@/services/order.service'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/lib/constants'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 export default function AdminOrders() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const queryClient = useQueryClient()
+  
   const { data, isLoading } = useQuery({
     queryKey: ['admin', 'orders', page],
     queryFn: () => orderService.getAllOrders({ page, limit: 10 }),
+  })
+
+  const updateStatus = useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => 
+      orderService.updateOrderStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] })
+      toast.success('Order status updated')
+    },
+    onError: () => toast.error('Failed to update status')
   })
 
   return (
@@ -65,12 +78,22 @@ export default function AdminOrders() {
                   <td className="px-6 py-4 text-muted-foreground">{order.createdAt ? formatDate(order.createdAt) : '—'}</td>
                   <td className="px-6 py-4 text-foreground font-medium tabular-nums">{formatCurrency(order.totalAmount)}</td>
                   <td className="px-6 py-4">
-                    <span 
-                      className="px-2.5 py-1 rounded-full text-xs font-bold" 
-                      style={{ background: `${ORDER_STATUS_COLORS[order.status]}20`, color: ORDER_STATUS_COLORS[order.status] }}
+                    <select
+                      value={order.status}
+                      disabled={updateStatus.isPending && updateStatus.variables?.id === order.id}
+                      onChange={(e) => updateStatus.mutate({ id: order.id, status: e.target.value })}
+                      className="px-2.5 py-1 rounded-full text-xs font-bold border border-border cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary appearance-none"
+                      style={{ 
+                        background: `${ORDER_STATUS_COLORS[order.status] || '#888'}20`, 
+                        color: ORDER_STATUS_COLORS[order.status] || '#888' 
+                      }}
                     >
-                      {ORDER_STATUS_LABELS[order.status]}
-                    </span>
+                      {Object.keys(ORDER_STATUS_LABELS).map(key => (
+                        <option key={key} value={key} className="bg-background text-foreground">
+                          {ORDER_STATUS_LABELS[key]}
+                        </option>
+                      ))}
+                    </select>
                   </td>
                 </tr>
               ))}

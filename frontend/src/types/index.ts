@@ -169,6 +169,7 @@ export interface ProductQuery {
   page?: number
   limit?: number
   category?: string
+  categoryId?: string
   minPrice?: number
   maxPrice?: number
   sort?: 'newest' | 'price_asc' | 'price_desc' | 'bestseller' | 'rating'

@@ -1,17 +1,210 @@
 import { useState } from 'react'
 import AdminLayout from '@/components/layout/AdminLayout'
-import { Plus, Search, Edit2, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
+import { Plus, Search, Edit2, Trash2, ChevronLeft, ChevronRight, X, Save } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { productService } from '@/services/product.service'
 import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog'
+import { toast } from 'sonner'
+import type { Product, ProductVariant } from '@/types'
+
+function EditProductModal({ 
+  product, 
+  isOpen, 
+  onClose 
+}: { 
+  product: Product | null, 
+  isOpen: boolean, 
+  onClose: () => void 
+}) {
+  const queryClient = useQueryClient()
+  
+  const [name, setName] = useState('')
+  const [stock, setStock] = useState(0)
+  const [price, setPrice] = useState(0)
+  const [isActive, setIsActive] = useState(true)
+  const [variants, setVariants] = useState<ProductVariant[]>([])
+
+  // Reset form when product changes
+  import('react').then(React => {
+    React.useEffect(() => {
+      if (product) {
+        setName(product.name)
+        setStock(product.stock)
+        setPrice(product.price)
+        setIsActive(product.isActive)
+        setVariants(product.variants || [])
+      }
+    }, [product])
+  })
+
+  const updateProduct = useMutation({
+    mutationFn: (data: Partial<Product>) => productService.updateProduct(product!.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] })
+      toast.success('Product updated successfully')
+      onClose()
+    },
+    onError: () => toast.error('Failed to update product')
+  })
+
+  const handleSave = () => {
+    if (!product) return
+    updateProduct.mutate({
+      name,
+      stock,
+      price,
+      isActive,
+      variants,
+    })
+  }
+
+  const handleVariantChange = (index: number, field: keyof ProductVariant, value: any) => {
+    const newVariants = [...variants]
+    newVariants[index] = { ...newVariants[index], [field]: value }
+    setVariants(newVariants)
+  }
+
+  if (!product) return null
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold">Edit Product</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6 py-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Price</label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Total Stock</label>
+              <input
+                type="number"
+                value={stock}
+                onChange={(e) => setStock(Number(e.target.value))}
+                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              />
+            </div>
+            <div className="flex flex-col justify-end">
+              <label className="flex items-center gap-3 cursor-pointer py-2">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={(e) => setIsActive(e.target.checked)}
+                  className="w-5 h-5 rounded border-border text-primary focus:ring-primary bg-background"
+                />
+                <span className="text-sm font-medium text-foreground">Active (Visible in store)</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-foreground">Variants (Sizes/Colors)</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-8"
+                onClick={() => setVariants([...variants, { id: Date.now().toString(), productId: product.id, stock: 0, sku: `NEW-SKU-${Date.now()}` } as any])}
+              >
+                <Plus size={14} className="mr-1" /> Add Variant
+              </Button>
+            </div>
+            
+            {variants.length === 0 ? (
+              <p className="text-sm text-muted-foreground italic">No variants available.</p>
+            ) : (
+              <div className="space-y-3">
+                {variants.map((variant, index) => (
+                  <div key={variant.id || index} className="flex gap-3 items-center glass p-3 rounded-xl border border-border">
+                    <div className="flex-1">
+                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Size</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. M"
+                        value={variant.size || ''}
+                        onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
+                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Color</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Black"
+                        value={variant.color || ''}
+                        onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
+                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                      />
+                    </div>
+                    <div className="w-24">
+                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Stock</label>
+                      <input
+                        type="number"
+                        value={variant.stock || 0}
+                        onChange={(e) => handleVariantChange(index, 'stock', Number(e.target.value))}
+                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                      />
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive mt-5"
+                      onClick={() => setVariants(variants.filter((_, i) => i !== index))}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <DialogFooter className="mt-4">
+          <DialogClose asChild>
+            <Button variant="outline" className="mr-2">Cancel</Button>
+          </DialogClose>
+          <Button 
+            onClick={handleSave} 
+            disabled={updateProduct.isPending}
+            className="bg-primary hover:bg-primary/90 text-white"
+          >
+            {updateProduct.isPending ? 'Saving...' : 'Save Changes'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export default function AdminProducts() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'products', page],
-    queryFn: () => productService.getProducts({ page, limit: 10 }),
+    queryKey: ['admin', 'products', page, search],
+    queryFn: () => productService.getProducts({ page, limit: 10, search: search || undefined }),
   })
 
   return (
@@ -65,7 +258,10 @@ export default function AdminProducts() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img src={product.images[0]} alt="" className="w-10 h-10 rounded-md object-cover bg-muted" />
-                      <span className="font-medium text-foreground">{product.name}</span>
+                      <div>
+                        <span className="font-medium text-foreground block">{product.name}</span>
+                        {!product.isActive && <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-bold">INACTIVE</span>}
+                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-muted-foreground">{product.category?.name || 'Uncategorized'}</td>
@@ -76,7 +272,12 @@ export default function AdminProducts() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-2">
-                    <button className="p-1.5 text-muted-foreground hover:text-primary transition-colors"><Edit2 size={16} /></button>
+                    <button 
+                      onClick={() => setEditingProduct(product)}
+                      className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Edit2 size={16} />
+                    </button>
                     <button className="p-1.5 text-muted-foreground hover:text-destructive transition-colors"><Trash2 size={16} /></button>
                   </td>
                 </tr>
@@ -114,6 +315,12 @@ export default function AdminProducts() {
           </div>
         )}
       </div>
+
+      <EditProductModal 
+        product={editingProduct} 
+        isOpen={!!editingProduct} 
+        onClose={() => setEditingProduct(null)} 
+      />
     </AdminLayout>
   )
 }

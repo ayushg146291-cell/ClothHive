@@ -40,7 +40,7 @@ export default function ProductDetail() {
 
   const { data: related } = useQuery({
     queryKey: ['products', 'related', product?.categoryId],
-    queryFn: () => productService.getProducts({ category: product?.category.slug, limit: 4 }),
+    queryFn: () => productService.getProducts({ categoryId: product?.categoryId, limit: 4 }),
     enabled: !!product,
   })
 

@@ -13,7 +13,9 @@ export class EmailService {
 
     if (user && pass) {
       this.transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
           user,
           pass,
@@ -46,6 +48,7 @@ export class EmailService {
     } catch (err: unknown) {
       const error = err as Error;
       this.logger.error(`Failed to send order confirmation: ${error.message}`);
+      this.logger.debug(`Email fallback (Order Confirmation #${order.id}):\nHi ${user.name || 'Customer'},\nWe've received your order #${order.id} for $${order.totalAmount}. Payment: Cash on Delivery.`);
     }
   }
 
@@ -69,6 +72,7 @@ export class EmailService {
     } catch (err: unknown) {
       const error = err as Error;
       this.logger.error(`Failed to send status update: ${error.message}`);
+      this.logger.debug(`Email fallback (Order Update #${order.id}):\nHi ${user.name || 'Customer'},\nYour order #${order.id} is now: ${newStatus}`);
     }
   }
 
