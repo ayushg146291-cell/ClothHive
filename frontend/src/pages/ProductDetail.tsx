@@ -539,9 +539,7 @@ export default function ProductDetail() {
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
               {related.data?.filter(p => p.id !== product.id).slice(0, 4).map((p, i) => (
-                <motion.div key={p.id} variants={cardVariants} custom={i}>
-                  <ProductCard product={p} index={i} />
-                </motion.div>
+                <ProductCard key={p.id} product={p} index={i} />
               ))}
             </motion.div>
           </section>

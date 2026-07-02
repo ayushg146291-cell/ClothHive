@@ -33,12 +33,12 @@ export const staggerContainer: Variants = {
 // Product card animations
 export const cardVariants: Variants = {
   hidden: { opacity: 0, y: 32, scale: 0.96 },
-  visible: {
+  visible: (i: number = 0) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
+    transition: { duration: 0.45, delay: i * 0.08, ease: [0.25, 0.46, 0.45, 0.94] },
+  }),
   hover: {
     y: -6,
     scale: 1.025,
