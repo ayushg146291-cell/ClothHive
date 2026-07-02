@@ -15,16 +15,44 @@ export class OrdersService {
   async createOrder(userId: string, dto: CreateOrderDto) {
     const result = await this.prisma.$transaction(async (tx) => {
       // 1. Fetch user cart & address
-      const cart = await tx.cart.findUnique({
-        where: { userId },
-        include: {
-          items: {
-            include: { product: { include: { variants: true } } },
-          },
-        },
-      });
+      let itemsToProcess = [];
+      let cartIdToClear = null;
 
-      if (!cart || cart.items.length === 0) {
+      if (dto.items && dto.items.length > 0) {
+        // Use items from the DTO (frontend local cart)
+        const productIds = dto.items.map(i => i.productId);
+        const products = await tx.product.findMany({
+          where: { id: { in: productIds } },
+          include: { variants: true },
+        });
+
+        itemsToProcess = dto.items.map(item => {
+          const product = products.find(p => p.id === item.productId);
+          if (!product) throw new NotFoundException(`Product ${item.productId} not found`);
+          return {
+            ...item,
+            product,
+          };
+        });
+      } else {
+        // Fallback to backend cart
+        const cart = await tx.cart.findUnique({
+          where: { userId },
+          include: {
+            items: {
+              include: { product: { include: { variants: true } } },
+            },
+          },
+        });
+
+        if (!cart || cart.items.length === 0) {
+          throw new BadRequestException('Cart is empty');
+        }
+        itemsToProcess = cart.items;
+        cartIdToClear = cart.id;
+      }
+
+      if (itemsToProcess.length === 0) {
         throw new BadRequestException('Cart is empty');
       }
 
@@ -39,7 +67,7 @@ export class OrdersService {
       let subtotal = 0;
       const orderItemsData = [];
 
-      for (const item of cart.items) {
+      for (const item of itemsToProcess) {
         const product = item.product;
         
         let unitPrice = Number(product.price);
@@ -84,7 +112,7 @@ export class OrdersService {
 
       const taxRate = 0.08; // 8% tax (example)
       const tax = subtotal * taxRate;
-      const shippingCost = subtotal > 100 ? 0 : 10; // Free shipping over $100
+      const shippingCost = subtotal > 1000 ? 0 : 100; // Adjusted for INR: Free shipping over ₹1000
       const totalAmount = subtotal + tax + shippingCost;
 
       // 3. Create the order
@@ -107,8 +135,10 @@ export class OrdersService {
         include: { items: true },
       });
 
-      // 4. Clear the cart
-      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+      // 4. Clear the backend cart if we used it
+      if (cartIdToClear) {
+        await tx.cartItem.deleteMany({ where: { cartId: cartIdToClear } });
+      }
 
       return order;
     });

@@ -1,24 +1,53 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Sparkles, Shield, Truck, RotateCcw } from 'lucide-react'
+import { ArrowRight, Sparkles, Shield, Truck, RotateCcw, Star } from 'lucide-react'
 import AnimatedPage from '@/components/common/AnimatedPage'
 import ProductCard from '@/components/product/ProductCard'
 import ProductSkeleton from '@/components/product/ProductSkeleton'
 import { staggerContainer, cardVariants, fadeUp } from '@/lib/animations'
 import { useQuery } from '@tanstack/react-query'
 import { productService } from '@/services/product.service'
+import { SparklesCore } from '@/components/ui/sparkles'
+import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
+import { Marquee } from '@/components/ui/marquee'
+import { Button } from '@/components/ui/button'
 
 const features = [
-  { icon: Truck, title: 'Free Shipping', desc: 'On orders over $75. Fast & reliable.' },
-  { icon: RotateCcw, title: 'Easy Returns', desc: '30-day hassle-free returns.' },
-  { icon: Shield, title: 'Secure Payment', desc: 'Your data is always protected.' },
-  { icon: Sparkles, title: 'Quality Assured', desc: 'Curated premium pieces only.' },
+  { 
+    name: 'Free Shipping', 
+    description: 'On orders over ₹1000. Fast & reliable.',
+    Icon: Truck,
+    href: '/shipping',
+    cta: 'Learn More',
+    className: 'col-span-3 lg:col-span-1',
+    background: <div className="absolute inset-0 bg-primary/10 blur-xl transition-all duration-300 group-hover:bg-primary/20" />
+  },
+  { 
+    name: 'Easy Returns', 
+    description: '30-day hassle-free returns.',
+    Icon: RotateCcw,
+    href: '/returns',
+    cta: 'View Policy',
+    className: 'col-span-3 lg:col-span-1',
+    background: <div className="absolute inset-0 bg-secondary/10 blur-xl transition-all duration-300 group-hover:bg-secondary/20" />
+  },
+  { 
+    name: 'Secure Payment', 
+    description: 'Your data is always protected.',
+    Icon: Shield,
+    href: '/security',
+    cta: 'Read More',
+    className: 'col-span-3 lg:col-span-1',
+    background: <div className="absolute inset-0 bg-accent/10 blur-xl transition-all duration-300 group-hover:bg-accent/20" />
+  },
 ]
 
-const categories = [
-  { name: "Women's", slug: 'womens', image: 'https://placehold.co/400x500/1e1b4b/6366f1?text=Women', gradient: 'from-indigo-900 to-purple-900' },
-  { name: "Men's", slug: 'mens', image: 'https://placehold.co/400x500/1a1a2e/ec4899?text=Men', gradient: 'from-gray-900 to-indigo-950' },
-  { name: 'Accessories', slug: 'accessories', image: 'https://placehold.co/400x500/0f0f1a/a855f7?text=Acc', gradient: 'from-purple-900 to-pink-950' },
+const reviews = [
+  { name: "Aarav S.", body: "The quality of these clothes is absolutely insane for the price. The shipping was also incredibly fast to Mumbai.", rating: 5 },
+  { name: "Priya M.", body: "I've completely overhauled my wardrobe using ClothHive. The Dark Liquid Glass aesthetic of their site perfectly matches their clothing.", rating: 5 },
+  { name: "Rohan K.", body: "Customer service is top notch. Had to exchange a size and it was completely hassle-free.", rating: 5 },
+  { name: "Meera T.", body: "Stunning pieces! I wore their summer collection dress to a party and got so many compliments.", rating: 5 },
+  { name: "Kunal D.", body: "Premium fashion without the insane markup. I am a customer for life.", rating: 5 },
 ]
 
 export default function Home() {
@@ -29,229 +58,177 @@ export default function Home() {
 
   return (
     <AnimatedPage>
-      <div className="flex flex-col gap-[clamp(4rem,8vw,8rem)] pb-[8vh]">
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Gradient orbs */}
-        <div
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none"
-          style={{ background: 'var(--color-primary-500)' }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-15 pointer-events-none"
-          style={{ background: 'var(--color-secondary-500)' }}
-        />
+      <div className="flex flex-col gap-0 pb-[8vh]">
+        {/* Hero with Sparkles */}
+        <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
+          <div className="absolute inset-0 w-full h-full">
+            <SparklesCore
+              id="tsparticlesfullpage"
+              background="transparent"
+              minSize={0.6}
+              maxSize={1.4}
+              particleDensity={100}
+              className="w-full h-full"
+              particleColor="#BE185D"
+            />
+          </div>
+          {/* Subtle gradient overlay to make text pop */}
+          <div className="absolute inset-0 bg-zinc-950/40 pointer-events-none" />
 
-        <div className="page-container relative z-10 pt-safe-nav pb-[8vh]">
-          <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 glass"
-              style={{ color: 'var(--color-primary-400)' }}
-            >
-              <Sparkles size={14} />
-              New Summer Collection 2026
-            </motion.div>
+          <div className="page-container relative z-10 pt-safe-nav pb-[8vh] flex flex-col items-center text-center">
+            <div className="max-w-4xl mx-auto flex flex-col items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 glass text-primary border-primary/20"
+              >
+                <Sparkles size={14} />
+                New Summer Collection 2026
+              </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-[clamp(3.5rem,7vw,5.5rem)] font-black text-white leading-tight mb-6"
-            >
-              Dress for the{' '}
-              <span className="gradient-text">life you want</span>
-            </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="h1 text-white mb-6"
+              >
+                Dress for the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">life you want</span>
+              </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              className="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-xl"
-            >
-              Premium fashion crafted for the modern individual. Discover pieces that speak your style — curated, sustainable, and built to last.
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="p-fluid text-zinc-400 mb-10 max-w-2xl"
+              >
+                Premium fashion crafted for the modern individual. Discover pieces that speak your style — curated, sustainable, and built to last.
+              </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55 }}
-              className="flex flex-wrap gap-4"
-            >
-              <div className="magic-button">
-                <Link
-                  to="/shop"
-                  className="magic-button-content"
-                  id="hero-shop-btn"
-                >
-                  Shop Now
-                  <ArrowRight size={18} />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55 }}
+                className="flex flex-wrap gap-4 justify-center"
+              >
+                <Link to="/shop">
+                  <Button className="h-14 px-8 rounded-full text-lg font-bold bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(190,24,93,0.4)] transition-all hover:scale-105">
+                    Shop Now <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </Link>
-              </div>
-              <Link
-                to="/shop?sort=newest"
-                className="btn-glass"
-              >
-                New Arrivals
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof Banner (Progressive Disclosure) */}
-      <section className="page-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap items-center justify-between gap-8 p-8 md:p-12 rounded-3xl"
-          style={{ background: 'var(--surface-glass)', border: '1px solid var(--border-glass)' }}
-        >
-          {[['50K+', 'Happy Customers'], ['2K+', 'Premium Products'], ['4.9★', 'Average Rating']].map(([num, label]) => (
-            <div key={label} className="text-center md:text-left flex-1 min-w-[150px]">
-              <p className="text-4xl md:text-5xl font-black text-white mb-2">{num}</p>
-              <p className="text-sm md:text-base text-gray-400">{label}</p>
+                <Link to="/shop?sort=newest">
+                  <Button variant="outline" className="h-14 px-8 rounded-full text-lg font-bold border-zinc-700 bg-zinc-900/50 hover:bg-zinc-800 text-white backdrop-blur-md">
+                    New Arrivals
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Categories */}
-      <section className="page-container">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          <h2 className="text-3xl font-black text-white mb-2">Shop by Category</h2>
-          <p className="text-gray-400 mb-10">Find your perfect style in our curated collections</p>
-        </motion.div>
-
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="animate"
-          viewport={{ once: true }}
-          className="grid gap-5"
-          style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))' }}
-        >
-          {categories.map((cat, i) => (
-            <motion.div key={cat.slug} variants={cardVariants} custom={i}>
-              <Link
-                to={`/shop?category=${cat.slug}`}
-                className="group relative block rounded-2xl overflow-hidden aspect-[4/5]"
-                id={`category-${cat.slug}`}
-              >
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-x-0 bottom-0 p-6 backdrop-blur-md bg-gray-950/40 border-t border-white/10 transition-all duration-500 group-hover:bg-gray-950/60 group-hover:backdrop-blur-xl">
-                  <h3 className="text-2xl font-bold text-white mb-1">{cat.name}</h3>
-                  <span className="text-sm font-medium text-indigo-400 group-hover:text-indigo-300 transition-colors">
-                    Explore →
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="page-container">
-        <div className="flex items-end justify-between mb-10">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            <h2 className="text-3xl font-black text-white mb-2">Featured Picks</h2>
-            <p className="text-gray-400">Hand-picked pieces our team is obsessed with</p>
-          </motion.div>
-          <Link
-            to="/shop?isFeatured=true"
-            className="hidden md:flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
-          >
-            View all <ArrowRight size={14} />
-          </Link>
-        </div>
-
-        {!isLoading && (!featured || featured.length === 0) ? (
-          <div className="py-24 text-center border border-dashed border-gray-700 rounded-3xl glass">
-            <p className="text-2xl font-bold text-white mb-2">New drops coming soon!</p>
-            <p className="text-gray-400">We're meticulously curating the next batch of premium fashion.</p>
           </div>
-        ) : (
-          <div className="grid gap-4 md:gap-5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))' }}>
-            {isLoading
-              ? Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
-              : featured?.map((product, i) => (
-                  <ProductCard key={product.id} product={product} index={i} />
-                ))}
-          </div>
-        )}
-      </section>
+        </section>
 
-      {/* Features */}
-      <section className="page-container">
-        <div
-          className="grid gap-6 p-8 rounded-3xl"
-          style={{ 
-            background: 'var(--surface-glass)', 
-            border: '1px solid var(--border-glass)',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))' 
-          }}
-        >
-          {features.map((feat, i) => (
-            <motion.div
-              key={feat.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex flex-col items-center text-center gap-3 p-4"
-            >
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                style={{ background: 'var(--surface-glass)', border: '1px solid var(--border-glass)' }}
-              >
-                <feat.icon size={20} className="text-indigo-400" />
+        {/* Marquee Section */}
+        <section className="py-8 bg-zinc-900/50 border-y border-border-glass overflow-hidden">
+          <Marquee pauseOnHover className="[--duration:30s]">
+            {['VOGUE', 'GQ', 'HYPEBEAST', 'HIGHSNOBIETY', 'ESQUIRE', 'ELLE', 'COMPLEX', 'GRAILED'].map((brand) => (
+              <div key={brand} className="mx-8 text-2xl font-black text-zinc-700 tracking-widest uppercase">
+                {brand}
               </div>
-              <h3 className="font-bold text-white text-sm">{feat.title}</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">{feat.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </Marquee>
+        </section>
 
-      {/* CTA Banner */}
-      <section className="page-container">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-center"
-          style={{ background: 'linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #500724 100%)' }}
-        >
-          <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full blur-3xl opacity-30 pointer-events-none"
-            style={{ background: 'var(--color-primary-500)' }}
-          />
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 relative z-10">
-            Get 20% off your first order
-          </h2>
-          <p className="text-gray-300 mb-8 relative z-10">
-            Join ClothHive and unlock exclusive member perks from day one.
-          </p>
-          <Link
-            to="/auth/signup"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-indigo-900 bg-white hover:bg-gray-100 transition-all text-base relative z-10"
-            id="signup-cta-btn"
+        {/* Bento Grid Features */}
+        <section className="page-container py-section">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-12">
+            <h2 className="h2 text-white mb-4">Why Choose ClothHive?</h2>
+            <p className="p-fluid text-zinc-400">Experience premium shopping with our world-class services.</p>
+          </motion.div>
+
+          <BentoGrid className="lg:grid-rows-1">
+            {features.map((feature) => (
+              <BentoCard key={feature.name} {...feature} />
+            ))}
+          </BentoGrid>
+        </section>
+
+        {/* Featured Products */}
+        <section className="page-container py-section">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <h2 className="h2 text-white mb-2">Featured Picks</h2>
+              <p className="p-fluid text-zinc-400">Hand-picked pieces our team is obsessed with</p>
+            </motion.div>
+            <Link to="/shop?isFeatured=true">
+              <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/10">
+                View all <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+
+          {!isLoading && (!featured || featured.length === 0) ? (
+            <div className="py-24 text-center rounded-3xl glass border border-dashed border-border-glass">
+              <p className="text-2xl font-bold text-white mb-2">New drops coming soon!</p>
+              <p className="text-zinc-400">We're meticulously curating the next batch of premium fashion.</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {isLoading
+                ? Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)
+                : featured?.slice(0, 4).map((product, i) => (
+                    <ProductCard key={product.id} product={product} index={i} />
+                  ))}
+            </div>
+          )}
+        </section>
+
+        {/* Testimonials Marquee */}
+        <section className="py-section relative overflow-hidden">
+          <div className="absolute inset-0 bg-zinc-950/50" />
+          <div className="page-container relative z-10">
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-12">
+              <h2 className="h2 text-white mb-4">Loved by Thousands</h2>
+              <p className="p-fluid text-zinc-400">Don't just take our word for it.</p>
+            </motion.div>
+
+            <Marquee pauseOnHover className="[--duration:40s]">
+              {reviews.map((review, i) => (
+                <div key={i} className="glass w-[350px] p-6 rounded-2xl mx-4 flex flex-col gap-4">
+                  <div className="flex text-accent">
+                    {Array.from({ length: review.rating }).map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-zinc-300 flex-1">"{review.body}"</p>
+                  <p className="font-bold text-white">— {review.name}</p>
+                </div>
+              ))}
+            </Marquee>
+          </div>
+        </section>
+
+        {/* CTA Banner */}
+        <section className="page-container py-section">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-center border border-border-glass bg-zinc-900/50"
           >
-            Create Account
-            <ArrowRight size={18} />
-          </Link>
-        </motion.div>
-      </section>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent pointer-events-none" />
+            <h2 className="h2 text-white mb-4 relative z-10">
+              Get 20% off your first order
+            </h2>
+            <p className="p-fluid text-zinc-300 mb-8 relative z-10 max-w-2xl mx-auto">
+              Join ClothHive and unlock exclusive member perks from day one.
+            </p>
+            <Link to="/auth/signup" className="relative z-10">
+              <Button className="h-14 px-8 rounded-full text-lg font-bold bg-white text-zinc-950 hover:bg-zinc-200 shadow-lg shadow-white/10 transition-all hover:scale-105">
+                Create Account <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+        </section>
       </div>
     </AnimatedPage>
   )
