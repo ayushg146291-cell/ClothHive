@@ -1,11 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
+import { UploadService } from '../upload/upload.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   async findAll(params: {
     skip?: number;
@@ -13,8 +18,9 @@ export class ProductsService {
     search?: string;
     categoryId?: string;
     sort?: string;
+    sale?: boolean;
   }) {
-    const { skip = 0, take = 20, search, categoryId, sort } = params;
+    const { skip = 0, take = 20, search, categoryId, sort, sale } = params;
 
     const where: any = { isActive: true };
 
@@ -29,6 +35,10 @@ export class ProductsService {
       where.categoryId = categoryId;
     }
 
+    if (sale) {
+      where.comparePrice = { not: null };
+    }
+
     let orderBy: any = { createdAt: 'desc' };
     if (sort === 'price_asc') orderBy = { price: 'asc' };
     if (sort === 'price_desc') orderBy = { price: 'desc' };
@@ -39,13 +49,28 @@ export class ProductsService {
         take,
         where,
         orderBy,
-        include: { variants: true },
+        include: { 
+          variants: true,
+          reviews: { 
+            where: { isVerified: true },
+            select: { rating: true } 
+          } 
+        },
       }),
       this.prisma.product.count({ where }),
     ]);
 
+    const dataWithRatings = data.map(product => {
+      const actualReviewCount = product.reviews?.length || 0;
+      const reviewCount = actualReviewCount > 0 ? actualReviewCount : 1;
+      const avgRating = actualReviewCount > 0 
+        ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / actualReviewCount 
+        : 5;
+      return { ...product, avgRating, reviewCount };
+    });
+
     return {
-      data,
+      data: dataWithRatings,
       total,
       page: Math.floor(skip / take) + 1,
       totalPages: Math.ceil(total / take),
@@ -59,6 +84,7 @@ export class ProductsService {
         category: true,
         variants: true,
         reviews: {
+          where: { isVerified: true },
           include: { user: { select: { id: true, name: true, avatar: true } } },
         },
       },
@@ -68,7 +94,78 @@ export class ProductsService {
       throw new NotFoundException('Product not found');
     }
 
-    return product;
+    // Calculate avgRating and reviewCount
+    const actualReviewCount = product.reviews.length;
+    const reviewCount = actualReviewCount > 0 ? actualReviewCount : 1;
+    const avgRating = actualReviewCount > 0 
+      ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / actualReviewCount 
+      : 5;
+
+    return { ...product, avgRating, reviewCount };
+  }
+
+  // --- Reviews ---
+  async addReview(productId: string, userId: string, dto: CreateReviewDto, files: Express.Multer.File[]) {
+    // Check if user already reviewed
+    const existingReview = await this.prisma.review.findUnique({
+      where: { userId_productId: { userId, productId } },
+    });
+
+    if (existingReview) {
+      throw new BadRequestException('You have already reviewed this product');
+    }
+
+    // Upload images if any
+    const imageUrls: string[] = [];
+    if (files && files.length > 0) {
+      for (const file of files) {
+        const url = await this.uploadService.uploadImage(file, 'reviews');
+        imageUrls.push(url);
+      }
+    }
+
+    const review = await this.prisma.review.create({
+      data: {
+        productId,
+        userId,
+        rating: Number(dto.rating),
+        title: dto.title,
+        body: dto.body,
+        images: imageUrls,
+      },
+      include: { user: { select: { id: true, name: true, avatar: true } } },
+    });
+
+    return review;
+  }
+
+  async getAdminReviews() {
+    return this.prisma.review.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        user: { select: { name: true, email: true, avatar: true } },
+        product: { select: { name: true, slug: true, images: true } }
+      }
+    });
+  }
+
+  async approveReview(id: string) {
+    const review = await this.prisma.review.findUnique({ where: { id } });
+    if (!review) throw new NotFoundException('Review not found');
+
+    return this.prisma.review.update({
+      where: { id },
+      data: { isVerified: true }
+    });
+  }
+
+  async deleteReview(id: string) {
+    const review = await this.prisma.review.findUnique({ where: { id } });
+    if (!review) throw new NotFoundException('Review not found');
+
+    return this.prisma.review.delete({
+      where: { id }
+    });
   }
 
   // --- Admin Methods ---

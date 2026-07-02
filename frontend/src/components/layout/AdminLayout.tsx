@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { LayoutDashboard, ShoppingBag, Users, Package, Store, LogOut } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Package, Store, LogOut, Star } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 
 const navLinks = [
@@ -7,6 +7,7 @@ const navLinks = [
   { icon: ShoppingBag, label: 'Products', href: '/admin/products' },
   { icon: Package, label: 'Orders', href: '/admin/orders' },
   { icon: Users, label: 'Users', href: '/admin/users' },
+  { icon: Star, label: 'Reviews', href: '/admin/reviews' },
 ]
 
 export default function AdminLayout({ children }: { children?: React.ReactNode }) {

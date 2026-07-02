@@ -42,4 +42,26 @@ export const productService = {
   async deleteProduct(id: string) {
     await api.delete(`/products/${id}`)
   },
+
+  async addReview(productId: string, payload: FormData) {
+    const { data } = await api.post(`/products/${productId}/reviews`, payload, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return data
+  },
+
+  async getAdminReviews() {
+    const { data } = await api.get('/products/admin/reviews')
+    return data
+  },
+
+  async approveReview(id: string) {
+    const { data } = await api.patch(`/products/reviews/${id}/approve`)
+    return data
+  },
+
+  async deleteReview(id: string) {
+    const { data } = await api.delete(`/products/reviews/${id}`)
+    return data
+  },
 }

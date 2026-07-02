@@ -14,6 +14,9 @@ import { buttonPress, scalePop, staggerContainer, cardVariants } from '@/lib/ani
 import type { ProductVariant } from '@/types'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
+import { useAuthStore } from '@/store/authStore'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ImagePlus, X } from 'lucide-react'
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -26,7 +29,14 @@ export default function ProductDetail() {
   const addItem = useCartStore((s) => s.addItem)
   const openCart = useCartStore((s) => s.openCart)
   const { toggle, isInWishlist } = useWishlistStore()
+  const { isAuthenticated, user } = useAuthStore()
+  const queryClient = useQueryClient()
 
+  const [reviewRating, setReviewRating] = useState(5)
+  const [reviewTitle, setReviewTitle] = useState('')
+  const [reviewBody, setReviewBody] = useState('')
+  const [reviewImages, setReviewImages] = useState<File[]>([])
+  
   const { data: product, isLoading } = useQuery({
     queryKey: ['product', slug],
     queryFn: () => productService.getProduct(slug!),
@@ -86,6 +96,34 @@ export default function ProductDetail() {
     toggle(product)
     setHeartState('pop')
     setTimeout(() => setHeartState('idle'), 400)
+  }
+
+  const addReviewMutation = useMutation({
+    mutationFn: (formData: FormData) => productService.addReview(product.id, formData),
+    onSuccess: () => {
+      toast.success('Your review has been submitted and is pending admin approval.')
+      queryClient.invalidateQueries({ queryKey: ['product', slug] })
+      setReviewRating(5)
+      setReviewTitle('')
+      setReviewBody('')
+      setReviewImages([])
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to submit review')
+    }
+  })
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!reviewRating) return toast.error('Please select a rating')
+    
+    const formData = new FormData()
+    formData.append('rating', reviewRating.toString())
+    if (reviewTitle) formData.append('title', reviewTitle)
+    if (reviewBody) formData.append('body', reviewBody)
+    reviewImages.forEach((img) => formData.append('images', img))
+    
+    addReviewMutation.mutate(formData)
   }
 
   return (
@@ -338,6 +376,156 @@ export default function ProductDetail() {
             )}
           </div>
         </div>
+
+        {/* Reviews Section */}
+        <section className="mt-20 border-t border-border pt-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            {/* Reviews List */}
+            <div className="lg:col-span-2 space-y-8">
+              <h2 className="text-2xl font-black text-white">Customer Reviews</h2>
+              
+              {(!product.reviews || product.reviews.length === 0) ? (
+                <div className="glass p-8 rounded-2xl text-center text-gray-400">
+                  No reviews yet. Be the first to review this product!
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {product.reviews.map((review) => (
+                    <div key={review.id} className="glass p-6 rounded-2xl space-y-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
+                            {review.user.name?.[0] || 'A'}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-white">{review.user.name}</p>
+                            <p className="text-xs text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} size={14} fill={i < review.rating ? '#f59e0b' : 'none'} stroke={i < review.rating ? '#f59e0b' : '#6b7280'} />
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {review.title && <h4 className="font-semibold text-white">{review.title}</h4>}
+                      {review.body && <p className="text-gray-300 text-sm leading-relaxed">{review.body}</p>}
+                      
+                      {review.images && review.images.length > 0 && (
+                        <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                          {review.images.map((img, i) => (
+                            <img key={i} src={img} alt="Review attachment" className="h-24 w-24 object-cover rounded-xl border border-border" />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Write Review Form */}
+            <div>
+              <div className="glass p-6 rounded-2xl sticky top-24">
+                <h3 className="text-xl font-bold text-white mb-6">Write a Review</h3>
+                
+                {isAuthenticated ? (
+                  <form onSubmit={handleReviewSubmit} className="space-y-5">
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Rating</label>
+                      <div className="flex gap-1">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setReviewRating(i + 1)}
+                            className="p-1 focus:outline-none transition-transform hover:scale-110"
+                          >
+                            <Star size={24} fill={i < reviewRating ? '#f59e0b' : 'none'} stroke={i < reviewRating ? '#f59e0b' : '#6b7280'} />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Title (Optional)</label>
+                      <input
+                        type="text"
+                        value={reviewTitle}
+                        onChange={(e) => setReviewTitle(e.target.value)}
+                        className="w-full bg-background border border-border rounded-xl px-4 py-2 text-white outline-none focus:border-primary transition-colors"
+                        placeholder="Sum up your experience"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Review (Optional)</label>
+                      <textarea
+                        value={reviewBody}
+                        onChange={(e) => setReviewBody(e.target.value)}
+                        rows={4}
+                        className="w-full bg-background border border-border rounded-xl px-4 py-2 text-white outline-none focus:border-primary transition-colors resize-none"
+                        placeholder="What did you like or dislike?"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Add Photos (Optional)</label>
+                      <div className="flex flex-wrap gap-2">
+                        {reviewImages.map((file, i) => (
+                          <div key={i} className="relative w-16 h-16 rounded-xl overflow-hidden border border-border">
+                            <img src={URL.createObjectURL(file)} alt="Preview" className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => setReviewImages(prev => prev.filter((_, idx) => idx !== i))}
+                              className="absolute top-1 right-1 bg-black/50 rounded-full p-0.5 text-white hover:bg-black"
+                            >
+                              <X size={12} />
+                            </button>
+                          </div>
+                        ))}
+                        {reviewImages.length < 5 && (
+                          <label className="w-16 h-16 flex items-center justify-center rounded-xl border border-dashed border-gray-600 text-gray-400 hover:text-white hover:border-gray-400 cursor-pointer transition-colors">
+                            <ImagePlus size={20} />
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              className="hidden"
+                              onChange={(e) => {
+                                if (e.target.files) {
+                                  const newFiles = Array.from(e.target.files)
+                                  setReviewImages(prev => [...prev, ...newFiles].slice(0, 5))
+                                }
+                              }}
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <button
+                      type="submit"
+                      disabled={addReviewMutation.isPending}
+                      className="w-full py-3 rounded-xl font-bold bg-primary hover:bg-primary/90 text-white transition-all disabled:opacity-50"
+                    >
+                      {addReviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
+                    </button>
+                  </form>
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-gray-400 mb-4">You must be logged in to leave a review.</p>
+                    <button onClick={() => navigate('/auth/login')} className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors">
+                      Log In
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Related Products */}
         {related && related.data.length > 0 && (

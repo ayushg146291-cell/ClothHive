@@ -28,6 +28,7 @@ const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
 const AdminProducts = lazy(() => import('@/pages/admin/Products'))
 const AdminOrders = lazy(() => import('@/pages/admin/Orders'))
 const AdminUsers = lazy(() => import('@/pages/admin/Users'))
+const AdminReviews = lazy(() => import('@/pages/admin/Reviews'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
 const queryClient = new QueryClient({
@@ -112,6 +113,7 @@ function AppRoutes() {
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
+                <Route path="/admin/reviews" element={<AdminReviews />} />
               </Route>
               
               {/* 404 */}

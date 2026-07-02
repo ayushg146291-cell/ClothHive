@@ -30,6 +30,7 @@ export default function ProductList() {
     category: searchParams.get('category') || undefined,
     sort: (searchParams.get('sort') as ProductQuery['sort']) || 'newest',
     search: searchParams.get('search') || undefined,
+    sale: searchParams.get('sale') === 'true',
     minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
     maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
   }

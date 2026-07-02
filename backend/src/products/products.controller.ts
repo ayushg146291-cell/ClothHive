@@ -8,13 +8,18 @@ import {
   Delete,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 import { Public } from '../auth/decorators/public.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -28,6 +33,7 @@ export class ProductsController {
     @Query('search') search?: string,
     @Query('categoryId') categoryId?: string,
     @Query('sort') sort?: string,
+    @Query('sale') sale?: string,
   ) {
     return this.productsService.findAll({
       skip: skip ? parseInt(skip, 10) : 0,
@@ -35,6 +41,7 @@ export class ProductsController {
       search,
       categoryId,
       sort,
+      sale: sale === 'true',
     });
   }
 
@@ -42,6 +49,41 @@ export class ProductsController {
   @Get(':slug')
   async findOne(@Param('slug') slug: string) {
     return this.productsService.findOne(slug);
+  }
+
+  // --- Reviews ---
+  @Post(':id/reviews')
+  @UseInterceptors(FilesInterceptor('images', 5))
+  async addReview(
+    @Param('id') id: string,
+    @Body() createReviewDto: CreateReviewDto,
+    @CurrentUser() user: any,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    return this.productsService.addReview(id, user.userId, createReviewDto, files);
+  }
+
+  // --- Admin Review Endpoints ---
+
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN')
+  @Get('admin/reviews')
+  async getAdminReviews() {
+    return this.productsService.getAdminReviews();
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN')
+  @Patch('reviews/:id/approve')
+  async approveReview(@Param('id') id: string) {
+    return this.productsService.approveReview(id);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN')
+  @Delete('reviews/:id')
+  async deleteReview(@Param('id') id: string) {
+    return this.productsService.deleteReview(id);
   }
 
   // --- Admin Endpoints ---
