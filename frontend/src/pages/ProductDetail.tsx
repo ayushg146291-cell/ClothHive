@@ -141,7 +141,7 @@ export default function ProductDetail() {
         <section className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20">
           {/* Images Gallery */}
           <div className="space-y-4 lg:sticky lg:top-[120px] lg:h-[calc(100vh-160px)]">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden glass p-4" style={{ border: '1px solid var(--border-glass)' }}>
+            <div className="relative aspect-[4/5] bg-background brutal-border brutal-shadow overflow-hidden p-4 group">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={selectedImage}
@@ -153,7 +153,7 @@ export default function ProductDetail() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full h-full object-contain rounded-2xl drop-shadow-2xl"
+                  className="w-full h-full object-cover border-4 border-transparent transition-all group-hover:border-foreground"
                 />
               </AnimatePresence>
 
@@ -222,13 +222,13 @@ export default function ProductDetail() {
               )}
 
               {/* Price */}
-              <div className="flex items-end gap-4 mt-6">
-                <span className="text-5xl font-serif font-bold text-foreground">{formatCurrency(currentPrice)}</span>
+              <div className="flex items-end gap-4 mt-6 mb-6">
+                <span className="text-7xl font-black text-primary tracking-tighter">{formatCurrency(currentPrice)}</span>
                 {product.comparePrice && (
-                  <div className="flex flex-col mb-1">
-                    <span className="text-xl font-sans text-muted-foreground line-through">{formatCurrency(product.comparePrice)}</span>
-                    <span className="text-sm font-sans font-bold text-accent">
-                      Save {Math.round(((product.comparePrice - currentPrice) / product.comparePrice) * 100)}%
+                  <div className="flex flex-col mb-2">
+                    <span className="text-2xl font-black text-muted-foreground line-through">{formatCurrency(product.comparePrice)}</span>
+                    <span className="text-lg font-bold text-foreground bg-accent px-2 py-1 brutal-border brutal-shadow inline-block">
+                      SAVE {Math.round(((product.comparePrice - currentPrice) / product.comparePrice) * 100)}%
                     </span>
                   </div>
                 )}
@@ -250,10 +250,10 @@ export default function ProductDetail() {
                         const v = product.variants.find((v) => v.color === color)
                         setSelectedVariant(v ?? null)
                       }}
-                      className={`px-4 py-2 min-h-[44px] min-w-[44px] rounded-xl text-sm font-medium transition-all ${
+                      className={`px-4 py-2 min-h-[44px] min-w-[44px] rounded-none brutal-btn transition-all ${
                         selectedVariant?.color === color
-                          ? 'bg-foreground text-background ring-2 ring-accent ring-offset-2 ring-offset-background'
-                          : 'glass glass-hover text-foreground/80'
+                          ? 'bg-primary text-white brutal-shadow-hover'
+                          : 'bg-background text-foreground hover-flood-acid'
                       }`}
                     >
                       {color}
@@ -275,10 +275,10 @@ export default function ProductDetail() {
                         const v = product.variants.find((v) => v.size === size && v.color === selectedVariant?.color)
                         setSelectedVariant(v ?? product.variants.find((v) => v.size === size) ?? null)
                       }}
-                      className={`px-4 py-2 min-w-[44px] min-h-[44px] rounded-xl text-sm font-bold transition-all ${
+                      className={`px-4 py-2 min-h-[44px] min-w-[44px] rounded-none brutal-btn transition-all ${
                         selectedVariant?.size === size
-                          ? 'bg-foreground text-background ring-2 ring-accent ring-offset-2 ring-offset-background'
-                          : 'glass glass-hover text-foreground/80'
+                          ? 'bg-primary text-white brutal-shadow-hover'
+                          : 'bg-background text-foreground hover-flood-acid'
                       }`}
                     >
                       {size}
@@ -289,20 +289,17 @@ export default function ProductDetail() {
             )}
 
             {/* Quantity */}
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-semibold text-white">Quantity</span>
-              <div
-                className="flex items-center rounded-xl overflow-hidden"
-                style={{ border: '1px solid var(--border-glass)' }}
-              >
+            <div className="flex items-center gap-4 mt-8">
+              <span className="text-sm font-black uppercase text-foreground">Quantity</span>
+              <div className="flex items-center brutal-border overflow-hidden">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  className="px-4 py-3 text-foreground hover-flood-acid transition-colors border-r-2 border-foreground font-black"
                 >−</button>
-                <span className="px-5 text-white font-semibold">{quantity}</span>
+                <span className="px-5 text-foreground font-black bg-background">{quantity}</span>
                 <button
                   onClick={() => setQuantity((q) => Math.min(inStock ? 10 : 0, q + 1))}
-                  className="px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  className="px-4 py-3 text-foreground hover-flood-acid transition-colors border-l-2 border-foreground font-black"
                 >+</button>
               </div>
               <span className="text-sm text-gray-500">
@@ -312,33 +309,32 @@ export default function ProductDetail() {
 
             {/* CTA buttons */}
             <div className="flex gap-3">
-              <div className="flex-1 magic-button">
-                <motion.button
-                  {...buttonPress}
+              <div className="flex-1">
+                <button
                   onClick={handleAddToCart}
                   disabled={!inStock}
-                  className="magic-button-content disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-16 brutal-btn bg-primary text-white brutal-shadow-hover hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed text-lg flex items-center justify-center gap-2"
                   id="product-add-cart"
                 >
-                  <ShoppingBag size={18} />
-                  {inStock ? 'Add to Cart' : 'Out of Stock'}
-                </motion.button>
+                  <ShoppingBag size={20} strokeWidth={3} />
+                  {inStock ? 'ADD TO CART' : 'OUT OF STOCK'}
+                </button>
               </div>
               <motion.button
                 variants={scalePop}
                 animate={heartState}
                 onClick={handleWishlist}
-                className="p-4 rounded-2xl glass glass-hover transition-all"
+                className="h-16 w-16 flex items-center justify-center brutal-btn bg-background text-foreground hover-flood-acid transition-colors"
                 aria-label="Wishlist"
               >
                 <Heart
-                  size={20}
-                  fill={inWishlist ? '#ec4899' : 'none'}
-                  stroke={inWishlist ? '#ec4899' : 'currentColor'}
+                  size={24}
+                  fill={inWishlist ? '#000' : 'none'}
+                  strokeWidth={2.5}
                 />
               </motion.button>
-              <button className="p-4 rounded-2xl glass glass-hover transition-all" aria-label="Share">
-                <Share2 size={20} />
+              <button className="h-16 w-16 flex items-center justify-center brutal-btn bg-background text-foreground hover-flood-acid transition-colors" aria-label="Share">
+                <Share2 size={24} strokeWidth={2.5} />
               </button>
             </div>
 
@@ -349,9 +345,9 @@ export default function ProductDetail() {
                 { icon: RotateCcw, text: '30-day returns' },
                 { icon: Shield, text: 'Secure checkout' },
               ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex flex-col items-center gap-1.5 p-3 rounded-xl text-center glass">
-                  <Icon size={16} className="text-indigo-400" />
-                  <span className="text-xs text-gray-400">{text}</span>
+                <div key={text} className="flex flex-col items-center gap-2 p-3 text-center bg-accent text-foreground brutal-border brutal-shadow">
+                  <Icon size={20} strokeWidth={2.5} />
+                  <span className="text-xs font-black uppercase tracking-wider">{text}</span>
                 </div>
               ))}
             </div>

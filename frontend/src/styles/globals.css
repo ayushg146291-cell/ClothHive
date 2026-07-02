@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,57 +6,44 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors: True Luxury Theme */
-  --color-primary-500: #1C1917; /* Stone 900 */
-  --color-secondary-500: #44403C; /* Stone 700 */
-  --color-accent-500: #A16207; /* Gold/Bronze */
+  /* Brand Colors: Kinetic Brutalism Theme */
+  --color-primary-500: #E11D48; /* Vibrant Rose / Crimson */
+  --color-secondary-500: #2563EB; /* Engagement Blue */
+  --color-accent-500: #DFE104; /* Acid Yellow */
+  --color-black: #000000;
   
-  /* LIGHT MODE (Opal Glass) */
-  --color-bg: #FAFAF9;
-  --color-fg: #0C0A09;
+  /* LIGHT MODE (Cream Base) */
+  --color-bg: #FFF1F2;
+  --color-fg: #000000;
   
   /* Fluid UI Variables (Mobile to Desktop scaling using clamp) */
-  --fluid-padding: clamp(1rem, 5vw, 4rem);
-  --fluid-header: clamp(2.5rem, 6vw + 1rem, 5rem);
-  --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
+  --fluid-padding: clamp(1rem, 5vw, 3rem);
+  --fluid-header: clamp(3rem, 10vw, 8rem);
+  --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
   --fluid-gap: clamp(1rem, 3vw, 2.5rem);
-  
-  /* Glassmorphism Variables — Light Mode */
-  --surface-glass: rgba(255, 255, 255, 0.75);
-  --surface-glass-hover: rgba(255, 255, 255, 0.95);
-  --border-glass: rgba(0, 0, 0, 0.04);
-  --border-glass-hover: rgba(161, 98, 7, 0.3); /* Gold tint on hover */
-  
-  /* Radii */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 32px;
-  --radius-full: 9999px;
 
   /* Shadcn UI Light Theme Variables */
-  --background: oklch(0.98 0 0); /* #FAFAF9 */
-  --foreground: oklch(0.14 0 0); /* #0C0A09 */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.14 0 0);
+  --background: oklch(0.96 0.02 14); /* #FFF1F2 */
+  --foreground: oklch(0 0 0); /* #000000 */
+  --card: oklch(0.98 0 0); /* White cards on cream bg */
+  --card-foreground: oklch(0 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.14 0 0);
-  --primary: oklch(0.20 0 0); /* #1C1917 */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.35 0 0); /* #44403C */
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.95 0 0); /* #E8ECF0 */
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.55 0.15 75); /* #A16207 Gold */
-  --accent-foreground: oklch(0.98 0 0);
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0.55 0.22 18); /* #E11D48 */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.55 0.18 250); /* #2563EB */
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.90 0 0); 
+  --muted-foreground: oklch(0.3 0 0);
+  --accent: oklch(0.85 0.18 100); /* #DFE104 */
+  --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.577 0.245 27.325); /* #DC2626 */
-  --border: oklch(0.85 0 0); /* #D6D3D1 */
-  --input: oklch(0.85 0 0);
-  --ring: oklch(0.20 0 0);
-  --radius: 0.75rem;
+  --border: oklch(0 0 0); /* Black brutal borders */
+  --input: oklch(0 0 0);
+  --ring: oklch(0 0 0);
+  --radius: 0rem; /* Brutalist sharp corners */
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -64,40 +51,33 @@
 }
 
 .dark {
-  /* DARK MODE (Liquid Glass / OLED) */
+  /* DARK MODE (Acid / Neon Underground) */
   --color-bg: #000000;
-  --color-fg: #FAFAF9;
-  
-  /* Glassmorphism Variables — Dark Mode */
-  --surface-glass: rgba(255, 255, 255, 0.02);
-  --surface-glass-hover: rgba(255, 255, 255, 0.06);
-  --border-glass: rgba(255, 255, 255, 0.04);
-  --border-glass-hover: rgba(161, 98, 7, 0.4);
+  --color-fg: #FFFFFF;
 
   /* Shadcn UI Dark Theme Variables */
-  --background: oklch(0.05 0 0);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.95 0 0); /* White primary in dark mode */
-  --primary-foreground: oklch(0.10 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.1 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.1 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.55 0.22 18); /* #E11D48 */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.55 0.18 250); /* #2563EB */
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.20 0 0);
   --muted-foreground: oklch(0.70 0 0);
-  --accent: oklch(0.55 0.15 75); /* #A16207 Gold */
-  --accent-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.85 0.18 100); /* #DFE104 */
+  --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.70 0.19 22);
-  --border: oklch(0.20 0 0);
-  --input: oklch(0.20 0 0);
-  --ring: oklch(0.95 0 0);
+  --border: oklch(1 0 0); /* White borders in dark mode */
+  --input: oklch(1 0 0);
+  --ring: oklch(1 0 0);
 }
 
 @theme inline {
-  --font-sans: 'Montserrat', sans-serif;
-  --font-serif: 'Cormorant', serif;
+  --font-sans: 'Space Grotesk', sans-serif;
   
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -117,36 +97,15 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-xl: var(--radius);
   
   --animate-marquee: marquee var(--duration) infinite linear;
-  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(calc(-100% - var(--gap))); }
-  }
-  @keyframes marquee-vertical {
-    from { transform: translateY(0); }
-    to { transform: translateY(calc(-100% - var(--gap))); }
-  }
-  
-  --animate-shiny-text: shiny-text 8s infinite;
-  @keyframes shiny-text {
-    0%, 90%, 100% { background-position: calc(-100% - var(--shiny-width)) 0; }
-    30%, 60% { background-position: calc(100% + var(--shiny-width)) 0; }
-  }
-  
-  --animate-aurora: aurora 60s linear infinite;
-  @keyframes aurora {
-    from {
-      background-position: 50% 50%, 50% 50%;
-    }
-    to {
-      background-position: 350% 50%, 350% 50%;
-    }
   }
 }
 
@@ -164,38 +123,46 @@
   body {
     @apply bg-background text-foreground font-sans;
     min-height: 100vh;
-    line-height: 1.6;
+    line-height: 1.4; /* Tighter line height for brutalist typography */
     background-color: var(--color-bg);
     color: var(--color-fg);
   }
-  h1, h2, h3, h4, h5, h6, .font-serif {
-    font-family: var(--font-serif);
-  }
 }
 
-/* Glassmorphism Utilities — theme-aware via CSS variables */
-.glass {
-  background: var(--surface-glass);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 4px 32px -4px rgba(0,0,0,0.3);
+/* Kinetic Brutalism Utilities */
+.brutal-border {
+  border: 2px solid var(--color-fg);
 }
-.glass-hover {
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+.brutal-shadow {
+  box-shadow: 4px 4px 0px 0px var(--color-fg);
+  transition: all 0.15s cubic-bezier(0, 0, 0.2, 1);
 }
-.glass-hover:hover {
-  background: var(--surface-glass-hover);
-  border-color: var(--border-glass-hover);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+
+.brutal-shadow-hover:hover {
+  box-shadow: 8px 8px 0px 0px var(--color-fg);
+  transform: translate(-4px, -4px);
 }
-.glass-pill {
-  background: var(--surface-glass);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--border-glass);
-  border-radius: 9999px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+.brutal-btn {
+  border: 2px solid var(--color-fg);
+  box-shadow: 4px 4px 0px 0px var(--color-fg);
+  transition: all 0.1s cubic-bezier(0, 0, 0.2, 1);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.brutal-btn:active {
+  box-shadow: 0px 0px 0px 0px var(--color-fg);
+  transform: translate(4px, 4px);
+}
+
+/* Hover Floods (Acid/Black inversion) */
+.hover-flood-acid {
+  transition: all 0.15s ease-out;
+}
+.hover-flood-acid:hover {
+  background-color: var(--color-accent-500) !important;
+  color: var(--color-black) !important;
 }
 
 /* Fluid Structural Utilities */
@@ -213,14 +180,35 @@
   padding-bottom: clamp(4rem, 8vh, 8rem);
 }
 
-/* Typography Overrides using Clamp — theme-aware colors */
-h1, .h1 { font-family: var(--font-serif); font-size: var(--fluid-header); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
-h2, .h2 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw + 0.5rem, 4rem); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; }
-h3, .h3 { font-family: var(--font-serif); font-size: clamp(1.75rem, 3.5vw, 2.75rem); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
-p, .p-fluid { font-family: var(--font-sans); font-size: var(--fluid-text); color: var(--muted-foreground); font-weight: 400; }
+/* Typography Overrides using Clamp */
+h1, .h1 { 
+  font-size: var(--fluid-header); 
+  font-weight: 700; 
+  line-height: 0.95; 
+  letter-spacing: -0.04em; 
+  text-transform: uppercase; 
+}
+h2, .h2 { 
+  font-size: clamp(3rem, 6vw + 1rem, 5rem); 
+  font-weight: 700; 
+  line-height: 1; 
+  letter-spacing: -0.03em; 
+  text-transform: uppercase; 
+}
+h3, .h3 { 
+  font-size: clamp(2rem, 4vw, 3rem); 
+  font-weight: 700; 
+  line-height: 1.1; 
+  letter-spacing: -0.02em; 
+  text-transform: uppercase;
+}
+p, .p-fluid { 
+  font-size: var(--fluid-text); 
+  font-weight: 500; 
+}
 
-/* Custom scrollbar — theme-aware */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+/* Custom brutal scrollbar */
+::-webkit-scrollbar { width: 12px; height: 12px; border-left: 2px solid var(--color-fg); }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-primary-500); border: 2px solid var(--color-fg); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-fg); }

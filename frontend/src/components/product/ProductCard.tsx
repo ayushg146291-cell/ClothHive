@@ -13,7 +13,6 @@ import { productService } from '@/services/product.service'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { TiltCard } from '@/components/magic/TiltCard'
 
 interface ProductCardProps {
   product: Product
@@ -70,11 +69,11 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
       onHoverStart={prefetchProduct}
       className="group relative cursor-pointer"
     >
-      <TiltCard glareEnable={true} className="h-full rounded-2xl">
-        <Link to={`/products/${product.slug}`} className="block h-full rounded-2xl">
-          <Card className="h-full overflow-hidden bg-zinc-950/40 border-border-glass glass-hover rounded-2xl">
+      <div className="h-full">
+        <Link to={`/products/${product.slug}`} className="block h-full">
+          <Card className="h-full overflow-hidden bg-background brutal-border brutal-shadow brutal-shadow-hover hover-flood-acid transition-colors rounded-none p-2 group">
           {/* Image */}
-          <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
+          <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900 brutal-border border-b-4">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
             )}
@@ -130,7 +129,7 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
               <Button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg shadow-primary/20 pointer-events-auto"
+                className="flex-1 brutal-btn bg-primary text-white pointer-events-auto hover:bg-primary"
                 id={`add-to-cart-${product.id}`}
               >
                 <ShoppingBag size={16} className="mr-2" />
@@ -139,7 +138,7 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-xl glass border-border-glass text-white hover:bg-zinc-800/50 pointer-events-auto"
+                className="brutal-btn bg-background text-foreground pointer-events-auto hover:bg-background"
               >
                 <Eye size={16} />
               </Button>
@@ -147,9 +146,9 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
           </div>
 
           {/* Info */}
-          <CardContent className="p-4 bg-transparent">
-            <p className="text-xs font-sans uppercase tracking-widest text-zinc-500 mb-1">{product.category?.name}</p>
-            <h3 className="text-lg font-serif font-medium text-zinc-100 mb-2 line-clamp-2 leading-snug group-hover:text-accent transition-colors">
+          <CardContent className="px-2 py-4 bg-transparent">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1 group-hover:text-black">{product.category?.name}</p>
+            <h3 className="text-xl font-black text-foreground mb-2 line-clamp-2 leading-tight uppercase group-hover:text-black">
               {product.name}
             </h3>
 
@@ -170,10 +169,10 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
             )}
 
             {/* Price */}
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-base font-serif font-semibold text-accent">{formatCurrency(product.price)}</span>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-2xl font-black text-primary group-hover:text-primary">{formatCurrency(product.price)}</span>
               {product.comparePrice && (
-                <span className="text-sm font-sans text-zinc-600 line-through">
+                <span className="text-sm font-bold text-muted-foreground line-through group-hover:text-black/60">
                   {formatCurrency(product.comparePrice)}
                 </span>
               )}
@@ -181,7 +180,7 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
           </CardContent>
         </Card>
       </Link>
-    </TiltCard>
+    </div>
   </motion.article>
   )
 })
