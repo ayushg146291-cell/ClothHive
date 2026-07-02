@@ -50,7 +50,7 @@ export default function ProductDetail() {
 
   const { data: related } = useQuery({
     queryKey: ['products', 'related', product?.categoryId],
-    queryFn: () => productService.getProducts({ categoryId: product?.categoryId, limit: 4 }),
+    queryFn: () => productService.getProducts({ categoryId: product?.categoryId, limit: 6 }),
     enabled: !!product,
   })
 
@@ -396,10 +396,10 @@ export default function ProductDetail() {
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-                            {review.user.name?.[0] || 'A'}
+                            {review.user?.name?.[0] || 'A'}
                           </div>
                           <div>
-                            <p className="font-semibold text-white">{review.user.name}</p>
+                            <p className="font-semibold text-white">{review.user?.name || 'Anonymous'}</p>
                             <p className="text-xs text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
                           </div>
                         </div>
@@ -528,7 +528,7 @@ export default function ProductDetail() {
         </section>
 
         {/* Related Products */}
-        {related && related.data.length > 0 && (
+        {related && related.data.filter(p => p.id !== product.id).length > 0 && (
           <section className="mt-20">
             <h2 className="text-2xl font-black text-white mb-8">You may also like</h2>
             <motion.div
@@ -538,7 +538,7 @@ export default function ProductDetail() {
               viewport={{ once: true }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
-              {related.data.slice(0, 4).map((p, i) => (
+              {related.data.filter(p => p.id !== product.id).slice(0, 4).map((p, i) => (
                 <motion.div key={p.id} variants={cardVariants} custom={i}>
                   <ProductCard product={p} index={i} />
                 </motion.div>

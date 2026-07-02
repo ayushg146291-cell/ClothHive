@@ -60,16 +60,16 @@ export default function AdminReviews() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-                        {review.user.name?.[0] || 'A'}
+                        {review.user?.name?.[0] || 'A'}
                       </div>
                       <div>
-                        <p className="font-semibold text-white">{review.user.name}</p>
-                        <p className="text-xs">{review.user.email}</p>
+                        <p className="font-semibold text-white">{review.user?.name || 'Anonymous'}</p>
+                        <p className="text-xs">{review.user?.email}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-white font-medium">{review.product.name}</p>
+                    <p className="text-white font-medium">{review.product?.name || 'Unknown Product'}</p>
                     <p className="text-xs text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
                   </td>
                   <td className="px-6 py-4">
