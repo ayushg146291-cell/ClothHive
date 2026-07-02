@@ -138,7 +138,7 @@ export default function ProductDetail() {
           <span className="text-gray-300">{product.name}</span>
         </nav>
 
-        <section className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <section className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20">
           {/* Images Gallery */}
           <div className="space-y-4 lg:sticky lg:top-[120px] lg:h-[calc(100vh-160px)]">
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden glass p-4" style={{ border: '1px solid var(--border-glass)' }}>
@@ -197,7 +197,7 @@ export default function ProductDetail() {
           {/* Info */}
           <div className="space-y-6">
             <div>
-              <span className="text-sm font-bold tracking-widest uppercase text-primary mb-2 block">
+              <span className="text-sm font-sans font-semibold tracking-widest uppercase text-accent mb-2 block">
                 {product.category.name}
               </span>
               <h1 className="h1 text-foreground mb-4">{product.name}</h1>
@@ -223,11 +223,11 @@ export default function ProductDetail() {
 
               {/* Price */}
               <div className="flex items-end gap-4 mt-6">
-                <span className="text-5xl font-black text-foreground">{formatCurrency(currentPrice)}</span>
+                <span className="text-5xl font-serif font-bold text-foreground">{formatCurrency(currentPrice)}</span>
                 {product.comparePrice && (
                   <div className="flex flex-col mb-1">
-                    <span className="text-xl text-muted-foreground line-through font-medium">{formatCurrency(product.comparePrice)}</span>
-                    <span className="text-sm font-bold text-secondary">
+                    <span className="text-xl font-sans text-muted-foreground line-through">{formatCurrency(product.comparePrice)}</span>
+                    <span className="text-sm font-sans font-bold text-accent">
                       Save {Math.round(((product.comparePrice - currentPrice) / product.comparePrice) * 100)}%
                     </span>
                   </div>
@@ -250,12 +250,11 @@ export default function ProductDetail() {
                         const v = product.variants.find((v) => v.color === color)
                         setSelectedVariant(v ?? null)
                       }}
-                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                      className={`px-4 py-2 min-h-[44px] min-w-[44px] rounded-xl text-sm font-medium transition-all ${
                         selectedVariant?.color === color
-                          ? 'text-white ring-2 ring-indigo-500'
-                          : 'glass glass-hover text-gray-300'
+                          ? 'bg-foreground text-background ring-2 ring-accent ring-offset-2 ring-offset-background'
+                          : 'glass glass-hover text-foreground/80'
                       }`}
-                      style={selectedVariant?.color === color ? { background: 'var(--color-primary-700)' } : undefined}
                     >
                       {color}
                     </button>
@@ -276,12 +275,11 @@ export default function ProductDetail() {
                         const v = product.variants.find((v) => v.size === size && v.color === selectedVariant?.color)
                         setSelectedVariant(v ?? product.variants.find((v) => v.size === size) ?? null)
                       }}
-                      className={`w-12 h-12 rounded-xl text-sm font-bold transition-all ${
+                      className={`px-4 py-2 min-w-[44px] min-h-[44px] rounded-xl text-sm font-bold transition-all ${
                         selectedVariant?.size === size
-                          ? 'text-white ring-2 ring-indigo-500'
-                          : 'glass glass-hover text-gray-300'
+                          ? 'bg-foreground text-background ring-2 ring-accent ring-offset-2 ring-offset-background'
+                          : 'glass glass-hover text-foreground/80'
                       }`}
-                      style={selectedVariant?.size === size ? { background: 'var(--color-primary-700)' } : undefined}
                     >
                       {size}
                     </button>

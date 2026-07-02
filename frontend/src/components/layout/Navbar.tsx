@@ -42,12 +42,14 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30, delay: 0.1 }}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled ? 'glass shadow-sm' : 'bg-transparent'
+          'fixed top-4 left-0 right-0 z-50 transition-all duration-300 w-full px-4 md:px-8 flex justify-center pointer-events-none'
         )}
       >
-        <div className="page-container">
-          <nav className="flex items-center justify-between h-[8vh] min-h-[64px] max-h-[80px]">
+        <div className={cn(
+          'w-full max-w-5xl pointer-events-auto transition-all duration-500',
+          scrolled ? 'glass-pill px-6 py-1' : 'bg-transparent px-2 py-2'
+        )}>
+          <nav className="flex items-center justify-between min-h-[56px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">

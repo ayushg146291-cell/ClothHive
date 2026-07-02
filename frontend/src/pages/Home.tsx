@@ -14,6 +14,9 @@ import { Button } from '@/components/ui/button'
 import { GridBackground } from '@/components/magic/GridBackground'
 import { ShinyText } from '@/components/magic/ShinyText'
 import { TiltCard } from '@/components/magic/TiltCard'
+import { AuroraBackground } from '@/components/magic/AuroraBackground'
+import { SplitText } from '@/components/magic/SplitText'
+import { Magnetic } from '@/components/magic/Magnetic'
 
 const features = [
   { 
@@ -62,73 +65,55 @@ export default function Home() {
   return (
     <AnimatedPage>
       <div className="flex flex-col gap-0 pb-[8vh]">
-        {/* Hero with Sparkles */}
+        {/* Hero with Aurora and SplitText */}
         <section className="relative min-h-screen flex items-center overflow-hidden">
-          <GridBackground className="w-full h-full flex flex-col items-center justify-center">
-            <div className="absolute inset-0 w-full h-full">
-              <SparklesCore
-                id="tsparticlesfullpage"
-                background="transparent"
-                minSize={0.6}
-                maxSize={1.4}
-                particleDensity={100}
-                className="w-full h-full"
-                particleColor="#ffffff"
-              />
-            </div>
-            {/* Subtle gradient overlay to make text pop */}
-            <div className="absolute inset-0 bg-background/40 pointer-events-none" />
-
+          <AuroraBackground className="w-full h-full flex flex-col items-center justify-center">
           <div className="page-container relative z-10 pt-safe-nav pb-[8vh] flex flex-col items-center text-center">
             <div className="max-w-4xl mx-auto flex flex-col items-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 glass text-primary border-primary/20"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 glass text-accent border-accent/20"
               >
                 <Sparkles size={14} />
                 <ShinyText text="New Summer Collection 2026" />
               </motion.div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6, type: 'spring', damping: 20 }}
+              <SplitText 
+                text="Dress for the life you want"
                 className="h1 text-foreground mb-6"
-              >
-                Dress for the <ShinyText text="life you want" className="bg-gradient-to-r from-primary via-secondary to-accent" />
-              </motion.h1>
+                delay={40}
+              />
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 }}
-                className="p-fluid text-muted-foreground mb-10 max-w-2xl"
+                transition={{ delay: 1, duration: 0.6 }}
+                className="p-fluid max-w-2xl mx-auto mb-10"
               >
-                Premium fashion crafted for the modern individual. Discover pieces that speak your style — curated, sustainable, and built to last.
+                Discover our curated collection of premium clothing designed for the modern lifestyle.
+                Elevate your everyday look with pieces that make a statement.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55 }}
-                className="flex flex-wrap gap-4 justify-center"
+                transition={{ delay: 1.2, duration: 0.6 }}
+                className="flex flex-col sm:flex-row items-center gap-4"
               >
-                <Link to="/shop">
-                  <Button className="h-14 px-8 rounded-full text-lg font-bold bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(190,24,93,0.4)] transition-all hover:scale-105 text-white">
+                <Magnetic>
+                  <Button size="lg" className="h-14 px-8 text-base rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-2xl">
                     Shop Now <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                </Link>
-                <Link to="/shop?sort=newest">
-                  <Button variant="outline" className="h-14 px-8 rounded-full text-lg font-bold border-border bg-card/50 hover:bg-muted text-foreground backdrop-blur-md">
-                    New Arrivals
-                  </Button>
-                </Link>
+                </Magnetic>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full glass-pill border-foreground/20 text-foreground hover:bg-foreground/5">
+                  View Lookbook
+                </Button>
               </motion.div>
             </div>
           </div>
-          </GridBackground>
+          </AuroraBackground>
         </section>
 
         {/* Marquee Section */}

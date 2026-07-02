@@ -148,8 +148,8 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
 
           {/* Info */}
           <CardContent className="p-4 bg-transparent">
-            <p className="text-xs text-zinc-500 mb-1">{product.category?.name}</p>
-            <h3 className="text-sm font-semibold text-zinc-100 mb-2 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+            <p className="text-xs font-sans uppercase tracking-widest text-zinc-500 mb-1">{product.category?.name}</p>
+            <h3 className="text-lg font-serif font-medium text-zinc-100 mb-2 line-clamp-2 leading-snug group-hover:text-accent transition-colors">
               {product.name}
             </h3>
 
@@ -170,10 +170,10 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
             )}
 
             {/* Price */}
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-white">{formatCurrency(product.price)}</span>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-base font-serif font-semibold text-accent">{formatCurrency(product.price)}</span>
               {product.comparePrice && (
-                <span className="text-sm text-zinc-500 line-through">
+                <span className="text-sm font-sans text-zinc-600 line-through">
                   {formatCurrency(product.comparePrice)}
                 </span>
               )}
