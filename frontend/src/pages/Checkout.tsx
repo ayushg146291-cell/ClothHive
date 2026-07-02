@@ -159,7 +159,15 @@ export default function Checkout() {
 
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-1.5">Phone</label>
-                  <input {...register('phone')} placeholder="9876543210" maxLength={10} className={inputClasses} />
+                  <input 
+                    {...register('phone')} 
+                    placeholder="9876543210" 
+                    maxLength={10} 
+                    className={inputClasses} 
+                    onInput={(e) => {
+                      e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '')
+                    }}
+                  />
                   {errors.phone && <p className="text-destructive text-xs mt-1.5">{errors.phone.message}</p>}
                 </div>
 

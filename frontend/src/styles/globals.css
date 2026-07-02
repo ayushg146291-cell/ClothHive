@@ -62,7 +62,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.dark, :root {
+.dark {
   /* Shadcn UI Dark Theme Variables (Actual Default) */
   --background: oklch(0.13 0 0); /* zinc-950 approx */
   --foreground: oklch(0.98 0 0);

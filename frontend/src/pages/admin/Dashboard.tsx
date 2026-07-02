@@ -3,8 +3,12 @@ import { motion } from 'framer-motion'
 import { DollarSign, ShoppingBag, Users, Package } from 'lucide-react'
 import AdminLayout from '@/components/layout/AdminLayout'
 import { fadeUp } from '@/lib/animations'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatDate } from '@/lib/utils'
 import { api } from '@/services/api'
+import { orderService } from '@/services/order.service'
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/lib/constants'
+import type { Order } from '@/types'
+import { Link } from 'react-router-dom'
 
 interface StatsData {
   revenue: number
@@ -15,11 +19,18 @@ interface StatsData {
 
 export default function Dashboard() {
   const [stats, setStats] = useState<StatsData | null>(null)
+  const [recentOrders, setRecentOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/admin/stats')
-      .then(res => setStats(res.data))
+    Promise.all([
+      api.get('/admin/stats').then(res => res.data),
+      orderService.getAllOrders({ limit: 5 }).then(res => res.data)
+    ])
+      .then(([statsData, ordersData]) => {
+        setStats(statsData)
+        setRecentOrders(ordersData || [])
+      })
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [])
@@ -28,7 +39,7 @@ export default function Dashboard() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       </AdminLayout>
     )
@@ -51,19 +62,19 @@ export default function Dashboard() {
             initial="hidden"
             animate="visible"
             transition={{ delay: i * 0.1 }}
-            className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 border border-white/5"
+            className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border border-border"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-indigo-500/10 rounded-xl text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+              <div className="p-3 bg-primary/10 rounded-xl text-primary border border-primary/20 shadow-glow">
                 <stat.icon size={20} />
               </div>
-              <span className="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-md">
+              <span className="text-xs font-medium text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md">
                 {stat.trend}
               </span>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">{stat.title}</p>
-              <p className="text-2xl font-bold text-white">{stat.format(stat.value)}</p>
+              <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
+              <p className="text-2xl font-bold text-foreground">{stat.format(stat.value)}</p>
             </div>
           </motion.div>
         ))}
@@ -71,11 +82,43 @@ export default function Dashboard() {
 
       {/* Placeholder for charts/tables */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <div className="lg:col-span-2 glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center">
-          <p className="text-gray-500">Revenue Chart (Coming Soon)</p>
+        <div className="lg:col-span-2 glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center border border-border">
+          <p className="text-muted-foreground">Revenue Chart (Coming Soon)</p>
         </div>
-        <div className="glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center">
-          <p className="text-gray-500">Recent Orders (Coming Soon)</p>
+        <div className="glass rounded-2xl p-6 min-h-[400px] border border-border flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-bold text-lg text-foreground">Recent Orders</h3>
+            <Link to="/admin/orders" className="text-xs text-primary hover:underline">View all</Link>
+          </div>
+          
+          <div className="flex-1 overflow-auto space-y-4 pr-2">
+            {recentOrders.length === 0 ? (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-muted-foreground text-sm">No orders yet</p>
+              </div>
+            ) : (
+              recentOrders.map(order => (
+                <div key={order.id} className="p-3 rounded-xl bg-background/50 border border-border">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">#{order.orderNumber}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(order.createdAt)}</p>
+                    </div>
+                    <span 
+                      className="px-2 py-0.5 rounded-full text-[10px] font-bold" 
+                      style={{ background: `${ORDER_STATUS_COLORS[order.status]}20`, color: ORDER_STATUS_COLORS[order.status] }}
+                    >
+                      {ORDER_STATUS_LABELS[order.status]}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <p className="text-muted-foreground truncate max-w-[120px]">{order.user?.name || 'Guest'}</p>
+                    <p className="font-bold text-foreground">{formatCurrency(order.totalAmount)}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </AdminLayout>

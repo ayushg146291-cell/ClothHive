@@ -41,16 +41,6 @@ export default function Settings() {
               />
             </div>
           </section>
-
-          <section>
-            <h2 className="text-xl font-bold text-foreground mb-4">Account</h2>
-            <div className="flex items-center justify-between p-4 rounded-2xl glass-hover glass border border-border opacity-50 cursor-not-allowed">
-              <div>
-                <h3 className="font-semibold text-foreground">Change Password</h3>
-                <p className="text-sm text-muted-foreground">Update your account password (Coming soon)</p>
-              </div>
-            </div>
-          </section>
           
         </div>
       </div>

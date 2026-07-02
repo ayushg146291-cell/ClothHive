@@ -12,7 +12,7 @@ export const orderService = {
 
   async getOrders(): Promise<Order[]> {
     const { data } = await api.get('/orders')
-    return data
+    return data.data ? data.data : data
   },
 
   async getOrder(id: string): Promise<Order> {
