@@ -3,18 +3,20 @@ import type { Variants } from 'framer-motion'
 
 // Page transitions
 export const pageVariants: Variants = {
-  initial: { opacity: 0, y: 24, filter: 'blur(4px)' },
+  initial: { opacity: 0, y: 30, scale: 0.98, filter: 'blur(8px)' },
   animate: {
     opacity: 1,
     y: 0,
+    scale: 1,
     filter: 'blur(0px)',
-    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }, // Apple-like spring easing
   },
   exit: {
     opacity: 0,
-    y: -12,
-    filter: 'blur(4px)',
-    transition: { duration: 0.2 },
+    y: -20,
+    scale: 0.98,
+    filter: 'blur(8px)',
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
   },
 }
 

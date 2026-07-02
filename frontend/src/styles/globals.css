@@ -6,13 +6,14 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors: Dark Liquid Glass */
+  /* Brand Colors: Common across themes */
   --color-primary-500: #BE185D; /* Rose */
   --color-secondary-500: #EC4899; /* Pink */
   --color-accent-500: #D97706; /* Gold/Amber */
   
-  --color-bg: #09090b; /* Deep slate / zinc-950 */
-  --color-fg: #fafafa;
+  /* LIGHT MODE (Frosted Pearl) */
+  --color-bg: #fafafa;
+  --color-fg: #09090b;
   
   /* Fluid UI Variables (Mobile to Desktop scaling) */
   --fluid-padding: clamp(1rem, 5vw, 4rem);
