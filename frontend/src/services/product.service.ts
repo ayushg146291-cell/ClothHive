@@ -3,7 +3,16 @@ import type { Product, PaginatedResponse, ProductQuery } from '@/types'
 
 export const productService = {
   async getProducts(params: ProductQuery): Promise<PaginatedResponse<Product>> {
-    const { data } = await api.get('/products', { params })
+    const apiParams: any = { ...params }
+    if (params.limit !== undefined) {
+      apiParams.take = params.limit
+      delete apiParams.limit
+    }
+    if (params.page !== undefined) {
+      apiParams.skip = (params.page - 1) * (params.limit || 20)
+      delete apiParams.page
+    }
+    const { data } = await api.get('/products', { params: apiParams })
     return data
   },
 

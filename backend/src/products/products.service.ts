@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -17,10 +17,11 @@ export class ProductsService {
     take?: number;
     search?: string;
     categoryId?: string;
+    category?: string;
     sort?: string;
     sale?: boolean;
   }) {
-    const { skip = 0, take = 20, search, categoryId, sort, sale } = params;
+    const { skip = 0, take = 20, search, categoryId, category, sort, sale } = params;
 
     const where: any = { isActive: true };
 
@@ -33,6 +34,10 @@ export class ProductsService {
 
     if (categoryId) {
       where.categoryId = categoryId;
+    }
+
+    if (category) {
+      where.category = { slug: category };
     }
 
     if (sale) {
@@ -106,6 +111,20 @@ export class ProductsService {
 
   // --- Reviews ---
   async addReview(productId: string, userId: string, dto: CreateReviewDto, files: Express.Multer.File[]) {
+    // Check if user has purchased the product
+    const hasOrdered = await this.prisma.order.findFirst({
+      where: {
+        userId,
+        items: {
+          some: { productId },
+        },
+      },
+    });
+
+    if (!hasOrdered) {
+      throw new ForbiddenException('You can only review products you have purchased.');
+    }
+
     // Check if user already reviewed
     const existingReview = await this.prisma.review.findUnique({
       where: { userId_productId: { userId, productId } },

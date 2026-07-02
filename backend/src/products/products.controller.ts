@@ -32,6 +32,7 @@ export class ProductsController {
     @Query('take') take?: string,
     @Query('search') search?: string,
     @Query('categoryId') categoryId?: string,
+    @Query('category') category?: string,
     @Query('sort') sort?: string,
     @Query('sale') sale?: string,
   ) {
@@ -40,6 +41,7 @@ export class ProductsController {
       take: take ? parseInt(take, 10) : 20,
       search,
       categoryId,
+      category,
       sort,
       sale: sale === 'true',
     });
