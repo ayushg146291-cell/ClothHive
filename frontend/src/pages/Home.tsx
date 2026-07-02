@@ -15,6 +15,7 @@ import { ShinyText } from '@/components/magic/ShinyText'
 import { TiltCard } from '@/components/magic/TiltCard'
 import { SplitText } from '@/components/magic/SplitText'
 import { Magnetic } from '@/components/magic/Magnetic'
+import { AuroraBackground } from '@/components/magic/AuroraBackground'
 
 const features = [
   { 
@@ -63,65 +64,67 @@ export default function Home() {
   return (
     <AnimatedPage>
       <div className="flex flex-col gap-0 pb-[8vh]">
-        {/* Hero Brutalism */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-          <div className="absolute inset-0 border-b-4 border-foreground pointer-events-none" />
-
+        {/* Hero Spatial UI */}
+        <section className="relative min-h-screen flex items-center overflow-hidden">
+          <AuroraBackground className="w-full h-full flex flex-col items-center justify-center">
           <div className="page-container relative z-10 pt-safe-nav pb-[8vh] flex flex-col items-center text-center">
-            <div className="max-w-5xl mx-auto flex flex-col items-center">
+            <div className="max-w-4xl mx-auto flex flex-col items-center">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-                className="inline-flex items-center gap-2 px-6 py-2 bg-accent text-foreground brutal-border brutal-shadow mb-8 uppercase font-bold text-sm tracking-widest"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 glass text-foreground"
               >
-                <Sparkles size={16} strokeWidth={3} />
-                <span>CLOTHHIVE VOL. 4 / DROP 2026</span>
+                <Sparkles size={14} className="text-muted-foreground" />
+                <ShinyText text="New Summer Collection 2026" />
               </motion.div>
 
               <SplitText 
-                text="WEAR THE NOISE."
+                text="Live the spatial life."
                 className="h1 text-foreground mb-6"
-                delay={30}
+                delay={40}
               />
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
-                className="p-fluid max-w-2xl mx-auto mb-10 text-foreground font-bold tracking-tight uppercase"
+                className="p-fluid max-w-2xl mx-auto mb-10 text-muted-foreground"
               >
-                Hyper-modern streetwear. Zero compromises. 
-                Built for the underground. 
+                Discover our curated collection of premium clothing designed for the modern lifestyle.
+                Elevate your everyday look with pieces that make a subtle statement.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
-                className="flex flex-col sm:flex-row items-center gap-6"
+                className="flex flex-col sm:flex-row items-center gap-4"
               >
-                <Link to="/shop">
-                  <Button size="lg" className="h-16 px-10 text-lg bg-primary text-white brutal-btn brutal-shadow-hover hover:bg-primary">
-                    SHOP NOW <ArrowRight className="ml-3 h-6 w-6" strokeWidth={3} />
-                  </Button>
-                </Link>
+                <Magnetic>
+                  <Link to="/shop">
+                    <Button size="lg" className="h-14 px-8 text-base rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-2xl">
+                      Shop Now <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </Magnetic>
                 <Link to="/lookbook">
-                  <Button size="lg" variant="outline" className="h-16 px-10 text-lg bg-background text-foreground brutal-btn brutal-shadow-hover hover:bg-background">
-                    VIEW LOOKBOOK
+                  <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full glass-pill border-foreground/20 text-foreground hover:bg-foreground/5">
+                    View Lookbook
                   </Button>
                 </Link>
               </motion.div>
             </div>
           </div>
+          </AuroraBackground>
         </section>
 
         {/* Marquee Section */}
-        <section className="py-4 bg-accent border-b-4 border-foreground overflow-hidden">
-          <Marquee pauseOnHover className="[--duration:15s]">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="mx-4 text-3xl font-black text-foreground tracking-tighter uppercase whitespace-nowrap flex items-center gap-8">
-                /// NEW SUMMER COLLECTION /// <Sparkles size={24} strokeWidth={3} />
+        <section className="py-8 bg-muted/20 border-y border-border overflow-hidden">
+          <Marquee pauseOnHover className="[--duration:30s]">
+            {['VOGUE', 'GQ', 'HYPEBEAST', 'HIGHSNOBIETY', 'ESQUIRE', 'ELLE', 'COMPLEX', 'GRAILED'].map((brand) => (
+              <div key={brand} className="mx-8 text-2xl font-bold text-muted-foreground/30 tracking-widest uppercase">
+                {brand}
               </div>
             ))}
           </Marquee>
@@ -131,14 +134,16 @@ export default function Home() {
         <section className="page-container py-section">
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-12">
             <h2 className="h2 text-foreground mb-4">Why Choose ClothHive?</h2>
-            <p className="p-fluid text-muted-foreground font-bold uppercase">Experience premium shopping with our world-class services.</p>
+            <p className="p-fluid text-muted-foreground">Experience premium shopping with our world-class services.</p>
           </motion.div>
 
-          <BentoGrid className="lg:grid-rows-1 gap-6">
+          <BentoGrid className="lg:grid-rows-1">
             {features.map((feature) => (
-              <div key={feature.name} className="brutal-border brutal-shadow hover-flood-acid bg-background p-6 group transition-colors">
-                <BentoCard {...feature} />
-              </div>
+              <TiltCard key={feature.name} glareEnable={true} className="rounded-3xl">
+                <div className="glass h-full rounded-3xl p-6 hover:bg-white/10 transition-colors">
+                  <BentoCard {...feature} />
+                </div>
+              </TiltCard>
             ))}
           </BentoGrid>
         </section>
@@ -148,19 +153,19 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
               <h2 className="h2 text-foreground mb-2">Featured Picks</h2>
-              <p className="p-fluid text-muted-foreground font-bold uppercase">Hand-picked pieces our team is obsessed with</p>
+              <p className="p-fluid text-muted-foreground">Hand-picked pieces our team is obsessed with</p>
             </motion.div>
             <Link to="/shop?isFeatured=true">
-              <Button className="brutal-btn brutal-shadow-hover bg-background text-foreground hover:bg-background">
-                VIEW ALL <ArrowRight className="ml-2 h-4 w-4" strokeWidth={3} />
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full px-6">
+                View all <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
 
           {!isLoading && (!featured || featured.length === 0) ? (
-            <div className="py-24 text-center bg-accent brutal-border brutal-shadow">
-              <p className="text-3xl font-black text-foreground mb-2 uppercase">New drops coming soon!</p>
-              <p className="text-foreground font-bold">We're meticulously curating the next batch of premium fashion.</p>
+            <div className="py-24 text-center glass rounded-3xl">
+              <p className="text-2xl font-medium text-foreground mb-2">New drops coming soon!</p>
+              <p className="text-muted-foreground">We're meticulously curating the next batch of premium fashion.</p>
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

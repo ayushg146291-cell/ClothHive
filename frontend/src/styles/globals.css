@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,44 +6,44 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors: Kinetic Brutalism Theme */
-  --color-primary-500: #E11D48; /* Vibrant Rose / Crimson */
-  --color-secondary-500: #2563EB; /* Engagement Blue */
-  --color-accent-500: #DFE104; /* Acid Yellow */
+  /* Brand Colors: 3D Spatial UI */
+  --color-primary-500: #000000;
+  --color-secondary-500: #737373;
+  --color-accent-500: #000000;
   --color-black: #000000;
   
-  /* LIGHT MODE (Cream Base) */
-  --color-bg: #FFF1F2;
+  /* LIGHT MODE */
+  --color-bg: #f8f9fa; /* Very subtle light gray */
   --color-fg: #000000;
   
   /* Fluid UI Variables (Mobile to Desktop scaling using clamp) */
   --fluid-padding: clamp(1rem, 5vw, 3rem);
-  --fluid-header: clamp(3rem, 10vw, 8rem);
-  --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+  --fluid-header: clamp(3rem, 10vw, 6rem);
+  --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
   --fluid-gap: clamp(1rem, 3vw, 2.5rem);
 
   /* Shadcn UI Light Theme Variables */
-  --background: oklch(0.96 0.02 14); /* #FFF1F2 */
+  --background: oklch(0.98 0 0); /* #f8f9fa */
   --foreground: oklch(0 0 0); /* #000000 */
-  --card: oklch(0.98 0 0); /* White cards on cream bg */
+  --card: oklch(1 0 0); /* White */
   --card-foreground: oklch(0 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0.55 0.22 18); /* #E11D48 */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.55 0.18 250); /* #2563EB */
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.90 0 0); 
-  --muted-foreground: oklch(0.3 0 0);
-  --accent: oklch(0.85 0.18 100); /* #DFE104 */
+  --primary: oklch(0 0 0); /* Black */
+  --primary-foreground: oklch(1 0 0); /* White */
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.96 0 0); 
+  --muted-foreground: oklch(0.4 0 0);
+  --accent: oklch(0.96 0 0);
   --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.577 0.245 27.325); /* #DC2626 */
-  --border: oklch(0 0 0); /* Black brutal borders */
-  --input: oklch(0 0 0);
+  --border: oklch(0.9 0 0); /* Light gray border */
+  --input: oklch(0.9 0 0);
   --ring: oklch(0 0 0);
-  --radius: 0rem; /* Brutalist sharp corners */
+  --radius: 1rem; /* Soft rounded corners */
 
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -51,33 +51,33 @@
 }
 
 .dark {
-  /* DARK MODE (Acid / Neon Underground) */
-  --color-bg: #000000;
-  --color-fg: #FFFFFF;
+  /* DARK MODE */
+  --color-bg: #0a0a0a;
+  --color-fg: #ffffff;
 
   /* Shadcn UI Dark Theme Variables */
-  --background: oklch(0 0 0);
+  --background: oklch(0.1 0 0);
   --foreground: oklch(1 0 0);
-  --card: oklch(0.1 0 0);
+  --card: oklch(0.15 0 0);
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.1 0 0);
+  --popover: oklch(0.15 0 0);
   --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.55 0.22 18); /* #E11D48 */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.55 0.18 250); /* #2563EB */
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.20 0 0);
-  --muted-foreground: oklch(0.70 0 0);
-  --accent: oklch(0.85 0.18 100); /* #DFE104 */
-  --accent-foreground: oklch(0 0 0);
+  --primary: oklch(1 0 0); /* White */
+  --primary-foreground: oklch(0 0 0); /* Black */
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(0.9 0 0);
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.2 0 0);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.70 0.19 22);
-  --border: oklch(1 0 0); /* White borders in dark mode */
-  --input: oklch(1 0 0);
+  --border: oklch(0.25 0 0); /* Dark gray border */
+  --input: oklch(0.25 0 0);
   --ring: oklch(1 0 0);
 }
 
 @theme inline {
-  --font-sans: 'Space Grotesk', sans-serif;
+  --font-sans: 'Inter', sans-serif;
   
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -97,10 +97,10 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: var(--radius);
-  --radius-md: var(--radius);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   
   --animate-marquee: marquee var(--duration) infinite linear;
   @keyframes marquee {
@@ -123,92 +123,86 @@
   body {
     @apply bg-background text-foreground font-sans;
     min-height: 100vh;
-    line-height: 1.4; /* Tighter line height for brutalist typography */
+    line-height: 1.5;
     background-color: var(--color-bg);
     color: var(--color-fg);
   }
 }
 
-/* Kinetic Brutalism Utilities */
-.brutal-border {
-  border: 2px solid var(--color-fg);
+/* Spatial Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 
-.brutal-shadow {
-  box-shadow: 4px 4px 0px 0px var(--color-fg);
-  transition: all 0.15s cubic-bezier(0, 0, 0.2, 1);
+.dark .glass {
+  background: rgba(15, 15, 15, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
-.brutal-shadow-hover:hover {
-  box-shadow: 8px 8px 0px 0px var(--color-fg);
-  transform: translate(-4px, -4px);
+.glass-pill {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
 }
 
-.brutal-btn {
-  border: 2px solid var(--color-fg);
-  box-shadow: 4px 4px 0px 0px var(--color-fg);
-  transition: all 0.1s cubic-bezier(0, 0, 0.2, 1);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.brutal-btn:active {
-  box-shadow: 0px 0px 0px 0px var(--color-fg);
-  transform: translate(4px, 4px);
-}
-
-/* Hover Floods (Acid/Black inversion) */
-.hover-flood-acid {
-  transition: all 0.15s ease-out;
-}
-.hover-flood-acid:hover {
-  background-color: var(--color-accent-500) !important;
-  color: var(--color-black) !important;
+.dark .glass-pill {
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 /* Fluid Structural Utilities */
 .page-container {
   width: 100%;
   padding-inline: var(--fluid-padding);
-  max-width: 1600px;
+  max-width: 1400px;
   margin-inline: auto;
 }
 .pt-safe-nav {
-  padding-top: max(14vh, 8rem);
+  padding-top: max(12vh, 7rem);
 }
 .py-section {
-  padding-top: clamp(4rem, 8vh, 8rem);
-  padding-bottom: clamp(4rem, 8vh, 8rem);
+  padding-top: clamp(3rem, 6vh, 6rem);
+  padding-bottom: clamp(3rem, 6vh, 6rem);
 }
 
 /* Typography Overrides using Clamp */
 h1, .h1 { 
   font-size: var(--fluid-header); 
-  font-weight: 700; 
-  line-height: 0.95; 
-  letter-spacing: -0.04em; 
-  text-transform: uppercase; 
+  font-weight: 600; 
+  line-height: 1.05; 
+  letter-spacing: -0.05em; 
 }
 h2, .h2 { 
-  font-size: clamp(3rem, 6vw + 1rem, 5rem); 
-  font-weight: 700; 
-  line-height: 1; 
+  font-size: clamp(2.5rem, 5vw + 1rem, 4rem); 
+  font-weight: 500; 
+  line-height: 1.1; 
   letter-spacing: -0.03em; 
-  text-transform: uppercase; 
 }
 h3, .h3 { 
-  font-size: clamp(2rem, 4vw, 3rem); 
-  font-weight: 700; 
-  line-height: 1.1; 
+  font-size: clamp(1.5rem, 3vw, 2.5rem); 
+  font-weight: 500; 
+  line-height: 1.2; 
   letter-spacing: -0.02em; 
-  text-transform: uppercase;
 }
 p, .p-fluid { 
   font-size: var(--fluid-text); 
-  font-weight: 500; 
+  font-weight: 400; 
+  color: var(--muted-foreground);
 }
 
-/* Custom brutal scrollbar */
-::-webkit-scrollbar { width: 12px; height: 12px; border-left: 2px solid var(--color-fg); }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb { background: var(--color-primary-500); border: 2px solid var(--color-fg); }
-::-webkit-scrollbar-thumb:hover { background: var(--color-fg); }
+/* Elegant Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
+.dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.2); }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }

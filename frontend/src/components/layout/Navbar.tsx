@@ -41,18 +41,20 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30, delay: 0.1 }}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full border-b-[3px] border-foreground',
-          scrolled ? 'bg-background shadow-[0_4px_0_0_#000]' : 'bg-background'
+          'fixed top-4 left-0 right-0 z-50 transition-all duration-300 w-full px-4 md:px-8 flex justify-center pointer-events-none'
         )}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 py-3 transition-all duration-500">
+        <div className={cn(
+          'w-full max-w-5xl pointer-events-auto transition-all duration-500',
+          scrolled ? 'glass-pill px-6 py-1' : 'bg-transparent px-2 py-2'
+        )}>
           <nav className="flex items-center justify-between min-h-[56px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 flex items-center justify-center bg-foreground brutal-border brutal-shadow group-hover:brutal-shadow-hover">
-                <span className="text-background font-black text-xl">C</span>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
+                <span className="text-white font-medium text-sm">C</span>
               </div>
-              <span className="font-black text-3xl tracking-tighter uppercase text-foreground ml-2">
+              <span className="font-semibold text-lg tracking-tight text-foreground">
                 {APP_NAME}
               </span>
             </Link>
@@ -64,27 +66,33 @@ export default function Navbar() {
                   <Link
                     to={link.href}
                     className={cn(
-                      'text-sm font-bold uppercase tracking-widest transition-colors duration-200 block border-2',
+                      'text-sm font-medium transition-colors duration-200 relative group',
                       location.pathname === link.href
-                        ? 'text-primary border-primary bg-primary/5 px-3 py-1 brutal-shadow'
-                        : 'text-foreground hover-flood-acid border-transparent px-3 py-1 hover:border-foreground hover:brutal-shadow'
+                        ? 'text-primary'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
                     {link.label}
+                    <span
+                      className={cn(
+                        'absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300',
+                        location.pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'
+                      )}
+                    />
                   </Link>
                 </li>
               ))}
             </ul>
 
             {/* Actions */}
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} className="rounded-none brutal-btn hover-flood-acid border-2 border-transparent hover:border-foreground">
-                <Search size={22} strokeWidth={2.5} />
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                <Search size={20} />
               </Button>
 
               <Link to="/wishlist" className="relative">
-                <Button variant="ghost" size="icon" className="rounded-none brutal-btn hover-flood-acid border-2 border-transparent hover:border-foreground">
-                  <Heart size={22} strokeWidth={2.5} />
+                <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                  <Heart size={20} />
                 </Button>
                 {wishlistCount > 0 && (
                   <motion.span
