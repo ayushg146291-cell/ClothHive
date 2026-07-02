@@ -257,7 +257,7 @@ export default function AdminProducts() {
                 <tr key={product.id} className="border-b border-border hover:bg-muted/30 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <img src={product.images[0]} alt="" className="w-10 h-10 rounded-md object-cover bg-muted" />
+                      <img src={product.images?.[0] || 'https://placehold.co/40'} alt="" className="w-10 h-10 rounded-md object-cover bg-muted" />
                       <div>
                         <span className="font-medium text-foreground block">{product.name}</span>
                         {!product.isActive && <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-bold">INACTIVE</span>}

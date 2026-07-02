@@ -78,7 +78,7 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
               <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
             )}
             <motion.img
-              src={product.images[0] || 'https://placehold.co/400x533/1e293b/BE185D?text=ClothHive'}
+              src={product.images?.[0] || 'https://placehold.co/400x533/1e293b/BE185D?text=ClothHive'}
               alt={product.name}
               loading="lazy"
               decoding="async"

@@ -79,9 +79,9 @@ export default function ProductDetail() {
   if (!product) return null
 
   const inWishlist = isInWishlist(product.id)
-  const images = product.images.length > 0 ? product.images : ['https://placehold.co/600x700/1e293b/6366f1?text=ClothHive']
-  const sizes = [...new Set(product.variants.filter((v) => v.size).map((v) => v.size!))]
-  const colors = [...new Set(product.variants.filter((v) => v.color).map((v) => v.color!))]
+  const images = product.images?.length > 0 ? product.images : ['https://placehold.co/600x700/1e293b/6366f1?text=ClothHive']
+  const sizes = [...new Set(product.variants?.filter((v) => v.size).map((v) => v.size!) || [])]
+  const colors = [...new Set(product.variants?.filter((v) => v.color).map((v) => v.color!) || [])]
   const currentPrice = selectedVariant?.price ?? product.price
   const inStock = (selectedVariant?.stock ?? product.stock) > 0
 
@@ -362,9 +362,9 @@ export default function ProductDetail() {
             </div>
 
             {/* Tags */}
-            {product.tags.length > 0 && (
+            {product.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-2">
-                {product.tags.map((tag) => (
+                {product.tags?.map((tag) => (
                   <span
                     key={tag}
                     className="px-3 py-1 rounded-full text-xs text-gray-400 glass"
@@ -391,7 +391,7 @@ export default function ProductDetail() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {product.reviews.map((review) => (
+                  {product.reviews?.map((review) => (
                     <div key={review.id} className="glass p-6 rounded-2xl space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
@@ -528,7 +528,7 @@ export default function ProductDetail() {
         </section>
 
         {/* Related Products */}
-        {related && related.data.filter(p => p.id !== product.id).length > 0 && (
+        {related && (related.data?.filter(p => p.id !== product.id)?.length ?? 0) > 0 && (
           <section className="mt-20">
             <h2 className="text-2xl font-black text-white mb-8">You may also like</h2>
             <motion.div
@@ -538,7 +538,7 @@ export default function ProductDetail() {
               viewport={{ once: true }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
-              {related.data.filter(p => p.id !== product.id).slice(0, 4).map((p, i) => (
+              {related.data?.filter(p => p.id !== product.id).slice(0, 4).map((p, i) => (
                 <motion.div key={p.id} variants={cardVariants} custom={i}>
                   <ProductCard product={p} index={i} />
                 </motion.div>

@@ -191,13 +191,13 @@ export default function ProductList() {
         >
           {isLoading || isFetching
             ? Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => <ProductSkeleton key={i} />)
-            : data?.data.map((product, i) => (
+            : data?.data?.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />
               ))}
         </motion.div>
 
         {/* No results */}
-        {!isLoading && data?.data.length === 0 && (
+        {!isLoading && data?.data?.length === 0 && (
           <div className="text-center py-24 flex flex-col items-center">
             <p className="text-2xl font-bold text-white mb-2">No products found</p>
             <p className="text-gray-400 mb-8">Try adjusting your filters or search term.</p>
