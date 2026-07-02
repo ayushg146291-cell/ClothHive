@@ -25,7 +25,7 @@ export default function Dashboard() {
   useEffect(() => {
     Promise.all([
       api.get('/admin/stats').then(res => res.data),
-      orderService.getAllOrders({ limit: 5 }).then(res => res.data)
+      orderService.getAllOrders({ limit: 5 }).then(res => res.data || [])
     ])
       .then(([statsData, ordersData]) => {
         setStats(statsData)
@@ -39,17 +39,17 @@ export default function Dashboard() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </AdminLayout>
     )
   }
 
   const statCards = [
-    { title: 'Total Revenue', value: stats.revenue, format: formatCurrency, icon: DollarSign, trend: '+12.5%' },
-    { title: 'Orders', value: stats.totalOrders, format: (v: number) => v.toString(), icon: ShoppingBag, trend: '+5.2%' },
-    { title: 'Customers', value: stats.totalCustomers, format: (v: number) => v.toString(), icon: Users, trend: '+18.1%' },
-    { title: 'Products', value: stats.totalProducts, format: (v: number) => v.toString(), icon: Package, trend: '+1.1%' },
+    { title: 'Total Revenue', value: stats.revenue, format: formatCurrency, icon: DollarSign, color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20' },
+    { title: 'Orders', value: stats.totalOrders, format: (v: number) => v.toString(), icon: ShoppingBag, color: 'text-blue-500 bg-blue-500/10 border-blue-500/20' },
+    { title: 'Customers', value: stats.totalCustomers, format: (v: number) => v.toString(), icon: Users, color: 'text-purple-500 bg-purple-500/10 border-purple-500/20' },
+    { title: 'Products', value: stats.totalProducts, format: (v: number) => v.toString(), icon: Package, color: 'text-primary bg-primary/10 border-primary/20' },
   ]
 
   return (
@@ -65,22 +65,18 @@ export default function Dashboard() {
             className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border border-border"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-primary/10 rounded-xl text-primary border border-primary/20 shadow-glow">
+              <div className={`p-3 rounded-xl border ${stat.color}`}>
                 <stat.icon size={20} />
               </div>
-              <span className="text-xs font-medium text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md">
-                {stat.trend}
-              </span>
             </div>
             <div>
               <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
-              <p className="text-2xl font-bold text-foreground">{stat.format(stat.value)}</p>
+              <p className="text-2xl font-bold text-foreground tabular-nums">{stat.format(stat.value)}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Placeholder for charts/tables */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <div className="lg:col-span-2 glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center border border-border">
           <p className="text-muted-foreground">Revenue Chart (Coming Soon)</p>
@@ -88,17 +84,17 @@ export default function Dashboard() {
         <div className="glass rounded-2xl p-6 min-h-[400px] border border-border flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold text-lg text-foreground">Recent Orders</h3>
-            <Link to="/admin/orders" className="text-xs text-primary hover:underline">View all</Link>
+            <Link to="/admin/orders" className="text-xs text-primary hover:underline font-medium">View all</Link>
           </div>
           
-          <div className="flex-1 overflow-auto space-y-4 pr-2">
+          <div className="flex-1 overflow-auto space-y-3 pr-1">
             {recentOrders.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <p className="text-muted-foreground text-sm">No orders yet</p>
               </div>
             ) : (
               recentOrders.map(order => (
-                <div key={order.id} className="p-3 rounded-xl bg-background/50 border border-border">
+                <div key={order.id} className="p-3 rounded-xl bg-muted/30 border border-border hover:bg-muted/50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <p className="text-sm font-semibold text-foreground">#{order.orderNumber}</p>
@@ -112,8 +108,8 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <p className="text-muted-foreground truncate max-w-[120px]">{order.user?.name || 'Guest'}</p>
-                    <p className="font-bold text-foreground">{formatCurrency(order.totalAmount)}</p>
+                    <p className="text-muted-foreground truncate max-w-[120px]">{order.user?.name || order.user?.email || 'Guest'}</p>
+                    <p className="font-bold text-foreground tabular-nums">{formatCurrency(order.totalAmount)}</p>
                   </div>
                 </div>
               ))

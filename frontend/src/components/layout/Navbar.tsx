@@ -43,7 +43,7 @@ export default function Navbar() {
         transition={{ type: 'spring', stiffness: 300, damping: 30, delay: 0.1 }}
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled ? 'glass' : 'bg-transparent'
+          scrolled ? 'glass shadow-sm' : 'bg-transparent'
         )}
       >
         <div className="page-container">
@@ -53,7 +53,7 @@ export default function Navbar() {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
                 <span className="text-white font-black text-sm">C</span>
               </div>
-              <AnimatedShinyText className="inline-flex items-center justify-center font-bold text-lg tracking-tight transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
+              <AnimatedShinyText className="inline-flex items-center justify-center font-bold text-lg tracking-tight transition ease-out">
                 {APP_NAME}
               </AnimatedShinyText>
             </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
                       'text-sm font-medium transition-colors duration-200 relative group',
                       location.pathname === link.href
                         ? 'text-primary'
-                        : 'text-zinc-400 hover:text-white'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
                     {link.label}
@@ -85,12 +85,12 @@ export default function Navbar() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} className="rounded-full text-zinc-400 hover:text-white hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
                 <Search size={20} />
               </Button>
 
               <Link to="/wishlist" className="relative">
-                <Button variant="ghost" size="icon" className="rounded-full text-zinc-400 hover:text-white hover:bg-white/5">
+                <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
                   <Heart size={20} />
                 </Button>
                 {wishlistCount > 0 && (
@@ -106,7 +106,7 @@ export default function Navbar() {
               </Link>
 
               <div className="relative">
-                <Button variant="ghost" size="icon" onClick={openCart} className="rounded-full text-zinc-400 hover:text-white hover:bg-white/5">
+                <Button variant="ghost" size="icon" onClick={openCart} className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
                   <ShoppingBag size={20} />
                 </Button>
                 <AnimatePresence>
@@ -126,7 +126,7 @@ export default function Navbar() {
 
               {isAuthenticated ? (
                 <Link to={user?.role === 'ADMIN' ? '/admin' : '/profile'} className="hidden md:flex">
-                  <Button variant="ghost" size="icon" className="rounded-full text-zinc-400 hover:text-white hover:bg-white/5">
+                  <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50">
                     <User size={20} />
                   </Button>
                 </Link>
@@ -142,11 +142,11 @@ export default function Navbar() {
               <div className="md:hidden ml-1 flex items-center">
                 <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                       <Menu size={24} />
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] sm:w-[400px] glass border-r-border-glass bg-zinc-950/80">
+                  <SheetContent side="left" className="w-[300px] sm:w-[400px] glass border-r-border bg-background/95 backdrop-blur-xl">
                     <SheetHeader>
                       <SheetTitle className="text-left text-primary font-bold text-xl">{APP_NAME}</SheetTitle>
                     </SheetHeader>
@@ -158,18 +158,18 @@ export default function Navbar() {
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={cn(
                             "text-lg font-medium transition-colors",
-                            location.pathname === link.href ? "text-primary" : "text-zinc-400 hover:text-white"
+                            location.pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.label}
                         </Link>
                       ))}
-                      <div className="mt-6 pt-6 border-t border-border-glass flex flex-col gap-4">
+                      <div className="mt-6 pt-6 border-t border-border flex flex-col gap-4">
                         {isAuthenticated ? (
-                          <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-white font-medium">My Account</Link>
+                          <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground font-medium">My Account</Link>
                         ) : (
                           <Link to="/auth/login" onClick={() => setIsMobileMenuOpen(false)}>
-                            <Button className="w-full bg-primary hover:bg-primary/90 rounded-xl">Sign In</Button>
+                            <Button className="w-full bg-primary hover:bg-primary/90 rounded-xl text-white">Sign In</Button>
                           </Link>
                         )}
                       </div>
@@ -190,7 +190,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/70 z-[60] backdrop-blur-md"
+              className="fixed inset-0 bg-background/70 z-[60] backdrop-blur-md"
               onClick={() => setSearchOpen(false)}
             />
             <motion.div
@@ -200,7 +200,7 @@ export default function Navbar() {
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className="fixed top-24 left-1/2 -translate-x-1/2 w-[92%] max-w-2xl z-[70]"
             >
-              <div className="glass rounded-2xl p-2 shadow-[0_0_50px_rgba(190,24,93,0.15)] border-primary/20">
+              <div className="glass rounded-2xl p-2 shadow-xl border-primary/20">
                 <div className="flex items-center gap-3 px-4 py-3">
                   <Search size={20} className="text-primary shrink-0" />
                   <input
@@ -214,9 +214,9 @@ export default function Navbar() {
                         window.location.href = `/shop?search=${encodeURIComponent(searchQuery)}`
                       }
                     }}
-                    className="flex-1 bg-transparent text-white placeholder-zinc-500 outline-none text-lg font-sans"
+                    className="flex-1 bg-transparent text-foreground placeholder-muted-foreground outline-none text-lg font-sans"
                   />
-                  <Button variant="ghost" size="icon" onClick={() => setSearchOpen(false)} className="text-zinc-400 hover:text-white rounded-full">
+                  <Button variant="ghost" size="icon" onClick={() => setSearchOpen(false)} className="text-muted-foreground hover:text-foreground rounded-full">
                     <X size={18} />
                   </Button>
                 </div>
