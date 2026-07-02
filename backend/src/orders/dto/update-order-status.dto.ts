@@ -3,7 +3,7 @@ import { OrderStatus } from '@prisma/client';
 
 export class UpdateOrderStatusDto {
   @IsEnum(OrderStatus)
-  status: OrderStatus;
+  status!: OrderStatus;
 
   @IsOptional()
   @IsString()

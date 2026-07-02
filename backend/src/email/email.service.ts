@@ -5,7 +5,7 @@ import * as nodemailer from 'nodemailer';
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name);
-  private transporter: nodemailer.Transporter;
+  private transporter!: nodemailer.Transporter;
 
   constructor(private configService: ConfigService) {
     const user = this.configService.get<string>('GMAIL_USER');
@@ -43,7 +43,8 @@ export class EmailService {
         `,
       });
       this.logger.log(`Order confirmation email sent to ${user.email}`);
-    } catch (error) {
+    } catch (err: unknown) {
+      const error = err as Error;
       this.logger.error(`Failed to send order confirmation: ${error.message}`);
     }
   }
@@ -65,7 +66,8 @@ export class EmailService {
         `,
       });
       this.logger.log(`Status update email sent to ${user.email}`);
-    } catch (error) {
+    } catch (err: unknown) {
+      const error = err as Error;
       this.logger.error(`Failed to send status update: ${error.message}`);
     }
   }
@@ -86,7 +88,8 @@ export class EmailService {
         `,
       });
       this.logger.log(`Welcome email sent to ${user.email}`);
-    } catch (error) {
+    } catch (err: unknown) {
+      const error = err as Error;
       this.logger.error(`Failed to send welcome email: ${error.message}`);
     }
   }

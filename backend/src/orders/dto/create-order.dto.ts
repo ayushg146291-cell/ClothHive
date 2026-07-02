@@ -3,35 +3,35 @@ import { Type } from 'class-transformer';
 
 export class AddressDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  phone: string;
+  phone!: string;
 
   @IsString()
-  line1: string;
+  line1!: string;
 
   @IsOptional()
   @IsString()
   line2?: string;
 
   @IsString()
-  city: string;
+  city!: string;
 
   @IsString()
-  state: string;
+  state!: string;
 
   @IsString()
-  postalCode: string;
+  postalCode!: string;
 
   @IsString()
-  country: string;
+  country!: string;
 }
 
 export class CreateOrderDto {
   @ValidateNested()
   @Type(() => AddressDto)
-  shippingAddress: AddressDto;
+  shippingAddress!: AddressDto;
 
   @IsOptional()
   @IsString()

@@ -2,7 +2,7 @@ import { IsString, IsInt, IsOptional, Min } from 'class-validator';
 
 export class AddCartItemDto {
   @IsString()
-  productId: string;
+  productId!: string;
 
   @IsOptional()
   @IsString()

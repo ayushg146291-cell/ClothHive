@@ -11,42 +11,42 @@ export class ProductVariantDto {
   color?: string;
 
   @IsNumber()
-  stock: number;
+  stock!: number;
 
   @IsOptional()
   @IsNumber()
   price?: number;
 
   @IsString()
-  sku: string;
+  sku!: string;
 }
 
 export class CreateProductDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  description: string;
+  description!: string;
 
   @IsNumber()
-  price: number;
+  price!: number;
 
   @IsOptional()
   @IsNumber()
   comparePrice?: number;
 
   @IsString()
-  sku: string;
+  sku!: string;
 
   @IsNumber()
-  stock: number;
+  stock!: number;
 
   @IsArray()
   @IsString({ each: true })
-  images: string[];
+  images!: string[];
 
   @IsString()
-  categoryId: string;
+  categoryId!: string;
 
   @IsOptional()
   @IsArray()
