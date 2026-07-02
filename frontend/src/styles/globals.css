@@ -6,15 +6,15 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors: 3D Spatial UI */
-  --color-primary-500: #000000;
-  --color-secondary-500: #737373;
-  --color-accent-500: #000000;
-  --color-black: #000000;
+  /* Brand Colors: Neon Cyberpunk Spatial */
+  --color-primary-500: #7C3AED;
+  --color-secondary-500: #A78BFA;
+  --color-accent-500: #F43F5E;
+  --color-black: #0F0F23;
   
-  /* LIGHT MODE */
-  --color-bg: #f8f9fa; /* Very subtle light gray */
-  --color-fg: #000000;
+  /* LIGHT MODE (Cyberpunk is inherently dark, so we use a deep theme) */
+  --color-bg: #0F0F23; 
+  --color-fg: #E2E8F0;
   
   /* Fluid UI Variables (Mobile to Desktop scaling using clamp) */
   --fluid-padding: clamp(1rem, 5vw, 3rem);
@@ -22,25 +22,25 @@
   --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
   --fluid-gap: clamp(1rem, 3vw, 2.5rem);
 
-  /* Shadcn UI Light Theme Variables */
-  --background: oklch(0.98 0 0); /* #f8f9fa */
-  --foreground: oklch(0 0 0); /* #000000 */
-  --card: oklch(1 0 0); /* White */
-  --card-foreground: oklch(0 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0 0 0); /* Black */
+  /* Shadcn UI Variables (Neon Cyberpunk) */
+  --background: oklch(0.18 0.05 285); /* #0F0F23 */
+  --foreground: oklch(0.9 0.02 285); /* #E2E8F0 */
+  --card: oklch(0.2 0.05 285);
+  --card-foreground: oklch(0.9 0.02 285);
+  --popover: oklch(0.2 0.05 285);
+  --popover-foreground: oklch(0.9 0.02 285);
+  --primary: oklch(0.5 0.25 285); /* #7C3AED */
   --primary-foreground: oklch(1 0 0); /* White */
-  --secondary: oklch(0.95 0 0);
-  --secondary-foreground: oklch(0.2 0 0);
-  --muted: oklch(0.96 0 0); 
-  --muted-foreground: oklch(0.4 0 0);
-  --accent: oklch(0.96 0 0);
-  --accent-foreground: oklch(0 0 0);
-  --destructive: oklch(0.577 0.245 27.325); /* #DC2626 */
-  --border: oklch(0.9 0 0); /* Light gray border */
-  --input: oklch(0.9 0 0);
-  --ring: oklch(0 0 0);
+  --secondary: oklch(0.7 0.15 285); /* #A78BFA */
+  --secondary-foreground: oklch(0.2 0.1 285);
+  --muted: oklch(0.25 0.05 285); /* #27273B */
+  --muted-foreground: oklch(0.7 0.05 285);
+  --accent: oklch(0.6 0.2 15); /* #F43F5E (Rose/Magenta) */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.2 25); /* #EF4444 */
+  --border: oklch(0.3 0.15 285); /* #4C1D95 */
+  --input: oklch(0.3 0.15 285);
+  --ring: oklch(0.5 0.25 285); /* #7C3AED */
   --radius: 1rem; /* Soft rounded corners */
 
   font-family: 'Inter', sans-serif;
@@ -52,28 +52,28 @@
 
 .dark {
   /* DARK MODE */
-  --color-bg: #0a0a0a;
-  --color-fg: #ffffff;
+  --color-bg: #070713;
+  --color-fg: #E2E8F0;
 
-  /* Shadcn UI Dark Theme Variables */
-  --background: oklch(0.1 0 0);
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.15 0 0);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.15 0 0);
-  --popover-foreground: oklch(1 0 0);
-  --primary: oklch(1 0 0); /* White */
-  --primary-foreground: oklch(0 0 0); /* Black */
-  --secondary: oklch(0.2 0 0);
-  --secondary-foreground: oklch(0.9 0 0);
-  --muted: oklch(0.2 0 0);
-  --muted-foreground: oklch(0.7 0 0);
-  --accent: oklch(0.2 0 0);
+  /* Shadcn UI Dark Theme Variables (Deeper Cyberpunk) */
+  --background: oklch(0.15 0.05 285);
+  --foreground: oklch(0.9 0.02 285);
+  --card: oklch(0.18 0.05 285);
+  --card-foreground: oklch(0.9 0.02 285);
+  --popover: oklch(0.18 0.05 285);
+  --popover-foreground: oklch(0.9 0.02 285);
+  --primary: oklch(0.5 0.25 285); 
+  --primary-foreground: oklch(1 0 0); 
+  --secondary: oklch(0.7 0.15 285); 
+  --secondary-foreground: oklch(0.2 0.1 285);
+  --muted: oklch(0.22 0.05 285); 
+  --muted-foreground: oklch(0.7 0.05 285);
+  --accent: oklch(0.6 0.2 15); 
   --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.70 0.19 22);
-  --border: oklch(0.25 0 0); /* Dark gray border */
-  --input: oklch(0.25 0 0);
-  --ring: oklch(1 0 0);
+  --destructive: oklch(0.6 0.2 25); 
+  --border: oklch(0.28 0.15 285); 
+  --input: oklch(0.28 0.15 285);
+  --ring: oklch(0.5 0.25 285); 
 }
 
 @theme inline {
@@ -129,34 +129,34 @@
   }
 }
 
-/* Spatial Glassmorphism */
+/* Spatial Glassmorphism (Neon Tint) */
 .glass {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(124, 58, 237, 0.08);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 .dark .glass {
-  background: rgba(15, 15, 15, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 .glass-pill {
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(124, 58, 237, 0.1);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
 }
 
 .dark .glass-pill {
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
 /* Fluid Structural Utilities */
