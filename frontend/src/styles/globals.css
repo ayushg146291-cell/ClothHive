@@ -63,15 +63,15 @@
 }
 
 .dark {
-  /* DARK MODE (Liquid Glass) */
-  --color-bg: #09090b;
-  --color-fg: #fafafa;
+  /* DARK MODE (OLED Glass) */
+  --color-bg: #000000;
+  --color-fg: #ffffff;
   
   /* Glassmorphism Variables — Dark Mode */
-  --surface-glass: rgba(255, 255, 255, 0.03);
-  --surface-glass-hover: rgba(255, 255, 255, 0.08);
-  --border-glass: rgba(255, 255, 255, 0.05);
-  --border-glass-hover: rgba(190, 24, 93, 0.3);
+  --surface-glass: rgba(255, 255, 255, 0.02);
+  --surface-glass-hover: rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(255, 255, 255, 0.04);
+  --border-glass-hover: rgba(255, 255, 255, 0.1);
 
   /* Shadcn UI Dark Theme Variables */
   --background: oklch(0.13 0 0);
@@ -160,17 +160,18 @@
 /* Glassmorphism Utilities — theme-aware via CSS variables */
 .glass {
   background: var(--surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--border-glass);
+  box-shadow: 0 4px 24px -4px rgba(0,0,0,0.2);
 }
 .glass-hover {
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .glass-hover:hover {
   background: var(--surface-glass-hover);
   border-color: var(--border-glass-hover);
-  box-shadow: 0 8px 32px rgba(190, 24, 93, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* Fluid Structural Utilities */

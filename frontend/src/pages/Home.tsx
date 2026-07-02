@@ -11,6 +11,9 @@ import { SparklesCore } from '@/components/ui/sparkles'
 import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
 import { Marquee } from '@/components/ui/marquee'
 import { Button } from '@/components/ui/button'
+import { GridBackground } from '@/components/magic/GridBackground'
+import { ShinyText } from '@/components/magic/ShinyText'
+import { TiltCard } from '@/components/magic/TiltCard'
 
 const features = [
   { 
@@ -60,20 +63,21 @@ export default function Home() {
     <AnimatedPage>
       <div className="flex flex-col gap-0 pb-[8vh]">
         {/* Hero with Sparkles */}
-        <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
-          <div className="absolute inset-0 w-full h-full">
-            <SparklesCore
-              id="tsparticlesfullpage"
-              background="transparent"
-              minSize={0.6}
-              maxSize={1.4}
-              particleDensity={100}
-              className="w-full h-full"
-              particleColor="#BE185D"
-            />
-          </div>
-          {/* Subtle gradient overlay to make text pop */}
-          <div className="absolute inset-0 bg-background/40 pointer-events-none" />
+        <section className="relative min-h-screen flex items-center overflow-hidden">
+          <GridBackground className="w-full h-full flex flex-col items-center justify-center">
+            <div className="absolute inset-0 w-full h-full">
+              <SparklesCore
+                id="tsparticlesfullpage"
+                background="transparent"
+                minSize={0.6}
+                maxSize={1.4}
+                particleDensity={100}
+                className="w-full h-full"
+                particleColor="#ffffff"
+              />
+            </div>
+            {/* Subtle gradient overlay to make text pop */}
+            <div className="absolute inset-0 bg-background/40 pointer-events-none" />
 
           <div className="page-container relative z-10 pt-safe-nav pb-[8vh] flex flex-col items-center text-center">
             <div className="max-w-4xl mx-auto flex flex-col items-center">
@@ -84,16 +88,16 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 glass text-primary border-primary/20"
               >
                 <Sparkles size={14} />
-                New Summer Collection 2026
+                <ShinyText text="New Summer Collection 2026" />
               </motion.div>
 
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
+                transition={{ delay: 0.3, duration: 0.6, type: 'spring', damping: 20 }}
                 className="h1 text-foreground mb-6"
               >
-                Dress for the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">life you want</span>
+                Dress for the <ShinyText text="life you want" className="bg-gradient-to-r from-primary via-secondary to-accent" />
               </motion.h1>
 
               <motion.p
@@ -124,6 +128,7 @@ export default function Home() {
               </motion.div>
             </div>
           </div>
+          </GridBackground>
         </section>
 
         {/* Marquee Section */}
@@ -146,7 +151,9 @@ export default function Home() {
 
           <BentoGrid className="lg:grid-rows-1">
             {features.map((feature) => (
-              <BentoCard key={feature.name} {...feature} />
+              <TiltCard key={feature.name} glareEnable={true} className="rounded-xl">
+                <BentoCard {...feature} />
+              </TiltCard>
             ))}
           </BentoGrid>
         </section>

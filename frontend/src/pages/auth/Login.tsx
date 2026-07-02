@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Sparkles, User } from 'lucide-react'
 import AnimatedPage from '@/components/common/AnimatedPage'
+import { GridBackground } from '@/components/magic/GridBackground'
 import { buttonPress } from '@/lib/animations'
 import { API_BASE_URL } from '@/lib/constants'
 
@@ -13,6 +14,7 @@ export default function Login() {
   return (
     <AnimatedPage>
       <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        <GridBackground className="w-full h-full flex flex-col items-center justify-center">
         {/* Deep immersive background orbs */}
         <div className="absolute top-1/4 -left-1/4 w-[800px] h-[800px] rounded-full blur-[120px] opacity-20 pointer-events-none mix-blend-screen" style={{ background: 'var(--color-primary-600)' }} />
         <div className="absolute -bottom-1/4 -right-1/4 w-[800px] h-[800px] rounded-full blur-[120px] opacity-20 pointer-events-none mix-blend-screen" style={{ background: 'var(--color-secondary-600)' }} />
@@ -91,6 +93,7 @@ export default function Login() {
             </p>
           </motion.div>
         </div>
+        </GridBackground>
       </div>
     </AnimatedPage>
   )

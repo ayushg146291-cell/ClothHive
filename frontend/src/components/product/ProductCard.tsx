@@ -13,6 +13,7 @@ import { productService } from '@/services/product.service'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { TiltCard } from '@/components/magic/TiltCard'
 
 interface ProductCardProps {
   product: Product
@@ -66,12 +67,12 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
       initial="hidden"
       animate="visible"
       custom={index}
-      whileHover={{ y: -8, scale: 1.02, transition: { type: 'spring', stiffness: 400, damping: 25 } }}
       onHoverStart={prefetchProduct}
       className="group relative cursor-pointer"
     >
-      <Link to={`/products/${product.slug}`} className="block h-full">
-        <Card className="h-full overflow-hidden bg-zinc-950/40 border-border-glass glass-hover">
+      <TiltCard glareEnable={true} className="h-full rounded-2xl">
+        <Link to={`/products/${product.slug}`} className="block h-full rounded-2xl">
+          <Card className="h-full overflow-hidden bg-zinc-950/40 border-border-glass glass-hover rounded-2xl">
           {/* Image */}
           <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
             {!imageLoaded && (
@@ -111,7 +112,7 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
               variants={scalePop}
               animate={heartState}
               onClick={handleWishlist}
-              className="absolute top-3 right-3 p-2 rounded-full glass hover:bg-zinc-800/50 transition-all duration-200 z-10"
+              className="absolute top-3 right-3 h-11 w-11 flex items-center justify-center rounded-full glass hover:bg-zinc-800/50 transition-all duration-200 z-10"
               aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
             >
               <Heart
@@ -180,7 +181,8 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
           </CardContent>
         </Card>
       </Link>
-    </motion.article>
+    </TiltCard>
+  </motion.article>
   )
 })
 

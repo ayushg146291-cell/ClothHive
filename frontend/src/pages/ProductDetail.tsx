@@ -138,9 +138,9 @@ export default function ProductDetail() {
           <span className="text-gray-300">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-          {/* Gallery */}
-          <div className="space-y-4">
+        <section className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          {/* Images Gallery */}
+          <div className="space-y-4 lg:sticky lg:top-[120px] lg:h-[calc(100vh-160px)]">
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden glass p-4" style={{ border: '1px solid var(--border-glass)' }}>
               <AnimatePresence mode="wait">
                 <motion.img
@@ -197,10 +197,10 @@ export default function ProductDetail() {
           {/* Info */}
           <div className="space-y-6">
             <div>
-              <span className="text-sm font-medium" style={{ color: 'var(--color-primary-400)' }}>
+              <span className="text-sm font-bold tracking-widest uppercase text-primary mb-2 block">
                 {product.category.name}
               </span>
-              <h1 className="text-3xl font-black text-white mt-1 leading-snug">{product.name}</h1>
+              <h1 className="h1 text-foreground mb-4">{product.name}</h1>
 
               {/* Rating */}
               {(product.avgRating ?? 0) > 0 && (
@@ -222,24 +222,21 @@ export default function ProductDetail() {
               )}
 
               {/* Price */}
-              <div className="flex items-center gap-3 mt-4">
-                <span className="text-4xl font-black text-white">{formatCurrency(currentPrice)}</span>
+              <div className="flex items-end gap-4 mt-6">
+                <span className="text-5xl font-black text-foreground">{formatCurrency(currentPrice)}</span>
                 {product.comparePrice && (
-                  <>
-                    <span className="text-xl text-gray-500 line-through">{formatCurrency(product.comparePrice)}</span>
-                    <span
-                      className="px-2 py-1 rounded-lg text-sm font-bold text-white"
-                      style={{ background: 'var(--color-secondary-500)' }}
-                    >
+                  <div className="flex flex-col mb-1">
+                    <span className="text-xl text-muted-foreground line-through font-medium">{formatCurrency(product.comparePrice)}</span>
+                    <span className="text-sm font-bold text-secondary">
                       Save {Math.round(((product.comparePrice - currentPrice) / product.comparePrice) * 100)}%
                     </span>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-gray-400 leading-relaxed">{product.description}</p>
+            <p className="p-fluid text-muted-foreground py-6 border-y border-border">{product.description}</p>
 
             {/* Color selector */}
             {colors.length > 0 && (
@@ -375,7 +372,7 @@ export default function ProductDetail() {
               </div>
             )}
           </div>
-        </div>
+        </section>
 
         {/* Reviews Section */}
         <section className="mt-20 border-t border-border pt-16">
