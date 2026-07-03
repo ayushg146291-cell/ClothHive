@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Sparkles, User } from 'lucide-react'
+import { User, Sparkles } from 'lucide-react'
 import AnimatedPage from '@/components/common/AnimatedPage'
-import { GridBackground } from '@/components/magic/GridBackground'
-import { buttonPress } from '@/lib/animations'
 import { API_BASE_URL } from '@/lib/constants'
+import { SplitText } from '@/components/magic/SplitText'
+import { Button } from '@/components/ui/button'
 
 export default function Login() {
   const handleOAuthLogin = (provider: 'google' | 'github') => {
@@ -13,87 +12,62 @@ export default function Login() {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-        <GridBackground className="w-full h-full flex flex-col items-center justify-center">
-        {/* Deep immersive background orbs */}
-        <div className="absolute top-1/4 -left-1/4 w-[800px] h-[800px] rounded-full blur-[120px] opacity-20 pointer-events-none mix-blend-screen" style={{ background: 'var(--color-primary-600)' }} />
-        <div className="absolute -bottom-1/4 -right-1/4 w-[800px] h-[800px] rounded-full blur-[120px] opacity-20 pointer-events-none mix-blend-screen" style={{ background: 'var(--color-secondary-600)' }} />
-
-        <div className="w-full max-w-[420px] relative z-10 flex flex-col items-center">
+      <div className="min-h-screen flex items-center justify-center bg-background p-4 md:p-8">
+        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 border border-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]">
           
-          {/* Spatial Icon Logo */}
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", duration: 1 }}
-            className="w-16 h-16 rounded-3xl flex items-center justify-center mb-6 shadow-glow"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}
-          >
-            <Sparkles size={28} className="text-white" />
-          </motion.div>
-
-          {/* Typography */}
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-center mb-10 w-full"
-          >
-            <h1 className="text-4xl font-black text-white tracking-tight mb-3">Welcome Back</h1>
-            <p className="text-gray-400 text-sm font-medium">Elevate your wardrobe. Sign in to continue.</p>
-          </motion.div>
-
-          {/* Ultra-Premium Glass Panel */}
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="w-full rounded-[2rem] p-8 sm:p-10 relative overflow-hidden"
-            style={{ 
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-            }}
-          >
-            {/* Inner Glow */}
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-            <div className="flex flex-col gap-5 w-full">
-              {/* Standard Google Button */}
-              <motion.button
-                {...buttonPress}
-                onClick={() => handleOAuthLogin('google')}
-                className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-semibold text-gray-800 bg-white hover:bg-gray-50 transition-all shadow-sm"
-                style={{ border: '1px solid #e2e8f0' }}
-              >
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-                Continue with Google
-              </motion.button>
-
-              {/* GitHub Button with Glass Style */}
-              <motion.button
-                {...buttonPress}
-                onClick={() => handleOAuthLogin('github')}
-                className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-bold text-white transition-all hover:bg-white/10"
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)'
-                }}
-              >
-                <User size={20} />
-                Continue with GitHub
-              </motion.button>
+          {/* Left Panel */}
+          <div className="bg-foreground text-background p-12 md:p-16 flex flex-col justify-between min-h-[40vh]">
+            <div className="w-12 h-12 bg-background flex items-center justify-center rounded-none mb-16">
+              <Sparkles size={24} strokeWidth={2.5} className="text-foreground" />
             </div>
             
-            <p className="text-center text-xs text-gray-500 font-medium mt-8 leading-relaxed">
-              By continuing, you agree to our <br/>
-              <span className="text-gray-400 hover:text-white transition-colors cursor-pointer">Terms of Service</span> and <span className="text-gray-400 hover:text-white transition-colors cursor-pointer">Privacy Policy</span>.
-            </p>
-          </motion.div>
+            <div>
+              <SplitText 
+                text="WELCOME"
+                className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-background mb-2"
+                delay={20}
+              />
+              <SplitText 
+                text="BACK."
+                className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-background mb-6"
+                delay={40}
+              />
+              <p className="text-xs font-bold uppercase tracking-widest opacity-80 mt-8">Elevate your wardrobe. Sign in to continue.</p>
+            </div>
+          </div>
+
+          {/* Right Panel */}
+          <div className="bg-background text-foreground p-12 md:p-16 flex flex-col justify-center">
+            
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-8">Sign In</h2>
+            
+            <div className="flex flex-col gap-6 w-full mb-12">
+              <Button
+                onClick={() => handleOAuthLogin('google')}
+                className="w-full h-14 rounded-none flex items-center justify-center gap-4 bg-background text-foreground border-2 border-foreground hover:bg-foreground hover:text-background font-bold text-xs uppercase tracking-widest transition-colors"
+              >
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                CONTINUE WITH GOOGLE
+              </Button>
+
+              <Button
+                onClick={() => handleOAuthLogin('github')}
+                className="w-full h-14 rounded-none flex items-center justify-center gap-4 bg-foreground text-background border-2 border-foreground hover:bg-muted-foreground font-bold text-xs uppercase tracking-widest transition-colors"
+              >
+                <User size={18} strokeWidth={2.5} />
+                CONTINUE WITH GITHUB
+              </Button>
+            </div>
+            
+            <div className="text-center pt-8 border-t border-border">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground leading-relaxed">
+                BY CONTINUING, YOU AGREE TO OUR <br/>
+                <span className="text-foreground hover:underline cursor-pointer">TERMS OF SERVICE</span> AND <span className="text-foreground hover:underline cursor-pointer">PRIVACY POLICY</span>.
+              </p>
+            </div>
+          </div>
+
         </div>
-        </GridBackground>
       </div>
     </AnimatedPage>
   )

@@ -2,44 +2,62 @@ import AnimatedPage from '@/components/common/AnimatedPage'
 import { useAuthStore } from '@/store/authStore'
 import { Package, Heart, Settings, LogOut } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SplitText } from '@/components/magic/SplitText'
+import { Button } from '@/components/ui/button'
 
 export default function Profile() {
   const { user, logout } = useAuthStore()
   return (
     <AnimatedPage>
-      <div className="page-container pt-safe-nav pb-[5vh] w-full max-w-3xl mx-auto">
-        <h1 className="font-black text-foreground mb-8" style={{ fontSize: 'var(--fluid-header)' }}>My Account</h1>
-        <div className="glass rounded-3xl p-8 space-y-6 border border-border">
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center text-3xl font-black text-white shrink-0 shadow-lg relative" style={{ background: 'linear-gradient(135deg, var(--color-primary-500), var(--color-accent-500))' }}>
-              {user?.name?.[0] ?? 'U'}
-              <div className="absolute inset-0 rounded-[2rem] border-2 border-foreground/10" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">{user?.name ?? 'Guest'}</h2>
-              <p className="text-muted-foreground text-sm mt-1">{user?.email}</p>
-              <span className="inline-block mt-2 px-3 py-1 bg-primary/15 text-primary text-xs font-bold uppercase tracking-wider rounded-lg border border-primary/20">{user?.role}</span>
-            </div>
-          </div>
-          <div className="space-y-3 pt-4 border-t border-border">
-            {[
-              { icon: Package, label: 'My Orders', href: '/orders' },
-              { icon: Heart, label: 'Wishlist', href: '/wishlist' },
-              { icon: Settings, label: 'Settings', href: '/profile/settings' },
-            ].map(({ icon: Icon, label, href }) => (
-              <Link key={href} to={href} className="flex items-center gap-4 p-4 rounded-2xl glass-hover glass transition-all duration-300 text-muted-foreground hover:text-foreground hover:-translate-y-0.5 hover:shadow-lg group">
-                <div className="p-2 rounded-xl bg-muted/50 group-hover:bg-primary/15 transition-colors">
-                  <Icon size={18} className="text-primary" />
-                </div>
-                <span className="font-semibold">{label}</span>
-              </Link>
-            ))}
-            <button onClick={logout} className="flex items-center gap-4 p-4 rounded-2xl w-full text-left text-destructive hover:bg-destructive/10 transition-all duration-300 glass glass-hover hover:-translate-y-0.5 hover:shadow-lg group mt-4">
-              <div className="p-2 rounded-xl bg-muted/50 group-hover:bg-destructive/15 transition-colors">
-                <LogOut size={18} />
+      <div className="page-container pt-safe-nav pb-24 min-h-screen">
+        <SplitText 
+          text="ACCOUNT"
+          className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-foreground mb-16"
+          delay={20}
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-12 lg:gap-24">
+          {/* Sidebar */}
+          <div className="space-y-12">
+            <div className="border border-border p-8 text-center bg-background">
+              <div className="w-24 h-24 mx-auto bg-foreground text-background flex items-center justify-center font-black text-4xl uppercase mb-6">
+                {user?.name?.[0] ?? 'U'}
               </div>
-              <span className="font-semibold">Sign Out</span>
-            </button>
+              <h2 className="text-xl font-black uppercase tracking-tighter text-foreground mb-2">{user?.name ?? 'Guest'}</h2>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{user?.email}</p>
+              <span className="inline-block mt-4 px-4 py-2 bg-foreground text-background text-[10px] font-black uppercase tracking-widest">
+                {user?.role}
+              </span>
+            </div>
+
+            <div className="flex flex-col border border-border">
+              {[
+                { icon: Package, label: 'MY ORDERS', href: '/orders' },
+                { icon: Heart, label: 'WISHLIST', href: '/wishlist' },
+                { icon: Settings, label: 'SETTINGS', href: '/profile/settings' },
+              ].map(({ icon: Icon, label, href }) => (
+                <Link key={href} to={href} className="flex items-center gap-4 p-6 border-b border-border bg-background text-foreground hover:bg-foreground hover:text-background transition-colors group last:border-b-0">
+                  <Icon size={20} strokeWidth={2.5} />
+                  <span className="font-bold text-xs uppercase tracking-widest">{label}</span>
+                </Link>
+              ))}
+            </div>
+
+            <Button 
+              onClick={logout} 
+              variant="outline"
+              className="w-full h-16 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-4"
+            >
+              <LogOut size={18} strokeWidth={2.5} />
+              SIGN OUT
+            </Button>
+          </div>
+
+          {/* Main Content Area (Optional, currently just a placeholder for dashboard data) */}
+          <div className="border border-border p-8 md:p-16 flex flex-col justify-center items-center text-center bg-background min-h-[50vh]">
+             <Package size={48} strokeWidth={1.5} className="text-muted-foreground mb-8" />
+             <h3 className="text-2xl font-black uppercase tracking-tighter text-foreground mb-4">Dashboard</h3>
+             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">SELECT AN OPTION FROM THE MENU TO VIEW DETAILS</p>
           </div>
         </div>
       </div>

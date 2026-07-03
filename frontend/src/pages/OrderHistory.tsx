@@ -2,10 +2,10 @@ import AnimatedPage from '@/components/common/AnimatedPage'
 import { useQuery } from '@tanstack/react-query'
 import { orderService } from '@/services/order.service'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/lib/constants'
 import { Link } from 'react-router-dom'
 import { Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SplitText } from '@/components/magic/SplitText'
 
 export default function OrderHistory() {
   const { data: orders, isLoading } = useQuery({
@@ -15,42 +15,45 @@ export default function OrderHistory() {
 
   return (
     <AnimatedPage>
-      <div className="page-container pt-safe-nav pb-[5vh]">
-        <h1 className="text-4xl font-black text-foreground mb-8">Order History</h1>
+      <div className="page-container pt-safe-nav pb-24 min-h-screen">
+        <SplitText 
+          text="ORDERS"
+          className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-foreground mb-16"
+          delay={20}
+        />
+        
         {isLoading ? (
           <div className="space-y-4">
-            {Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-24 rounded-2xl bg-muted animate-pulse" />)}
+            {Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-24 bg-muted animate-pulse border border-border" />)}
           </div>
         ) : !orders?.length ? (
-          <div className="text-center py-24">
-            <Package size={48} className="mx-auto mb-4 text-muted-foreground" />
-            <p className="text-xl font-bold text-foreground mb-2">No orders yet</p>
-            <p className="text-muted-foreground mb-6">Your order history will appear here.</p>
+          <div className="text-center py-32 border border-border bg-background">
+            <Package size={48} strokeWidth={1.5} className="mx-auto mb-8 text-muted-foreground" />
+            <p className="text-2xl font-black uppercase tracking-tighter text-foreground mb-2">No orders yet</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-8">YOUR ORDER HISTORY WILL APPEAR HERE.</p>
             <Link to="/shop">
-              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl px-8 py-3 font-bold shadow-lg shadow-primary/20">
-                Start Shopping
+              <Button className="h-14 px-12 rounded-none bg-foreground hover:bg-muted-foreground text-background font-bold text-xs uppercase tracking-widest transition-colors">
+                START SHOPPING
               </Button>
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-8">
             {orders.map((order) => (
-              <div key={order.id} className="glass rounded-2xl p-6 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">Order #{order.orderNumber}</p>
-                    <p className="text-sm text-muted-foreground">{formatDate(order.createdAt)}</p>
-                  </div>
-                  <span 
-                    className="px-3 py-1 rounded-full text-xs font-bold" 
-                    style={{ background: `${ORDER_STATUS_COLORS[order.status]}20`, color: ORDER_STATUS_COLORS[order.status] }}
-                  >
-                    {ORDER_STATUS_LABELS[order.status]}
-                  </span>
+              <div key={order.id} className="border border-border p-8 bg-background flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors hover:border-foreground group">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">ORDER #{order.orderNumber}</p>
+                  <p className="text-sm font-black uppercase tracking-tighter text-foreground">{formatDate(order.createdAt)}</p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <p className="text-foreground font-semibold">{order.items.length} item(s)</p>
-                  <p className="text-foreground font-bold tabular-nums">{formatCurrency(order.totalAmount)}</p>
+                
+                <div className="flex flex-col md:items-end gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-foreground px-3 py-1 border border-foreground bg-background group-hover:bg-foreground group-hover:text-background transition-colors w-max">
+                    {order.status}
+                  </span>
+                  <div className="flex items-center gap-4 mt-2 md:mt-0">
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{order.items.length} ITEM(S)</p>
+                    <p className="text-lg font-black tracking-widest text-foreground">{formatCurrency(order.totalAmount)}</p>
+                  </div>
                 </div>
               </div>
             ))}

@@ -71,41 +71,41 @@ function EditProductModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl bg-card border-border max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl bg-background border border-border rounded-none p-8 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Edit Product</DialogTitle>
+          <DialogTitle className="text-2xl font-black uppercase tracking-tighter">Edit Product</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-8 py-4">
+          <div className="grid grid-cols-2 gap-8">
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Name</label>
+              <label className="block text-xs font-bold uppercase tracking-widest text-foreground mb-2">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                className="w-full h-12 bg-background px-4 text-foreground border border-border focus:border-foreground outline-none transition-colors text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Price</label>
+              <label className="block text-xs font-bold uppercase tracking-widest text-foreground mb-2">Price</label>
               <input
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(Number(e.target.value))}
-                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                className="w-full h-12 bg-background px-4 text-foreground border border-border focus:border-foreground outline-none transition-colors text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-1.5">
-                Total Stock {variants.length > 0 && '(Auto-calculated)'}
+              <label className="block text-xs font-bold uppercase tracking-widest text-foreground mb-2">
+                Total Stock {variants.length > 0 && '(Auto)'}
               </label>
               <input
                 type="number"
                 value={variants.length > 0 ? variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) : stock}
                 onChange={(e) => setStock(Number(e.target.value))}
                 disabled={variants.length > 0}
-                className="w-full glass bg-background/50 rounded-xl px-4 py-2 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none disabled:opacity-50"
+                className="w-full h-12 bg-background px-4 text-foreground border border-border focus:border-foreground outline-none transition-colors disabled:bg-muted text-sm font-medium"
               />
             </div>
             <div className="flex flex-col justify-end">
@@ -114,78 +114,76 @@ function EditProductModal({
                   type="checkbox"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="w-5 h-5 rounded border-border text-primary focus:ring-primary bg-background"
+                  className="w-5 h-5 rounded-none border-foreground text-foreground focus:ring-foreground bg-background"
                 />
-                <span className="text-sm font-medium text-foreground">Active (Visible in store)</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-foreground">Active (Visible)</span>
               </label>
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-bold text-foreground">Variants (Sizes/Colors)</h3>
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-border">
+              <h3 className="text-sm font-black uppercase tracking-widest text-foreground">Variants</h3>
               <Button 
                 variant="outline" 
-                size="sm" 
-                className="h-8"
+                className="h-8 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background text-xs font-bold uppercase tracking-widest"
                 onClick={() => setVariants([...variants, { id: Date.now().toString(), productId: product.id, stock: 0, sku: `NEW-SKU-${Date.now()}` } as any])}
               >
-                <Plus size={14} className="mr-1" /> Add Variant
+                <Plus size={14} strokeWidth={2.5} className="mr-2" /> Add Variant
               </Button>
             </div>
             
             {variants.length === 0 ? (
-              <p className="text-sm text-muted-foreground italic">No variants available.</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">NO VARIANTS AVAILABLE.</p>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {variants.map((variant, index) => (
-                  <div key={variant.id || index} className="flex gap-3 items-center glass p-3 rounded-xl border border-border">
+                  <div key={variant.id || index} className="flex gap-4 items-center p-4 border border-border">
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Size</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-foreground mb-1 block">Size</label>
                       <input
                         type="text"
-                        placeholder="e.g. M"
+                        placeholder="M"
                         value={variant.size || ''}
                         onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
-                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                        className="w-full h-10 bg-background px-3 text-sm text-foreground border border-border outline-none focus:border-foreground"
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Color</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-foreground mb-1 block">Color</label>
                       <input
                         type="text"
-                        placeholder="e.g. Black"
+                        placeholder="BLK"
                         value={variant.color || ''}
                         onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
-                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                        className="w-full h-10 bg-background px-3 text-sm text-foreground border border-border outline-none focus:border-foreground"
                       />
                     </div>
                     <div className="flex-1">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">SKU</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-foreground mb-1 block">SKU</label>
                       <input
                         type="text"
-                        placeholder="e.g. TSHIRT-XL-BLK"
+                        placeholder="SKU"
                         value={variant.sku || ''}
                         onChange={(e) => handleVariantChange(index, 'sku', e.target.value)}
-                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                        className="w-full h-10 bg-background px-3 text-sm text-foreground border border-border outline-none focus:border-foreground"
                       />
                     </div>
                     <div className="w-24">
-                      <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Stock</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-foreground mb-1 block">Stock</label>
                       <input
                         type="number"
                         value={variant.stock || 0}
                         onChange={(e) => handleVariantChange(index, 'stock', Number(e.target.value))}
-                        className="w-full bg-background/50 rounded-lg px-3 py-1.5 text-sm text-foreground border border-border outline-none"
+                        className="w-full h-10 bg-background px-3 text-sm text-foreground border border-border outline-none focus:border-foreground"
                       />
                     </div>
                     <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-destructive hover:bg-destructive/10 hover:text-destructive mt-5"
+                      variant="outline" 
+                      className="mt-5 h-10 w-10 rounded-none border-border hover:border-foreground hover:bg-foreground hover:text-background p-0 flex items-center justify-center transition-colors"
                       onClick={() => setVariants(variants.filter((_, i) => i !== index))}
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={16} strokeWidth={2.5} />
                     </Button>
                   </div>
                 ))}
@@ -194,16 +192,16 @@ function EditProductModal({
           </div>
         </div>
 
-        <DialogFooter className="mt-4">
+        <DialogFooter className="mt-8 pt-6 border-t border-border gap-4">
           <DialogClose asChild>
-            <Button variant="outline" className="mr-2">Cancel</Button>
+            <Button variant="outline" className="h-12 rounded-none border-foreground text-foreground font-bold uppercase tracking-widest text-xs">CANCEL</Button>
           </DialogClose>
           <Button 
             onClick={handleSave} 
             disabled={updateProduct.isPending}
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="h-12 rounded-none bg-foreground text-background hover:bg-muted-foreground font-bold uppercase tracking-widest text-xs"
           >
-            {updateProduct.isPending ? 'Saving...' : 'Save Changes'}
+            {updateProduct.isPending ? 'SAVING...' : 'SAVE CHANGES'}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -223,76 +221,78 @@ export default function AdminProducts() {
 
   return (
     <AdminLayout>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-12 pb-6 border-b-2 border-foreground">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Products</h1>
-          <p className="text-muted-foreground text-sm">Manage your product catalog</p>
+          <h1 className="text-3xl font-black uppercase tracking-tighter text-foreground">Products</h1>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">MANAGE YOUR PRODUCT CATALOG</p>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 text-white rounded-lg">
-          <Plus size={16} className="mr-2" /> Add Product
+        <Button className="h-12 rounded-none bg-foreground text-background hover:bg-muted-foreground font-bold uppercase tracking-widest text-xs">
+          <Plus size={16} strokeWidth={2.5} className="mr-2" /> ADD PRODUCT
         </Button>
       </div>
 
-      <div className="glass rounded-2xl overflow-hidden border border-border">
-        <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-4 justify-between items-center bg-muted/30">
-          <div className="relative flex-1 max-w-md">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <div className="border border-border bg-background">
+        <div className="p-6 border-b border-border bg-background flex flex-col sm:flex-row gap-6 justify-between items-center">
+          <div className="relative w-full max-w-md">
+            <Search size={20} strokeWidth={2.5} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="SEARCH PRODUCTS..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-background text-foreground text-sm rounded-lg pl-9 pr-4 py-2.5 outline-none border border-border focus:border-primary transition-colors"
+              className="w-full h-12 bg-background text-foreground text-xs font-bold uppercase tracking-widest rounded-none pl-12 pr-4 outline-none border border-border focus:border-foreground transition-colors"
             />
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="text-xs uppercase bg-muted/50 text-muted-foreground">
+            <thead className="text-[10px] font-black uppercase tracking-widest bg-muted text-foreground">
               <tr>
-                <th className="px-6 py-4 font-medium">Product</th>
-                <th className="px-6 py-4 font-medium">Category</th>
-                <th className="px-6 py-4 font-medium">Price</th>
-                <th className="px-6 py-4 font-medium">Stock</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-8 py-6">PRODUCT</th>
+                <th className="px-8 py-6">CATEGORY</th>
+                <th className="px-8 py-6">PRICE</th>
+                <th className="px-8 py-6">STOCK</th>
+                <th className="px-8 py-6 text-right">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="border-b border-border">
-                    <td colSpan={5} className="px-6 py-4"><div className="h-4 bg-muted rounded animate-pulse" /></td>
+                    <td colSpan={5} className="px-8 py-6"><div className="h-4 bg-muted animate-pulse" /></td>
                   </tr>
                 ))
               ) : data?.data?.length === 0 ? (
-                <tr><td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">No products found</td></tr>
+                <tr><td colSpan={5} className="px-8 py-16 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">NO PRODUCTS FOUND</td></tr>
               ) : data?.data?.map((product) => (
-                <tr key={product.id} className="border-b border-border hover:bg-muted/30 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <img src={product.images?.[0] || 'https://placehold.co/40'} alt="" className="w-10 h-10 rounded-md object-cover bg-muted" />
+                <tr key={product.id} className="border-b border-border hover:bg-muted transition-colors">
+                  <td className="px-8 py-4">
+                    <div className="flex items-center gap-6">
+                      <img src={product.images?.[0] || 'https://placehold.co/40'} alt="" className="w-12 h-12 object-cover border border-border" />
                       <div>
-                        <span className="font-medium text-foreground block">{product.name}</span>
-                        {!product.isActive && <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-bold">INACTIVE</span>}
+                        <span className="font-black text-sm uppercase tracking-widest text-foreground block mb-1">{product.name}</span>
+                        {!product.isActive && <span className="text-[10px] px-2 py-0.5 border border-foreground font-black uppercase tracking-widest">INACTIVE</span>}
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-muted-foreground">{product.category?.name || 'Uncategorized'}</td>
-                  <td className="px-6 py-4 text-foreground font-medium tabular-nums">{formatCurrency(product.price)}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${product.stock > 0 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-destructive/10 text-destructive'}`}>
-                      {product.stock} in stock
+                  <td className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground">{product.category?.name || 'UNCATEGORIZED'}</td>
+                  <td className="px-8 py-4 text-foreground font-black tracking-widest">{formatCurrency(product.price)}</td>
+                  <td className="px-8 py-4">
+                    <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border ${product.stock > 0 ? 'border-foreground text-foreground' : 'border-muted-foreground text-muted-foreground'}`}>
+                      {product.stock} IN STOCK
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right space-x-2">
+                  <td className="px-8 py-4 text-right space-x-4">
                     <button 
                       onClick={() => setEditingProduct(product)}
-                      className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      <Edit2 size={16} />
+                      <Edit2 size={18} strokeWidth={2.5} />
                     </button>
-                    <button className="p-1.5 text-muted-foreground hover:text-destructive transition-colors"><Trash2 size={16} /></button>
+                    <button className="text-muted-foreground hover:text-foreground transition-colors">
+                      <Trash2 size={18} strokeWidth={2.5} />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -302,28 +302,26 @@ export default function AdminProducts() {
 
         {/* Pagination */}
         {data && data.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-muted/20">
-            <p className="text-sm text-muted-foreground">
-              Page {data.page} of {data.totalPages} · {data.total} products
+          <div className="flex items-center justify-between px-8 py-6 border-t border-border bg-background">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              PAGE {data.page} OF {data.totalPages} · {data.total} PRODUCTS
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               <Button 
-                variant="outline" 
-                size="sm" 
+                variant="outline"
                 disabled={page <= 1} 
                 onClick={() => setPage(p => p - 1)}
-                className="border-border"
+                className="h-10 rounded-none border-border hover:border-foreground text-[10px] font-bold uppercase tracking-widest"
               >
-                <ChevronLeft size={14} className="mr-1" /> Previous
+                <ChevronLeft size={16} strokeWidth={2.5} className="mr-2" /> PREVIOUS
               </Button>
               <Button 
-                variant="outline" 
-                size="sm" 
+                variant="outline"
                 disabled={page >= data.totalPages} 
                 onClick={() => setPage(p => p + 1)}
-                className="border-border"
+                className="h-10 rounded-none border-border hover:border-foreground text-[10px] font-bold uppercase tracking-widest"
               >
-                Next <ChevronRight size={14} className="ml-1" />
+                NEXT <ChevronRight size={16} strokeWidth={2.5} className="ml-2" />
               </Button>
             </div>
           </div>

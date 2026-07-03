@@ -2,7 +2,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Check, X, Star, Trash2 } from 'lucide-react'
 import { productService } from '@/services/product.service'
 import { toast } from 'sonner'
-import { motion } from 'framer-motion'
 
 export default function AdminReviews() {
   const queryClient = useQueryClient()
@@ -28,94 +27,92 @@ export default function AdminReviews() {
     }
   })
 
-  if (isLoading) return <div className="text-white text-center py-20">Loading reviews...</div>
+  if (isLoading) return <div className="text-foreground text-center py-20 text-[10px] font-bold uppercase tracking-widest">LOADING REVIEWS...</div>
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-black text-white">Review Management</h1>
+    <div className="space-y-12">
+      <div className="flex items-center justify-between pb-6 border-b-2 border-foreground">
+        <h1 className="text-3xl font-black uppercase tracking-tighter text-foreground">Review Management</h1>
       </div>
 
-      <div className="glass rounded-2xl overflow-hidden border border-border">
+      <div className="border border-border bg-background">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-400">
-            <thead className="bg-white/5 text-gray-300">
+          <table className="w-full text-left text-sm text-foreground">
+            <thead className="bg-muted text-[10px] font-black uppercase tracking-widest text-foreground">
               <tr>
-                <th className="px-6 py-4 font-semibold">User</th>
-                <th className="px-6 py-4 font-semibold">Product</th>
-                <th className="px-6 py-4 font-semibold">Rating</th>
-                <th className="px-6 py-4 font-semibold">Review</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                <th className="px-8 py-6">USER</th>
+                <th className="px-8 py-6">PRODUCT</th>
+                <th className="px-8 py-6">RATING</th>
+                <th className="px-8 py-6">REVIEW</th>
+                <th className="px-8 py-6">STATUS</th>
+                <th className="px-8 py-6 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody>
               {reviews.map((review: any) => (
-                <motion.tr 
+                <tr 
                   key={review.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="hover:bg-white/5 transition-colors"
+                  className="hover:bg-muted transition-colors border-b border-border"
                 >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 border border-foreground bg-background text-foreground flex items-center justify-center font-black text-sm uppercase">
                         {review.user?.name?.[0] || 'A'}
                       </div>
                       <div>
-                        <p className="font-semibold text-white">{review.user?.name || 'Anonymous'}</p>
-                        <p className="text-xs">{review.user?.email}</p>
+                        <p className="font-black text-sm uppercase tracking-widest text-foreground">{review.user?.name || 'ANONYMOUS'}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{review.user?.email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <p className="text-white font-medium">{review.product?.name || 'Unknown Product'}</p>
-                    <p className="text-xs text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
+                  <td className="px-8 py-6">
+                    <p className="text-sm font-black uppercase tracking-widest text-foreground mb-1">{review.product?.name || 'UNKNOWN PRODUCT'}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{new Date(review.createdAt).toLocaleDateString()}</p>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-8 py-6">
                     <div className="flex items-center">
-                      <span className="font-bold text-white mr-1">{review.rating}</span>
-                      <Star size={14} fill="#f59e0b" stroke="#f59e0b" />
+                      <span className="font-black text-lg tracking-widest text-foreground mr-2">{review.rating}</span>
+                      <Star size={16} strokeWidth={2.5} className="text-foreground" fill="currentColor" />
                     </div>
                   </td>
-                  <td className="px-6 py-4 max-w-xs">
-                    {review.title && <p className="font-medium text-white mb-1">{review.title}</p>}
-                    <p className="text-xs truncate">{review.body}</p>
+                  <td className="px-8 py-6 max-w-xs">
+                    {review.title && <p className="font-black text-sm uppercase tracking-widest text-foreground mb-2">{review.title}</p>}
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground truncate">{review.body}</p>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-md text-xs font-bold ${
-                      review.isVerified ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                  <td className="px-8 py-6">
+                    <span className={`px-3 py-1 border text-[10px] font-black uppercase tracking-widest ${
+                      review.isVerified ? 'border-foreground text-foreground' : 'border-muted-foreground text-muted-foreground'
                     }`}>
-                      {review.isVerified ? 'Approved' : 'Pending'}
+                      {review.isVerified ? 'APPROVED' : 'PENDING'}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center justify-end gap-4">
                       {!review.isVerified && (
                         <button
                           onClick={() => approveMutation.mutate(review.id)}
-                          className="p-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
                           title="Approve Review"
                         >
-                          <Check size={16} />
+                          <Check size={18} strokeWidth={2.5} />
                         </button>
                       )}
                       <button
                         onClick={() => deleteMutation.mutate(review.id)}
-                        className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
                         title="Delete Review"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={18} strokeWidth={2.5} />
                       </button>
                     </div>
                   </td>
-                </motion.tr>
+                </tr>
               ))}
               
               {reviews.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                    No reviews found.
+                  <td colSpan={6} className="px-8 py-16 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    NO REVIEWS FOUND.
                   </td>
                 </tr>
               )}

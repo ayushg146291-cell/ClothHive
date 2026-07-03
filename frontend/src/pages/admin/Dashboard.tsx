@@ -6,9 +6,9 @@ import { fadeUp } from '@/lib/animations'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { api } from '@/services/api'
 import { orderService } from '@/services/order.service'
-import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from '@/lib/constants'
 import type { Order } from '@/types'
 import { Link } from 'react-router-dom'
+import { SplitText } from '@/components/magic/SplitText'
 
 interface StatsData {
   revenue: number
@@ -39,22 +39,29 @@ export default function Dashboard() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-foreground border-t-transparent animate-spin" />
         </div>
       </AdminLayout>
     )
   }
 
   const statCards = [
-    { title: 'Total Revenue', value: stats.revenue, format: formatCurrency, icon: DollarSign, color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20' },
-    { title: 'Orders', value: stats.totalOrders, format: (v: number) => v.toString(), icon: ShoppingBag, color: 'text-blue-500 bg-blue-500/10 border-blue-500/20' },
-    { title: 'Customers', value: stats.totalCustomers, format: (v: number) => v.toString(), icon: Users, color: 'text-purple-500 bg-purple-500/10 border-purple-500/20' },
-    { title: 'Products', value: stats.totalProducts, format: (v: number) => v.toString(), icon: Package, color: 'text-primary bg-primary/10 border-primary/20' },
+    { title: 'Total Revenue', value: stats.revenue, format: formatCurrency, icon: DollarSign },
+    { title: 'Orders', value: stats.totalOrders, format: (v: number) => v.toString(), icon: ShoppingBag },
+    { title: 'Customers', value: stats.totalCustomers, format: (v: number) => v.toString(), icon: Users },
+    { title: 'Products', value: stats.totalProducts, format: (v: number) => v.toString(), icon: Package },
   ]
 
   return (
     <AdminLayout>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      
+      <SplitText 
+        text="OVERVIEW"
+        className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-foreground mb-12"
+        delay={20}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
         {statCards.map((stat, i) => (
           <motion.div
             key={stat.title}
@@ -62,54 +69,54 @@ export default function Dashboard() {
             initial="hidden"
             animate="visible"
             transition={{ delay: i * 0.1 }}
-            className="glass rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border border-border"
+            className="border border-border p-8 bg-background flex flex-col justify-between h-48 group hover:border-foreground transition-colors"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className={`p-3 rounded-xl border ${stat.color}`}>
-                <stat.icon size={20} />
+              <div className={`p-3 border border-border group-hover:bg-foreground group-hover:text-background text-foreground transition-colors`}>
+                <stat.icon size={24} strokeWidth={2.5} />
               </div>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
-              <p className="text-2xl font-bold text-foreground tabular-nums">{stat.format(stat.value)}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{stat.title}</p>
+              <p className="text-3xl font-black text-foreground uppercase tracking-tighter">{stat.format(stat.value)}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <div className="lg:col-span-2 glass rounded-2xl p-6 min-h-[400px] flex items-center justify-center border border-border">
-          <p className="text-muted-foreground">Revenue Chart (Coming Soon)</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 border border-border p-12 bg-background min-h-[400px] flex flex-col justify-center items-center">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">REVENUE CHART</p>
+          <p className="text-2xl font-black uppercase tracking-tighter text-foreground">COMING SOON</p>
         </div>
-        <div className="glass rounded-2xl p-6 min-h-[400px] border border-border flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-lg text-foreground">Recent Orders</h3>
-            <Link to="/admin/orders" className="text-xs text-primary hover:underline font-medium">View all</Link>
+        <div className="border border-border p-8 bg-background flex flex-col h-full min-h-[400px]">
+          <div className="flex justify-between items-center mb-8 border-b border-border pb-4">
+            <h3 className="font-black text-xl uppercase tracking-tighter text-foreground">Recent Orders</h3>
+            <Link to="/admin/orders" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">VIEW ALL</Link>
           </div>
           
-          <div className="flex-1 overflow-auto space-y-3 pr-1">
+          <div className="flex-1 overflow-auto space-y-6 pr-2">
             {recentOrders.length === 0 ? (
               <div className="h-full flex items-center justify-center">
-                <p className="text-muted-foreground text-sm">No orders yet</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">NO ORDERS YET</p>
               </div>
             ) : (
               recentOrders.map(order => (
-                <div key={order.id} className="p-3 rounded-xl bg-muted/30 border border-border hover:bg-muted/50 transition-colors">
-                  <div className="flex justify-between items-start mb-2">
+                <div key={order.id} className="pb-6 border-b border-border last:border-0 last:pb-0">
+                  <div className="flex justify-between items-start mb-3">
                     <div>
-                      <p className="text-sm font-semibold text-foreground">#{order.orderNumber}</p>
-                      <p className="text-xs text-muted-foreground">{formatDate(order.createdAt)}</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">#{order.orderNumber}</p>
+                      <p className="text-sm font-black uppercase tracking-tighter text-foreground">{order.user?.name || order.user?.email || 'GUEST'}</p>
                     </div>
                     <span 
-                      className="px-2 py-0.5 rounded-full text-[10px] font-bold" 
-                      style={{ background: `${ORDER_STATUS_COLORS[order.status]}20`, color: ORDER_STATUS_COLORS[order.status] }}
+                      className="px-2 py-1 border border-foreground text-[10px] font-black uppercase tracking-widest"
                     >
-                      {ORDER_STATUS_LABELS[order.status]}
+                      {order.status}
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <p className="text-muted-foreground truncate max-w-[120px]">{order.user?.name || order.user?.email || 'Guest'}</p>
-                    <p className="font-bold text-foreground tabular-nums">{formatCurrency(order.totalAmount)}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{formatDate(order.createdAt)}</p>
+                    <p className="font-black tracking-widest text-foreground">{formatCurrency(order.totalAmount)}</p>
                   </div>
                 </div>
               ))

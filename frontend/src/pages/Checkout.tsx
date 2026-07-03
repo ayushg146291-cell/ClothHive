@@ -10,10 +10,9 @@ import { formatCurrency } from '@/lib/utils'
 import { ShoppingBag, ArrowRight } from 'lucide-react'
 import { api } from '@/services/api'
 import { toast } from 'sonner'
-import { motion } from 'motion/react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { SplitText } from '@/components/magic/SplitText'
 
 const safeString = z.string().regex(/^[^<>;'"]*$/, 'Invalid characters not allowed')
 
@@ -63,7 +62,7 @@ export default function Checkout() {
             setValue('city', postOffice.District, { shouldValidate: true })
             setValue('state', postOffice.State, { shouldValidate: true })
             setValue('country', postOffice.Country || 'India', { shouldValidate: true })
-            toast.success('Location auto-filled from PIN code')
+            toast.success('Location auto-filled')
           } else {
             toast.error('Invalid PIN code')
           }
@@ -109,12 +108,12 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <AnimatedPage>
-        <div className="page-container pt-safe-nav pb-section flex flex-col items-center justify-center text-center min-h-[60vh]">
-          <ShoppingBag size={64} className="mb-6 text-zinc-600 dark:text-zinc-400" />
-          <h1 className="h2 text-foreground mb-4">Your cart is empty</h1>
+        <div className="page-container pt-safe-nav pb-24 flex flex-col items-center justify-center text-center min-h-[70vh]">
+          <ShoppingBag size={64} strokeWidth={1} className="mb-8 text-foreground" />
+          <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-foreground mb-8">Cart is Empty</h1>
           <Link to="/shop">
-            <Button variant="outline" className="rounded-full px-8 bg-zinc-900 border-zinc-800 text-primary hover:bg-zinc-800">
-              Continue shopping <ArrowRight size={16} className="ml-2" />
+            <Button size="lg" className="h-16 px-12 rounded-none bg-foreground text-background font-bold uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors">
+              Continue Shopping <ArrowRight size={18} className="ml-3" />
             </Button>
           </Link>
         </div>
@@ -122,43 +121,47 @@ export default function Checkout() {
     )
   }
 
-  const inputClasses = "w-full glass bg-background/50 rounded-xl px-4 py-3 text-foreground border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all focus:scale-[1.01]"
+  const inputClasses = "w-full h-14 bg-background px-4 text-foreground border border-border focus:border-foreground outline-none transition-colors font-medium text-sm"
+  const labelClasses = "block text-xs font-bold uppercase tracking-widest text-foreground mb-3"
 
   return (
     <AnimatedPage>
-      <div className="page-container pt-safe-nav pb-section">
-        <h1 className="h1 text-foreground mb-10">Checkout</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="page-container pt-safe-nav pb-24 min-h-screen">
+        <SplitText 
+          text="CHECKOUT"
+          className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-foreground mb-16"
+          delay={30}
+        />
+        
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-16 lg:gap-24">
           
           {/* Left: Form */}
-          <div className="space-y-6">
-            <Card className="glass border-border bg-card/50">
-              <CardHeader>
-                <CardTitle className="text-xl text-foreground">Shipping Address</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-12">
+            <div className="border border-border p-8 md:p-12">
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground mb-10 pb-4 border-b border-border">Shipping Address</h2>
+              
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">Full Name</label>
-                    <input {...register('name')} placeholder="John Doe" className={inputClasses} />
-                    {errors.name && <p className="text-destructive text-xs mt-1.5">{errors.name.message}</p>}
+                    <label className={labelClasses}>Full Name</label>
+                    <input {...register('name')} placeholder="JOHN DOE" className={inputClasses} />
+                    {errors.name && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.name.message}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">Email</label>
+                    <label className={labelClasses}>Email</label>
                     <input 
                       {...register('email')} 
                       type="email" 
-                      placeholder="john@example.com" 
-                      className={`${inputClasses} ${isAuthenticated ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      placeholder="JOHN@EXAMPLE.COM" 
+                      className={`${inputClasses} ${isAuthenticated ? 'bg-muted text-muted-foreground border-transparent' : ''}`}
                       readOnly={isAuthenticated}
                     />
-                    {errors.email && <p className="text-destructive text-xs mt-1.5">{errors.email.message}</p>}
+                    {errors.email && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.email.message}</p>}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1.5">Phone</label>
+                  <label className={labelClasses}>Phone</label>
                   <input 
                     {...register('phone')} 
                     placeholder="9876543210" 
@@ -168,91 +171,84 @@ export default function Checkout() {
                       e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '')
                     }}
                   />
-                  {errors.phone && <p className="text-destructive text-xs mt-1.5">{errors.phone.message}</p>}
+                  {errors.phone && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.phone.message}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1.5">Address Line 1</label>
-                  <input {...register('line1')} placeholder="123 Main St" className={inputClasses} />
-                  {errors.line1 && <p className="text-destructive text-xs mt-1.5">{errors.line1.message}</p>}
+                  <label className={labelClasses}>Address Line 1</label>
+                  <input {...register('line1')} placeholder="123 MAIN ST" className={inputClasses} />
+                  {errors.line1 && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.line1.message}</p>}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">City (Auto-filled)</label>
-                    <input {...register('city')} readOnly placeholder="Mumbai" className={`${inputClasses} opacity-70 cursor-not-allowed`} />
-                    {errors.city && <p className="text-destructive text-xs mt-1.5">{errors.city.message}</p>}
+                    <label className={labelClasses}>City</label>
+                    <input {...register('city')} readOnly placeholder="MUMBAI" className={`${inputClasses} bg-muted text-muted-foreground border-transparent`} />
+                    {errors.city && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.city.message}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">State (Auto-filled)</label>
-                    <input {...register('state')} readOnly placeholder="Maharashtra" className={`${inputClasses} opacity-70 cursor-not-allowed`} />
-                    {errors.state && <p className="text-destructive text-xs mt-1.5">{errors.state.message}</p>}
+                    <label className={labelClasses}>State</label>
+                    <input {...register('state')} readOnly placeholder="MAHARASHTRA" className={`${inputClasses} bg-muted text-muted-foreground border-transparent`} />
+                    {errors.state && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.state.message}</p>}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">PIN Code</label>
+                    <label className={labelClasses}>PIN Code</label>
                     <input {...register('postalCode')} placeholder="400001" maxLength={6} className={inputClasses} />
-                    {errors.postalCode && <p className="text-destructive text-xs mt-1.5">{errors.postalCode.message}</p>}
+                    {errors.postalCode && <p className="text-foreground font-bold text-[10px] uppercase tracking-widest mt-2">{errors.postalCode.message}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1.5">Country (Auto-filled)</label>
-                    <input {...register('country')} readOnly placeholder="India" className={`${inputClasses} opacity-70 cursor-not-allowed`} />
+                    <label className={labelClasses}>Country</label>
+                    <input {...register('country')} readOnly placeholder="INDIA" className={`${inputClasses} bg-muted text-muted-foreground border-transparent`} />
                   </div>
                 </div>
+              </div>
+            </div>
 
-              </CardContent>
-            </Card>
-
-            <Card className="glass border-border bg-card/50">
-              <CardHeader>
-                <CardTitle className="text-xl text-foreground">Payment Method</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="p-5 rounded-xl text-center bg-primary/10 border border-primary/20 shadow-[0_0_20px_rgba(190,24,93,0.15)]">
-                  <span className="font-bold text-foreground text-lg">Cash on Delivery (COD)</span>
-                  <p className="text-sm text-primary mt-1">Pay with cash when your order is delivered.</p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="border border-border p-8 md:p-12">
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground mb-8 pb-4 border-b border-border">Payment Method</h2>
+              <div className="p-8 border border-foreground bg-foreground text-background">
+                <span className="block font-black text-xl uppercase tracking-tighter mb-2">Cash on Delivery (COD)</span>
+                <p className="text-xs font-bold uppercase tracking-widest opacity-80">Pay with cash when your order is delivered.</p>
+              </div>
+            </div>
           </div>
 
           {/* Right: Summary */}
           <div>
-            <Card className="glass border-border bg-card/50 sticky top-28">
-              <CardHeader>
-                <CardTitle className="text-xl text-foreground">Order Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4 mb-6">
-                  {items.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center text-sm">
-                      <span className="text-muted-foreground truncate pr-4 font-medium">{item.product.name} × {item.quantity}</span>
-                      <span className="text-foreground shrink-0 font-bold">{formatCurrency((item.variant?.price ?? item.product.price) * item.quantity)}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="space-y-3 text-sm border-t border-border pt-5 mb-8">
-                  <div className="flex justify-between text-muted-foreground font-medium"><span>Subtotal</span><span className="text-foreground">{formatCurrency(subtotal())}</span></div>
-                  <div className="flex justify-between text-muted-foreground font-medium"><span>Tax (8%)</span><span className="text-foreground">{formatCurrency(tax)}</span></div>
-                  <div className="flex justify-between text-muted-foreground font-medium"><span>Shipping</span><span className={shipping === 0 ? "text-green-500" : "text-foreground"}>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span></div>
-                  <div className="flex justify-between font-bold text-xl text-foreground border-t border-border pt-4 mt-2">
-                    <span>Total</span><span className="text-primary">{formatCurrency(total)}</span>
+            <div className="border border-border p-8 md:p-12 sticky top-32">
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-foreground mb-10 pb-4 border-b border-border">Order Summary</h2>
+              
+              <div className="space-y-6 mb-10">
+                {items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-start">
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground pr-4 leading-relaxed">{item.product.name} <br/>× {item.quantity}</span>
+                    <span className="text-sm font-black tracking-widest text-foreground shrink-0">{formatCurrency((item.variant?.price ?? item.product.price) * item.quantity)}</span>
                   </div>
-                </div>
+                ))}
+              </div>
+              
+              <div className="space-y-6 text-sm border-t border-border pt-8 mb-10">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground"><span>Subtotal</span><span className="text-foreground">{formatCurrency(subtotal())}</span></div>
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground"><span>Tax (8%)</span><span className="text-foreground">{formatCurrency(tax)}</span></div>
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground"><span>Shipping</span><span className="text-foreground">{shipping === 0 ? 'FREE' : formatCurrency(shipping)}</span></div>
                 
-                <Button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-6 rounded-xl font-bold text-lg bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(190,24,93,0.3)] transition-all hover:scale-[1.02]" 
-                >
-                  {isSubmitting ? 'Processing...' : 'Place Order (COD)'} 
-                  {!isSubmitting && <ArrowRight size={18} className="ml-2" />}
-                </Button>
-              </CardContent>
-            </Card>
+                <div className="flex justify-between font-black text-2xl tracking-tighter text-foreground border-t border-border pt-8 mt-4">
+                  <span>TOTAL</span><span>{formatCurrency(total)}</span>
+                </div>
+              </div>
+              
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-16 rounded-none font-bold text-sm uppercase tracking-widest bg-foreground hover:bg-muted-foreground text-background transition-colors" 
+              >
+                {isSubmitting ? 'PROCESSING...' : 'CONFIRM ORDER'} 
+                {!isSubmitting && <ArrowRight size={18} className="ml-3" />}
+              </Button>
+            </div>
           </div>
           
         </form>

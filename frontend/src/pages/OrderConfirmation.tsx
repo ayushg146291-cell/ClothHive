@@ -3,9 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 import AnimatedPage from '@/components/common/AnimatedPage'
-import { scalePop, fadeUp } from '@/lib/animations'
 import { api } from '@/services/api'
 import { Order } from '@/types'
+import { SplitText } from '@/components/magic/SplitText'
+import { Button } from '@/components/ui/button'
 
 export default function OrderConfirmation() {
   const { id } = useParams<{ id: string }>()
@@ -30,8 +31,8 @@ export default function OrderConfirmation() {
   if (loading) {
     return (
       <AnimatedPage>
-        <div className="min-h-[80vh] flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="w-16 h-16 border-4 border-foreground border-t-transparent animate-spin"></div>
         </div>
       </AnimatedPage>
     )
@@ -39,47 +40,49 @@ export default function OrderConfirmation() {
 
   return (
     <AnimatedPage>
-      <div className="min-h-[80vh] flex items-center justify-center py-20 page-container">
-        <div className="max-w-md w-full text-center">
+      <div className="min-h-screen flex items-center justify-center py-24 page-container bg-background">
+        <div className="max-w-2xl w-full text-center border border-border p-12 md:p-20">
+          
           <motion.div
-            variants={scalePop}
-            initial="idle"
-            animate="pop"
-            className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8"
-            style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)' }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', damping: 15 }}
+            className="w-24 h-24 flex items-center justify-center mx-auto mb-12 bg-foreground text-background"
           >
-            <CheckCircle2 size={48} className="text-white" />
+            <CheckCircle2 size={48} strokeWidth={2} />
           </motion.div>
 
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.2 }}>
-            <h1 className="text-4xl font-black text-white mb-4">Order Confirmed!</h1>
-            <p className="text-gray-400 mb-2">
-              Thank you for your purchase. Your order <span className="text-white font-medium">#{order?.orderNumber || id}</span> has been received.
-            </p>
-            <p className="text-sm text-gray-500 mb-4">
-              We'll send you an email confirmation with tracking details once your items ship.
-            </p>
-            <div className="p-4 rounded-xl text-sm text-gray-300 glass border border-indigo-500/20 shadow-[0_0_30px_rgba(99,102,241,0.15)] mb-8 inline-block text-left mx-auto">
-              <p className="font-bold text-white mb-1">Payment Method: Cash on Delivery</p>
-              <p>Please have the exact amount ready when the delivery arrives.</p>
-            </div>
-          </motion.div>
+          <SplitText 
+            text="CONFIRMED"
+            className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-foreground mb-6"
+            delay={30}
+          />
 
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.4 }} className="flex flex-col gap-3">
-            <Link
-              to={`/profile?tab=orders`}
-              className="magic-button w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white shadow-glow"
-            >
-              View Order Details
-              <ArrowRight size={18} />
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
+            THANK YOU FOR YOUR PURCHASE. YOUR ORDER <span className="text-foreground">#{order?.orderNumber || id}</span> HAS BEEN RECEIVED.
+          </p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-12">
+            WE'LL SEND YOU AN EMAIL CONFIRMATION WITH TRACKING DETAILS ONCE YOUR ITEMS SHIP.
+          </p>
+
+          <div className="p-6 border-2 border-foreground mb-12 inline-block text-left mx-auto">
+            <p className="text-sm font-black uppercase tracking-widest text-foreground mb-2">PAYMENT METHOD: CASH ON DELIVERY</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">PLEASE HAVE THE EXACT AMOUNT READY WHEN THE DELIVERY ARRIVES.</p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <Link to={`/profile`}>
+              <Button className="w-full h-16 rounded-none bg-foreground hover:bg-muted-foreground text-background font-bold text-sm uppercase tracking-widest transition-colors">
+                VIEW ORDER DETAILS
+                <ArrowRight size={18} strokeWidth={2.5} className="ml-3" />
+              </Button>
             </Link>
-            <Link
-              to="/shop"
-              className="w-full py-4 rounded-xl font-medium text-gray-300 hover:text-white glass glass-hover transition-all"
-            >
-              Continue Shopping
+            <Link to="/shop">
+              <Button variant="outline" className="w-full h-16 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-background font-bold text-xs uppercase tracking-widest transition-colors">
+                CONTINUE SHOPPING
+              </Button>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
     </AnimatedPage>

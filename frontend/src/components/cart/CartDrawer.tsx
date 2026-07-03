@@ -2,8 +2,25 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useCartStore } from '@/store/cartStore'
-import { cartDrawerVariants, backdropVariants, cartItemVariants } from '@/lib/animations'
 import { formatCurrency } from '@/lib/utils'
+
+const cartDrawerVariants = {
+  closed: { x: '100%', transition: { type: 'spring', stiffness: 400, damping: 40 } },
+  open: { x: 0, transition: { type: 'spring', stiffness: 400, damping: 40 } },
+  exit: { x: '100%', transition: { type: 'spring', stiffness: 400, damping: 40 } }
+}
+
+const backdropVariants = {
+  closed: { opacity: 0 },
+  open: { opacity: 1 },
+  exit: { opacity: 0 }
+}
+
+const cartItemVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.95 }
+}
 
 export default function CartDrawer() {
   const { isOpen, closeCart, items, removeItem, updateQuantity, subtotal } = useCartStore()
@@ -21,7 +38,7 @@ export default function CartDrawer() {
             initial="closed"
             animate="open"
             exit="exit"
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80]"
+            className="fixed inset-0 bg-background/80 backdrop-blur-md z-[80]"
             onClick={closeCart}
           />
 
@@ -32,62 +49,50 @@ export default function CartDrawer() {
             initial="closed"
             animate="open"
             exit="exit"
-            className="fixed top-0 right-0 h-full w-full max-w-md z-[90] flex flex-col bg-gray-950/60 backdrop-blur-3xl shadow-[-10px_0_40px_rgba(0,0,0,0.5)] border-l border-white/10"
+            className="fixed top-0 right-0 h-full w-full max-w-md z-[90] flex flex-col bg-background border-l-2 border-foreground"
             aria-label="Shopping cart"
           >
             {/* Header */}
-            <div
-              className="flex items-center justify-between px-6 py-5 border-b border-white/5"
-            >
-              <div className="flex items-center gap-3">
-                <ShoppingBag size={20} className="text-indigo-400" />
-                <h2 className="font-bold text-white text-lg">Your Cart</h2>
+            <div className="flex items-center justify-between px-8 py-6 border-b-2 border-foreground">
+              <div className="flex items-center gap-4">
+                <h2 className="font-black text-foreground text-2xl uppercase tracking-tighter">Cart</h2>
                 {items.length > 0 && (
-                  <span
-                    className="px-2 py-0.5 rounded-full text-xs font-semibold text-white"
-                    style={{ background: 'var(--color-primary-600)' }}
-                  >
+                  <span className="w-6 h-6 flex items-center justify-center bg-foreground text-background text-xs font-bold">
                     {items.length}
                   </span>
                 )}
               </div>
               <button
                 onClick={closeCart}
-                className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all shadow-[0_0_10px_rgba(0,0,0,0)] hover:shadow-glow"
+                className="text-foreground hover:text-muted-foreground transition-colors"
                 aria-label="Close cart"
               >
-                <X size={20} />
+                <X size={24} strokeWidth={2.5} />
               </button>
             </div>
 
             {/* Items */}
-            <div className="flex-1 overflow-y-auto py-4 px-6">
+            <div className="flex-1 overflow-y-auto py-4 px-8">
               {items.length === 0 ? (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center justify-center h-full text-center gap-4 py-16"
+                  className="flex flex-col items-center justify-center h-full text-center gap-6 py-16"
                 >
-                  <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.05)]"
-                    style={{ background: 'var(--surface-glass)' }}
-                  >
-                    <ShoppingBag size={32} className="text-gray-500" />
-                  </div>
+                  <ShoppingBag size={48} strokeWidth={1.5} className="text-muted-foreground" />
                   <div>
-                    <p className="text-white font-semibold mb-1 text-lg">Your cart is empty</p>
-                    <p className="text-gray-400 text-sm">Add some items to get started</p>
+                    <p className="text-foreground font-black uppercase tracking-tighter text-3xl mb-2">Cart is empty</p>
                   </div>
                   <button
                     onClick={closeCart}
-                    className="magic-button mt-4 px-8 py-3 rounded-xl text-sm font-bold text-white shadow-glow"
+                    className="mt-4 px-8 h-14 bg-foreground text-background font-bold uppercase tracking-widest text-xs transition-colors hover:bg-muted-foreground"
                   >
-                    Continue Shopping
+                    CONTINUE SHOPPING
                   </button>
                 </motion.div>
               ) : (
                 <AnimatePresence initial={false}>
-                  <ul className="space-y-4">
+                  <ul className="space-y-6 mt-4">
                     {items.map((item) => (
                       <motion.li
                         key={item.id}
@@ -96,66 +101,65 @@ export default function CartDrawer() {
                         animate="animate"
                         exit="exit"
                         layout
-                        className="flex gap-4 p-3 rounded-2xl glass glass-hover group"
+                        className="flex gap-6 pb-6 border-b border-border group"
                       >
                         {/* Product image */}
                         <Link to={`/products/${item.product.slug}`} onClick={closeCart}>
                           <img
-                            src={item.product.images[0] || 'https://placehold.co/80x100/1e293b/6366f1?text=Item'}
+                            src={item.product.images[0] || 'https://placehold.co/80x100/18181B/FFFFFF?text=Item'}
                             alt={item.product.name}
-                            className="w-16 h-20 object-cover rounded-lg shrink-0"
+                            className="w-20 h-28 object-cover shrink-0 border border-border"
                           />
                         </Link>
 
                         {/* Info */}
-                        <div className="flex-1 min-w-0">
-                          <Link
-                            to={`/products/${item.product.slug}`}
-                            onClick={closeCart}
-                            className="text-sm font-semibold text-white hover:text-indigo-300 transition-colors line-clamp-2 leading-snug"
-                          >
-                            {item.product.name}
-                          </Link>
-                          {item.variant && (
-                            <p className="text-xs text-gray-500 mt-0.5">
-                              {item.variant.size && `Size: ${item.variant.size}`}
-                              {item.variant.color && ` · ${item.variant.color}`}
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div>
+                            <Link
+                              to={`/products/${item.product.slug}`}
+                              onClick={closeCart}
+                              className="text-sm font-black uppercase tracking-widest text-foreground hover:text-muted-foreground transition-colors line-clamp-2 leading-snug"
+                            >
+                              {item.product.name}
+                            </Link>
+                            {item.variant && (
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2">
+                                {item.variant.size && `SIZE: ${item.variant.size}`}
+                                {item.variant.color && ` · ${item.variant.color}`}
+                              </p>
+                            )}
+                            <p className="text-sm font-bold tracking-widest text-foreground mt-2">
+                              {formatCurrency(item.variant?.price ?? item.product.price)}
                             </p>
-                          )}
-                          <p className="text-sm font-bold text-indigo-400 mt-1">
-                            {formatCurrency(item.variant?.price ?? item.product.price)}
-                          </p>
+                          </div>
 
                           {/* Quantity controls */}
-                          <div className="flex items-center justify-between mt-3">
-                            <div
-                              className="flex items-center rounded-lg overflow-hidden"
-                              style={{ border: '1px solid var(--border-glass)' }}
-                            >
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="flex items-center border border-border h-10">
                               <button
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="px-2.5 py-1.5 text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                                className="w-8 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors"
                                 aria-label="Decrease quantity"
                               >
-                                <Minus size={12} />
+                                <Minus size={14} />
                               </button>
-                              <span className="px-3 text-sm font-semibold text-white min-w-[2rem] text-center">
+                              <span className="w-8 text-center text-xs font-bold text-foreground">
                                 {item.quantity}
                               </span>
                               <button
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="px-2.5 py-1.5 text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                                className="w-8 h-full flex items-center justify-center text-foreground hover:bg-muted transition-colors"
                                 aria-label="Increase quantity"
                               >
-                                <Plus size={12} />
+                                <Plus size={14} />
                               </button>
                             </div>
                             <button
                               onClick={() => removeItem(item.id)}
-                              className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                              className="text-muted-foreground hover:text-foreground transition-colors"
                               aria-label="Remove item"
                             >
-                              <Trash2 size={14} />
+                              <Trash2 size={16} strokeWidth={2.5} />
                             </button>
                           </div>
                         </div>
@@ -168,28 +172,22 @@ export default function CartDrawer() {
 
             {/* Footer — Totals + CTA */}
             {items.length > 0 && (
-              <div
-                className="border-t p-6 space-y-4"
-                style={{ borderColor: 'var(--border-glass)', background: 'var(--surface-glass)' }}
-              >
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between text-gray-400">
+              <div className="border-t-2 border-foreground p-8 bg-background">
+                <div className="space-y-4 text-xs font-bold uppercase tracking-widest mb-8">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span className="text-white">{formatCurrency(subtotal())}</span>
+                    <span className="text-foreground">{formatCurrency(subtotal())}</span>
                   </div>
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>Estimated tax (8%)</span>
-                    <span className="text-white">{formatCurrency(tax)}</span>
+                    <span className="text-foreground">{formatCurrency(tax)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
-                    <span className="text-green-400 font-medium">Free</span>
+                    <span className="text-foreground">FREE</span>
                   </div>
-                  <div
-                    className="flex justify-between font-bold text-base text-white pt-2 border-t"
-                    style={{ borderColor: 'var(--border-glass)' }}
-                  >
-                    <span>Total</span>
+                  <div className="flex justify-between font-black text-xl tracking-tighter text-foreground pt-4 border-t border-border">
+                    <span>TOTAL</span>
                     <span>{formatCurrency(total)}</span>
                   </div>
                 </div>
@@ -197,17 +195,17 @@ export default function CartDrawer() {
                 <Link
                   to="/checkout"
                   onClick={closeCart}
-                  className="magic-button flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-white shadow-glow"
+                  className="flex items-center justify-center gap-2 w-full h-14 bg-foreground text-background font-bold uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors mb-4"
                   id="checkout-btn"
                 >
                   Checkout
-                  <ArrowRight size={16} />
+                  <ArrowRight size={16} strokeWidth={2.5} className="ml-2" />
                 </Link>
                 <button
                   onClick={closeCart}
-                  className="w-full py-3 rounded-xl text-sm text-gray-400 hover:text-white glass-hover glass transition-colors"
+                  className="w-full h-14 border border-foreground text-foreground font-bold uppercase tracking-widest text-xs hover:bg-muted transition-colors"
                 >
-                  Continue Shopping
+                  CONTINUE SHOPPING
                 </button>
               </div>
             )}

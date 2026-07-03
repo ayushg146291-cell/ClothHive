@@ -3,27 +3,33 @@ import ProductCard from '@/components/product/ProductCard'
 import { useWishlistStore } from '@/store/wishlistStore'
 import { Heart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { SplitText } from '@/components/magic/SplitText'
 
 export default function Wishlist() {
   const { items } = useWishlistStore()
   return (
     <AnimatedPage>
-      <div className="page-container pt-safe-nav pb-[5vh]">
-        <h1 className="text-4xl font-black text-white mb-2">Wishlist</h1>
-        <p className="text-gray-400 mb-10">{items.length} saved items</p>
+      <div className="page-container pt-safe-nav pb-24 min-h-screen">
+        <SplitText 
+          text="WISHLIST"
+          className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-foreground mb-4"
+          delay={30}
+        />
+        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-16 pb-8 border-b border-border">
+          {items.length} SAVED ITEMS
+        </p>
+
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center gap-4">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center glass shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-white/5 animate-pulse">
-              <Heart size={36} className="text-gray-500" />
-            </div>
-            <p className="text-white font-bold text-xl mt-2">Your wishlist is empty</p>
-            <p className="text-gray-400 text-sm">Save items you love for later.</p>
-            <Link to="/shop" className="magic-button mt-4 px-8 py-3 rounded-xl text-sm font-bold text-white shadow-glow">
-              Start Shopping
+          <div className="flex flex-col items-center justify-center py-32 text-center border border-border">
+            <Heart size={48} strokeWidth={1.5} className="text-muted-foreground mb-8" />
+            <p className="text-2xl font-black uppercase tracking-tighter text-foreground mb-2">Wishlist is empty</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-8">SAVE ITEMS YOU LOVE FOR LATER</p>
+            <Link to="/shop" className="h-14 px-12 bg-foreground flex items-center justify-center text-background font-bold uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors">
+              START SHOPPING
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
             {items.map((product, i) => <ProductCard key={product.id} product={product} index={i} />)}
           </div>
         )}
