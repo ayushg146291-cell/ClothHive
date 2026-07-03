@@ -80,7 +80,7 @@ export default function Home() {
               </motion.div>
 
               <SplitText 
-                text="Live the spatial life."
+                text="Elegance, redefined."
                 className="h1 text-foreground mb-6"
                 delay={40}
               />
@@ -109,7 +109,7 @@ export default function Home() {
                   </Link>
                 </Magnetic>
                 <Link to="/lookbook">
-                  <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full glass-pill border-foreground/20 text-foreground hover:bg-foreground/5">
+                  <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full glass-pill border-border text-foreground hover:bg-white/5 transition-all">
                     View Lookbook
                   </Button>
                 </Link>
