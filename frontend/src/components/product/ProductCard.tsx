@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Heart, ShoppingBag, Star, Eye } from 'lucide-react'
 import { useQueryClient } from '@tanstack/react-query'
-import { cardVariants, scalePop } from '@/lib/animations'
 import { useCartStore } from '@/store/cartStore'
 import { useWishlistStore } from '@/store/wishlistStore'
 import { formatCurrency } from '@/lib/utils'
@@ -11,9 +10,7 @@ import type { Product } from '@/types'
 import { toast } from 'sonner'
 import { productService } from '@/services/product.service'
 
-import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { TiltCard } from '@/components/magic/TiltCard'
 
 interface ProductCardProps {
   product: Product
@@ -63,126 +60,99 @@ const ProductCard = React.memo(function ProductCard({ product, index = 0 }: Prod
 
   return (
     <motion.article
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
-      custom={index}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.5, ease: 'easeOut' }}
       onHoverStart={prefetchProduct}
-      className="group relative cursor-pointer"
+      className="group relative cursor-pointer flex flex-col"
     >
-      <TiltCard glareEnable={true} className="h-full rounded-3xl">
-        <Link to={`/products/${product.slug}`} className="block h-full rounded-3xl">
-          <Card className="h-full overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 shadow-xl shadow-black/5 hover:shadow-black/10 transition-all rounded-3xl group">
-          {/* Image */}
-          <div className="relative aspect-[4/5] overflow-hidden bg-zinc-100 dark:bg-zinc-900 m-2 rounded-2xl">
+      <Link to={`/products/${product.slug}`} className="block h-full w-full">
+        <div className="w-full flex flex-col h-full bg-transparent group">
+          {/* Image Container */}
+          <div className="relative aspect-[3/4] overflow-hidden bg-muted w-full mb-6">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+              <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
             <motion.img
-              src={product.images?.[0] || 'https://placehold.co/400x533/1e293b/BE185D?text=ClothHive'}
+              src={product.images?.[0] || 'https://placehold.co/400x533/18181B/FFFFFF?text=Shoppe'}
               alt={product.name}
               loading="lazy"
               decoding="async"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               onLoad={() => setImageLoaded(true)}
               style={{ opacity: imageLoaded ? 1 : 0 }}
             />
 
-            {/* Badges */}
-            <div className="absolute top-3 left-3 flex flex-col gap-2">
+            {/* Minimal Badges */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2">
               {product.isFeatured && (
-                <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white bg-primary">
-                  Featured
+                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-background bg-foreground">
+                  New
                 </span>
               )}
               {discount > 0 && (
-                <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white bg-secondary">
+                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-background bg-foreground">
                   -{discount}%
                 </span>
               )}
               {product.stock === 0 && (
-                <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white bg-zinc-600">
+                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-border">
                   Sold Out
                 </span>
               )}
             </div>
 
-            {/* Wishlist button */}
-            <motion.button
-              variants={scalePop}
-              animate={heartState}
+            {/* Wishlist Button */}
+            <button
               onClick={handleWishlist}
-              className="absolute top-3 right-3 h-11 w-11 flex items-center justify-center rounded-full glass hover:bg-zinc-800/50 transition-all duration-200 z-10"
+              className="absolute top-4 right-4 h-10 w-10 flex items-center justify-center bg-background border border-border hover:bg-muted transition-colors duration-200 z-10"
               aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
             >
               <Heart
                 size={16}
                 className="transition-colors duration-200"
-                fill={inWishlist ? '#EC4899' : 'none'}
-                stroke={inWishlist ? '#EC4899' : 'currentColor'}
+                fill={inWishlist ? 'currentColor' : 'none'}
+                stroke="currentColor"
               />
-            </motion.button>
+            </button>
 
             {/* Hover overlay actions */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            
-            <div className="absolute bottom-0 left-0 right-0 p-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+            <div className="absolute bottom-0 left-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
               <Button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 rounded-2xl glass border-border/50 text-white hover:bg-white/20 pointer-events-auto shadow-lg backdrop-blur-md"
+                className="flex-1 rounded-none h-12 bg-foreground text-background hover:bg-muted-foreground font-bold uppercase tracking-widest text-xs pointer-events-auto"
                 id={`add-to-cart-${product.id}`}
               >
-                <ShoppingBag size={16} className="mr-2" />
+                <ShoppingBag size={14} className="mr-2" />
                 {product.stock === 0 ? 'Sold Out' : 'Add to Cart'}
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-2xl glass border-border/50 text-white hover:bg-white/20 pointer-events-auto shadow-lg backdrop-blur-md"
-              >
-                <Eye size={16} />
               </Button>
             </div>
           </div>
 
           {/* Info */}
-          <CardContent className="p-4 bg-transparent">
-            <p className="text-xs font-medium tracking-wide text-muted-foreground mb-1">{product.category?.name}</p>
-            <h3 className="text-lg font-medium text-foreground mb-2 line-clamp-2 leading-snug">
+          <div className="flex flex-col flex-1 px-1">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-foreground mb-1 line-clamp-1">
               {product.name}
             </h3>
-
-            {/* Rating */}
-            {(product.avgRating ?? 0) > 0 && (
-              <div className="flex items-center gap-1 mb-2">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={11}
-                    fill={i < Math.round(product.avgRating ?? 0) ? '#D97706' : 'none'}
-                    stroke={i < Math.round(product.avgRating ?? 0) ? '#D97706' : 'currentColor'}
-                    className="text-accent"
-                  />
-                ))}
-                <span className="text-xs text-zinc-500 ml-1">({product.reviewCount ?? 0})</span>
-              </div>
-            )}
+            
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
+              {product.category?.name || 'Essentials'}
+            </p>
 
             {/* Price */}
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-base font-semibold text-foreground">{formatCurrency(product.price)}</span>
+            <div className="flex items-center gap-3 mt-auto">
+              <span className="text-sm font-bold text-foreground tracking-widest">{formatCurrency(product.price)}</span>
               {product.comparePrice && (
-                <span className="text-sm text-muted-foreground line-through">
+                <span className="text-xs text-muted-foreground line-through tracking-widest">
                   {formatCurrency(product.comparePrice)}
                 </span>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </Link>
-    </TiltCard>
-  </motion.article>
+    </motion.article>
   )
 })
 

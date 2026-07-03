@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -6,80 +6,78 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand Colors: Premium Fashion Liquid Glass */
-  --color-primary-500: #A16207;
-  --color-secondary-500: #44403C;
-  --color-accent-500: #A16207;
-  --color-black: #0C0A09;
+  /* Brand Colors: Shoppe Exaggerated Minimalism */
+  --color-primary-500: #18181B;
+  --color-secondary-500: #27272A;
+  --color-accent-500: #F8FAFC;
+  --color-black: #000000;
   
   /* OVERALL MODE */
-  --color-bg: #FAFAF9; 
-  --color-fg: #0C0A09;
+  --color-bg: #FFFFFF; 
+  --color-fg: #000000;
   
   /* Fluid UI Variables (Mobile to Desktop scaling using clamp) */
-  --fluid-padding: clamp(1rem, 5vw, 3rem);
-  --fluid-header: clamp(3rem, 10vw, 6rem);
-  --fluid-text: clamp(1rem, 1.5vw + 0.5rem, 1.125rem);
-  --fluid-gap: clamp(1rem, 3vw, 2.5rem);
+  --fluid-padding: clamp(1.5rem, 6vw, 4rem);
+  --fluid-header: clamp(4rem, 12vw, 10rem);
+  --fluid-text: clamp(1.125rem, 2vw + 0.5rem, 1.5rem);
+  --fluid-gap: clamp(1.5rem, 4vw, 3rem);
 
-  /* Shadcn UI Variables (Light Fashion Theme) */
-  --background: oklch(0.98 0 0); /* #FAFAF9 */
-  --foreground: oklch(0.12 0.01 240); /* #0C0A09 */
+  /* Shadcn UI Variables (Minimal Light Theme) */
+  --background: oklch(1 0 0); /* #FFFFFF */
+  --foreground: oklch(0 0 0); /* #000000 */
   --card: oklch(1 0 0); /* #FFFFFF */
-  --card-foreground: oklch(0.12 0.01 240);
+  --card-foreground: oklch(0 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0.01 240);
-  --primary: oklch(0.12 0.01 240); /* Dark */
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0 0 0); /* Black */
   --primary-foreground: oklch(1 0 0); /* White */
-  --secondary: oklch(0.94 0.01 240); /* #E8ECF0 */
-  --secondary-foreground: oklch(0.12 0.01 240);
-  --muted: oklch(0.94 0.01 240); 
-  --muted-foreground: oklch(0.4 0.01 240); 
-  --accent: oklch(0.65 0.15 60); /* Gold #A16207 */
-  --accent-foreground: oklch(0.97 0 0);
-  --destructive: oklch(0.55 0.2 25); /* #DC2626 */
-  --border: oklch(0.85 0.01 240); /* #D6D3D1 */
-  --input: oklch(0.85 0.01 240);
-  --ring: oklch(0.65 0.15 60); /* Gold */
-  --radius: 0.5rem; /* Crisper rounded corners for premium feel */
+  --secondary: oklch(0.96 0 0); /* #F4F4F5 */
+  --secondary-foreground: oklch(0 0 0);
+  --muted: oklch(0.96 0 0); 
+  --muted-foreground: oklch(0.5 0 0); /* #71717A */
+  --accent: oklch(0.96 0 0); /* Light Gray */
+  --accent-foreground: oklch(0 0 0);
+  --destructive: oklch(0.6 0.2 25); /* #EF4444 */
+  --border: oklch(0.9 0 0); /* #E4E4E7 */
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0 0 0); /* Black */
+  --radius: 0rem; /* Sharp corners for stark minimalism */
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Force dark mode for Liquid Glass Premium Fashion by default, or just define the dark variant properly */
 .dark {
-  /* DARK MODE (Liquid Glass Premium Fashion) */
-  --color-bg: #0C0A09;
-  --color-fg: #FAFAF9;
+  /* DARK MODE (Minimal Black/White) */
+  --color-bg: #000000;
+  --color-fg: #FFFFFF;
 
   /* Shadcn UI Dark Theme Variables */
-  --background: oklch(0.1 0.01 240); /* Deep dark #0C0A09 */
-  --foreground: oklch(0.98 0 0); /* White #FAFAF9 */
-  --card: oklch(0.14 0.01 240); 
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.14 0.01 240);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.98 0 0); /* White for primary */
-  --primary-foreground: oklch(0.1 0.01 240); 
-  --secondary: oklch(0.24 0.01 240); /* #44403C */
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.24 0.01 240); 
-  --muted-foreground: oklch(0.7 0.01 240); 
-  --accent: oklch(0.65 0.15 60); /* Gold #A16207 */
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.55 0.2 25); 
-  --border: oklch(0.24 0.01 240); 
-  --input: oklch(0.24 0.01 240);
-  --ring: oklch(0.65 0.15 60);
+  --background: oklch(0 0 0); /* #000000 */
+  --foreground: oklch(1 0 0); /* #FFFFFF */
+  --card: oklch(0 0 0); 
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0); /* White for primary */
+  --primary-foreground: oklch(0 0 0); 
+  --secondary: oklch(0.15 0 0); /* #27272A */
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.1 0 0); 
+  --muted-foreground: oklch(0.6 0 0); /* #A1A1AA */
+  --accent: oklch(0.15 0 0); /* #27272A */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.2 25); 
+  --border: oklch(0.15 0 0); /* #27272A */
+  --input: oklch(0.15 0 0);
+  --ring: oklch(1 0 0); /* White */
 }
 
 @theme inline {
-  --font-sans: 'Montserrat', sans-serif;
-  --font-serif: 'Cormorant', serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
   
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -99,10 +97,10 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: var(--radius);
   
   --animate-marquee: marquee var(--duration) infinite linear;
   @keyframes marquee {
@@ -121,98 +119,90 @@
   html {
     scroll-behavior: smooth;
     height: 100%;
-    /* Default to dark mode for the premium look */
-    color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground font-sans;
     min-height: 100vh;
-    line-height: 1.6;
+    line-height: 1.4;
     background-color: var(--color-bg);
     color: var(--color-fg);
   }
 }
 
-/* Liquid Glass Morphing UI */
+/* Minimalist Modifiers */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 
 .dark .glass {
-  background: rgba(12, 10, 9, 0.5);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid var(--border);
 }
 
+/* Remove pills, use sharp corners */
 .glass-pill {
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 0;
 }
 
 .dark .glass-pill {
-  background: rgba(12, 10, 9, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  background: var(--background);
+  border: 1px solid var(--foreground);
 }
 
 /* Fluid Structural Utilities */
 .page-container {
   width: 100%;
   padding-inline: var(--fluid-padding);
-  max-width: 1400px;
+  max-width: 1600px;
   margin-inline: auto;
 }
 .pt-safe-nav {
-  padding-top: max(12vh, 7rem);
+  padding-top: max(16vh, 9rem);
 }
 .py-section {
-  padding-top: clamp(4rem, 8vh, 8rem);
-  padding-bottom: clamp(4rem, 8vh, 8rem);
+  padding-top: clamp(6rem, 12vh, 12rem);
+  padding-bottom: clamp(6rem, 12vh, 12rem);
 }
 
-/* Typography Overrides using Clamp & Serif Fonts */
+/* Typography Overrides using Clamp & Bold Sans */
 h1, .h1 { 
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--fluid-header); 
-  font-weight: 500; 
-  line-height: 1.05; 
-  letter-spacing: -0.02em; 
+  font-weight: 800; 
+  line-height: 0.95; 
+  letter-spacing: -0.05em; 
+  text-transform: uppercase;
 }
 h2, .h2 { 
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 5vw + 1rem, 4rem); 
-  font-weight: 400; 
-  line-height: 1.1; 
-  letter-spacing: -0.01em; 
+  font-family: var(--font-sans);
+  font-size: clamp(3rem, 6vw + 1rem, 6rem); 
+  font-weight: 800; 
+  line-height: 1; 
+  letter-spacing: -0.04em; 
+  text-transform: uppercase;
 }
 h3, .h3 { 
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: clamp(1.5rem, 3vw, 2.5rem); 
-  font-weight: 400; 
-  line-height: 1.2; 
-  letter-spacing: 0em; 
+  font-weight: 700; 
+  line-height: 1.1; 
+  letter-spacing: -0.02em; 
 }
 p, .p-fluid { 
   font-family: var(--font-sans);
   font-size: var(--fluid-text); 
-  font-weight: 300; 
+  font-weight: 400; 
   color: var(--muted-foreground);
+  letter-spacing: -0.01em;
 }
 
-/* Elegant Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+/* Minimalist Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
-.dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.2); }
-.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+::-webkit-scrollbar-thumb { background: var(--foreground); }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }

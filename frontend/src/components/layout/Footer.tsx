@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Camera, MessageSquare, Share2, Video, Mail, MapPin, Phone } from 'lucide-react'
 import { APP_NAME } from '@/lib/constants'
-import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
 import { Button } from '@/components/ui/button'
 
 const footerLinks = {
@@ -37,30 +36,28 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="mt-20 border-t border-border relative overflow-hidden bg-transparent">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent -z-10" />
-      
+    <footer className="mt-20 border-t border-border bg-background">
       {/* Newsletter */}
-      <div className="border-b border-border glass">
-        <div className="page-container py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="border-b border-border">
+        <div className="page-container py-24">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
             <div>
-              <h3 className="text-xl font-bold text-foreground mb-1">Stay in the loop</h3>
-              <p className="text-muted-foreground text-sm">Get early access to new drops, exclusive offers, and style tips.</p>
+              <h3 className="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter mb-4">Stay in the loop</h3>
+              <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">Get early access to new drops & exclusive offers.</p>
             </div>
             <form
-              className="flex gap-2 w-full md:w-auto"
+              className="flex gap-4 w-full md:w-auto flex-col sm:flex-row"
               onSubmit={(e) => e.preventDefault()}
             >
-              <div className="flex items-center gap-2 glass rounded-xl px-4 py-3 flex-1 md:w-72 border-border">
-                <Mail size={16} className="text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-4 bg-background border-b-2 border-foreground pb-2 flex-1 md:w-80">
+                <Mail size={20} strokeWidth={2.5} className="text-foreground shrink-0" />
                 <input
                   type="email"
-                  placeholder="your@email.com"
-                  className="bg-transparent text-sm text-foreground placeholder-muted-foreground outline-none flex-1 font-sans"
+                  placeholder="YOUR@EMAIL.COM"
+                  className="bg-transparent text-sm text-foreground placeholder-muted-foreground outline-none flex-1 font-bold tracking-widest uppercase"
                 />
               </div>
-              <Button type="submit" className="px-6 h-auto rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+              <Button type="submit" className="rounded-none h-14 px-8 uppercase font-bold tracking-widest text-sm bg-foreground text-background hover:bg-muted-foreground w-full sm:w-auto">
                 Subscribe
               </Button>
             </form>
@@ -69,33 +66,30 @@ export default function Footer() {
       </div>
 
       {/* Main footer */}
-      <div className="page-container py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+      <div className="page-container py-24">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8">
           {/* Brand */}
-          <div className="col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
-                <span className="text-white font-black text-sm">C</span>
-              </div>
-              <AnimatedShinyText className="inline-flex items-center justify-center font-bold text-lg tracking-tight transition ease-out">
+          <div className="col-span-1 md:col-span-2">
+            <Link to="/" className="flex items-center gap-2 mb-8 group">
+              <span className="font-black text-3xl tracking-tighter uppercase text-foreground">
                 {APP_NAME}
-              </AnimatedShinyText>
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-xs">
+            <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground leading-relaxed mb-8 max-w-sm">
               Premium fashion crafted for the modern individual. Designed with purpose, worn with confidence.
             </p>
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Mail size={14} />
-                <span>ayush@clothhive.com</span>
+            <div className="space-y-4 text-xs font-bold uppercase tracking-widest text-foreground">
+              <div className="flex items-center gap-4">
+                <Mail size={16} strokeWidth={2.5} />
+                <span>INFO@{APP_NAME.toUpperCase()}.COM</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone size={14} />
+              <div className="flex items-center gap-4">
+                <Phone size={16} strokeWidth={2.5} />
                 <span>+91 98765 43210</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin size={14} />
-                <span>Mumbai, India</span>
+              <div className="flex items-center gap-4">
+                <MapPin size={16} strokeWidth={2.5} />
+                <span>MUMBAI, INDIA</span>
               </div>
             </div>
           </div>
@@ -103,13 +97,13 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
-              <h4 className="text-sm font-semibold text-foreground mb-4">{group}</h4>
-              <ul className="space-y-3">
+              <h4 className="text-sm font-black text-foreground uppercase tracking-widest mb-6">{group}</h4>
+              <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       to={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+                      className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -123,23 +117,23 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-border">
-        <div className="page-container py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
+        <div className="page-container py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            © {new Date().getFullYear()} {APP_NAME}. ALL RIGHTS RESERVED.
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
             {socials.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
                 href={href}
                 aria-label={label}
-                className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 hover:-translate-y-1"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Icon size={16} />
+                <Icon size={18} strokeWidth={2.5} />
               </a>
             ))}
           </div>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-foreground transition-colors">Terms</Link>
             <Link to="/cookies" className="hover:text-foreground transition-colors">Cookies</Link>
